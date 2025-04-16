@@ -67,3 +67,33 @@ footer a:hover{
     
     
 }
+
+.bubble{
+    background: #2caadb;
+    background: linear-gradient(199deg, rgba(44, 170, 219, 1) 0%, rgb(2, 126, 226) 0%, rgba(212, 255, 253, 1) 100%);
+
+    border-radius: 50%;
+    width: 5vh;
+    
+    height: 5vh;
+    display: flex;
+    color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    bottom: 12vh;
+    z-index: 30;
+    right: 3vh;
+    box-shadow: -2px 0px 10px rgba(0, 110, 101, 0.144);
+
+    transition: box-shadow .25s linear, color .25s linear;
+}
+
+.bubble:hover{
+    box-shadow: -2px 0px 50px rgba(0, 238, 255, 0.932);
+
+    color: rgb(185, 250, 255);
+
+    
+}
