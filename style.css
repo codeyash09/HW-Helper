@@ -45,3 +45,25 @@ footer a{
 footer a:hover{
     color: black;
 }
+
+.profileCard{
+    width: 100vw;
+}
+
+.image{
+    position: fixed;
+    
+    top: 1vh;
+    right: 1vh;
+    height: 100%;
+}
+
+
+.image img{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+    
+    
+}
