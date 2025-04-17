@@ -11,15 +11,22 @@
     <div class="profileCard">
         <div class="image" id="profileImage">
             <!-- Placeholder -->
-            <img src="image copy.png" alt="Profile Picture">
+            <img id="realProfile" src="image copy.png" alt="Profile Picture">
         </div>
-
+        
         <div class="dropdown" id="dropdownMenu">
-            <a href="#">Settings</a>
-            <a href="#">Customize</a>
-            <a href="#">Profile</a> <!-- changed from Privacy to Profile -->
-            <a href="#">Privacy and Terms</a>
+            <div class="menu" id="menu">
+                <a href="#">Settings</a>
+                <a href="#">Customize</a>
+                <a href="#">Profile</a> <!-- changed from Privacy to Profile -->
+                <a href="#">Privacy and Terms</a>
+            </div>
         </div>
+        
+    </div>
+
+    <div class="content" id="content">
+
     </div>
 
     <div class="bubble">
@@ -33,6 +40,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="script.js"></script>
+    <script src="server.js"></script>
+    <script src="animations.js"></script>
 </body>
 </html>
