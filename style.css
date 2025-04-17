@@ -1,18 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
     padding: 0;
     margin: 0;
     overflow-x: hidden;
     scroll-behavior: smooth;
- 
     text-decoration: none;
 }
 
-
-
-footer{
+footer {
     position: fixed;
     bottom: 0;
     width: 100vw;
@@ -28,72 +25,92 @@ footer{
     background-color: white;
 }
 
-footer:hover{
+footer:hover {
     box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.144);
-   
 }
 
-footer a{
+footer a {
     color: rgb(29, 29, 29);
     transition: color 0.25s linear;
     font-family: "Bebas Neue", sans-serif;
     text-decoration: none;
     font-size: 2.5vh;
-
 }
 
-footer a:hover{
+footer a:hover {
     color: black;
 }
 
-.profileCard{
+.profileCard {
     width: 100vw;
 }
 
-.image{
+.image {
     position: fixed;
-    
     top: 1vh;
     right: 1vh;
     height: 100%;
 }
 
-
-.image img{
+.image img {
     width: 5vh;
     height: 5vh;
     border-radius: 50%;
     background-color: rgb(194, 194, 194);
-    
-    
 }
 
-.bubble{
+.bubble {
     background: #2caadb;
     background: linear-gradient(199deg, rgba(44, 170, 219, 1) 0%, rgb(2, 126, 226) 0%, rgba(212, 255, 253, 1) 100%);
-
     border-radius: 50%;
     width: 5vh;
-    
     height: 5vh;
     display: flex;
     color: rgb(255, 255, 255);
     justify-content: center;
     align-items: center;
-
     position: fixed;
     bottom: 12vh;
     z-index: 30;
     right: 3vh;
     box-shadow: -2px 0px 10px rgba(0, 110, 101, 0.144);
-
     transition: box-shadow .25s linear, color .25s linear;
 }
 
-.bubble:hover{
+.bubble:hover {
     box-shadow: -2px 0px 50px rgba(0, 238, 255, 0.932);
-
     color: rgb(185, 250, 255);
+}
 
-    
+/* Dropdown Styles */
+.dropdown {
+    position: fixed;
+    top: 8vh;
+    right: 2vh;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    min-width: 150px;
+    z-index: 50;
+}
+
+.dropdown a {
+    padding: 10px;
+    text-align: left;
+    text-decoration: none;
+    color: #333;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown a:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown a:last-child {
+    border-bottom: none;
 }
