@@ -138,3 +138,39 @@ footer a:hover {
 .dropdown a:last-child {
     border-bottom: none;
 }
+
+.grades{
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin-top: 5vw;
+    padding: 5vw;
+
+    width: fit-content;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.144);
+
+    display: flex;
+    align-self: center;
+    justify-self: center;
+}
+
+#gradeChart{
+    
+    width: 25vw;
+    max-width: 25vw;
+   
+}
+
+@media only screen and (max-width: 2000px) {
+    #gradeChart{
+        max-width: 90vw;
+        width: 90vw;
+        
+
+    }
+    .grades{
+        margin-top: 0;
+        border-radius: 0;
+       
+        
+    }
+}
