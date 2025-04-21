@@ -7,6 +7,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     text-decoration: none;
+    font-family: 'Bebas Neue';
 }
 
 .content{
@@ -142,7 +143,7 @@ footer a:hover {
 .grades{
     background-color: #f8f8f8;
     border-radius: 8px;
-    margin-top: 5vw;
+    margin-top: 5vh;
     padding: 5vw;
 
     width: fit-content;
@@ -160,7 +161,48 @@ footer a:hover {
    
 }
 
-@media only screen and (max-width: 2000px) {
+
+
+.rest{
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    justify-content: space-around;
+    width: 35vw;
+
+    
+   
+  
+}
+
+.chats{
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.144);
+    padding: 2%;
+    margin-top: 2vh;
+    margin-right: 1vh;
+    width: 45%;
+    height: 50vh;
+    
+}
+.upcoming{
+    width: 45%;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 2%;
+    margin-top: 2vh;
+
+    margin-left: 1vh;
+
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.144);
+    height: 50vh;
+}
+
+
+
+
+@media only screen and (max-width: 1500px) {
     #gradeChart{
         max-width: 90vw;
         width: 90vw;

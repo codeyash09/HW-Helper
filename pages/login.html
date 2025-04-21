@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In | Summit</title>
+    <link rel="stylesheet" href="/style/signup.css">
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    
+    <form novalidate id="myForm">
+
+        <h1>Log In</h1>
+        
+        <h3 class="emailer">Email Or Username</h3>
+        <input type="email" id="emailAddress" minlength="8" required>
+
+        <div id="emailErrorMessage" class="error"></div>
+
+        <h3 class="passworder">Password</h3>
+
+        <input type="password" id="password" minlength="8" required>
+
+        <input id="button" type="submit" value='Log In'>
+
+    </form>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="/scripts/server.js"></script>
+
+    <script type="module" src="/scripts/login.js"></script>
+</body>
+</html>
