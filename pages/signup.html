@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup | Summit</title>
+    <link rel="stylesheet" href="/style/signup.css">
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    
+    <form novalidate id="myForm">
+
+        <h1>Sign Up</h1>
+        
+        <h3 class="emailer">Email</h3>
+        <input type="email" id="emailAddress" minlength="8" required>
+
+        <div id="emailErrorMessage" class="error"></div>
+
+        <h3 class="passworder">Password</h3>
+
+        <input type="password" id="password" minlength="8" required>
+
+
+        <h3 class="namer">Name</h3>
+
+        <input type="text" id="name" required>
+
+        <h3 class="bdayer">Birthday</h3>
+
+        <input type="date" id="birthday" required>
+
+        <h3 class="usernamer">Username</h3>
+
+        <input type="text" id="username" required>
+
+        <input id="button" type="submit" value='Sign Up'>
+
+    </form>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="/scripts/server.js"></script>
+
+    <script type="module" src="/scripts/signup.js"></script>
+</body>
+</html>
