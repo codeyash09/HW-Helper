@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes | Summit</title>
+    <link rel="stylesheet" href="/style/notes.css">
+    <script type="module" src="/scripts/notes.js"></script>
+
+</head>
+<body>
+
+    
+
+    <div id="notes">
+        <span contenteditable="true" class="firstLine" id="first" onfocus="placeHolderBye('Title...', 'first')" onblur="placeHolderHi('Title...', 'first')"><span class="placeholder">Title...</span></span><br>
+        <span contenteditable="true" class="text" id="text"  onfocus="placeHolderBye('Begin creating . . . ', 'text')" onblur="placeHolderHi('Begin creating . . . ', 'text')" oninput="checkForSpecial()"><span class="placeholder">Begin creating . . . </span></span>
+        
+    </div>
+
+    <script>
+
+        function placeHolderBye(text, id){
+            let words = document.getElementById(id);
+
+            if(words.innerHTML == '<span class="placeholder">' + text +'</span>'){
+                words.innerHTML = "";
+            }
+        }
+
+        function placeHolderHi(text, id){
+            let words = document.getElementById(id);
+
+            if(words.innerText == "" || words.innerHTML == '<br>' || words.innerHTML == '<br><br>' || words.innerHTML == '<br><br><br>'){
+                words.innerHTML = '<span class="placeholder">' + text +'</span>';
+            }
+        }
+
+        function checkForSpecial(){
+            let words = document.getElementById("text");
+            // if(words.innerHTML.includes("\n*&nbsp;")){
+            //     words.innerHTML = words.innerHTML.replace("\n* ", "&bull; ");
+                
+            // }
+
+            // if(words.innerHTML == "*&nbsp;"){
+            //     words.innerHTML = words.innerHTML.replace("* ", "&bull; ");
+            // }
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="/scripts/server.js"></script>
+
+    <script type="module" src="/scripts/notes.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 
-import { fetchPassword, details, logInOfficial } from '/scripts/server.js';
+import { fetchPassword, details, fetchId } from '/scripts/server.js';
 
 
 
@@ -45,11 +45,36 @@ form.addEventListener("submit", (event) => {
                     errorMessage.style.display = "block";
                 }else{
 
+                    window.localStorage.setItem('loggedInStatus', true);
+                    
+                    let id;
+                    if(emailValue.includes("@") && emailValue.includes(".")){
+                        id = fetchId('Users', 'email', emailValue);
 
-                    window.location.replace("/pages/");
+                
+                    }else{
+                        id = fetchId('Users', 'username', emailValue);
 
-                    logInOfficial();
+                
+                    }
 
+                    
+                    if(id != undefined){
+                        id.then(result =>{
+                            if(result[0] != undefined){
+                                id = result[0].id;
+
+                                window.localStorage.setItem('userIdentify', id);
+
+                                window.location.replace("/pages/");
+                            }
+                        });
+                    }
+                    
+                    
+                   
+
+                    
                     
                 }
             }else{

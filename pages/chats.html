@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="/style/chats.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<!-- Add class="dnd-active" here manually to test the styles -->
+<body>
+
+    <div class="sidebar">
+        <h2>Chat</h2> <!-- Changed title -->
+        <ul class="channels-list">
+            <!-- Example Direct Messages/Groups with Avatars -->
+            <li class="active">
+                <div class="avatar"></div> <!-- Added avatar div -->
+                FriendUser#5678
+            </li>
+            <li>
+                <div class="avatar"></div> <!-- Added avatar div -->
+                AnotherUser#9012
+            </li>
+            <li>
+                <div class="avatar" style="background-color: #57f287;"></div> <!-- Example different color -->
+                Group Chat: Project Alpha
+            </li>
+            <li>
+                <div class="avatar" style="background-color: #ed4245;"></div> <!-- Example different color -->
+                Group Chat: Gaming Crew
+            </li>
+            <!-- Add more contacts/groups here -->
+        </ul>
+
+        <!-- Add Chat/Server Button -->
+        <div class="add-chat-button" title="Create DM or Group">
+            +
+        </div>
+
+        <div class="user-info">
+             <!-- Clicking this avatar area would typically trigger status change (via JS) -->
+             <div class="avatar" title="Change Status">
+                 <!-- Status Indicator Dot (e.g., add class 'idle', 'dnd', 'offline' here via JS) -->
+                 <div class="status-indicator"></div>
+                 <!-- Actual avatar image would go here -->
+             </div>
+             <div class="username" title="YourUsername#1234">
+                 YourUsername#1234
+             </div>
+             <div class="user-actions">
+                 <i class="fa-solid fa-moon" title="Do Not Disturb"></i> <!-- Moon Icon -->
+                 <i class="fa-solid fa-gear" title="User Settings"></i> <!-- Settings Icon -->
+             </div>
+        </div>
+    </div>
+
+    <div class="main-chat">
+        <div class="chat-header">
+             <!-- This should dynamically update based on selection -->
+             FriendUser#5678 <!-- Updated placeholder to match selected chat -->
+        </div>
+        <div class="chat-messages">
+            <!-- Messages will be loaded here -->
+             <div class="message"> <!-- Other user's message -->
+                <!-- Removed message-body wrapper -->
+                <div class="avatar"></div>
+                <div class="content">
+                    <div class="username">FriendUser#5678</div> <!-- Username back inside content -->
+                    <div class="text">Hey, how's it going?</div>
+                    <div class="timestamp">10:30 AM</div>
+                </div>
+            </div>
+             <div class="message own-message"> <!-- Your message -->
+                 <!-- Removed message-body wrapper -->
+                <div class="avatar"></div>
+                <div class="content">
+                    <div class="username">YourUsername#1234</div> <!-- Username stays inside (will be hidden by CSS) -->
+                    <div class="text">Pretty good! Just working on this chat interface.</div>
+                    <div class="timestamp">10:31 AM</div>
+                </div>
+            </div>
+             <div class="message"> <!-- Other user's message -->
+                 <!-- Removed message-body wrapper -->
+                <div class="avatar"></div>
+                <div class="content">
+                    <div class="username">AnotherUser#9012</div> <!-- Username back inside content -->
+                    <div class="text">Looks cool!</div>
+                    <div class="timestamp">10:32 AM</div>
+                </div>
+            </div>
+            <!-- Example message structure -->
+
+        </div>
+        <div class="chat-input">
+             <!-- Input area now uses flexbox -->
+             <div class="input-actions left">
+                 <i class="fa-solid fa-plus" title="Add Attachment"></i> <!-- Plus icon -->
+             </div>
+             <input type="text" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
+             <div class="input-actions right">
+                 <i class="fa-solid fa-note-sticky" title="Open Stickers"></i> <!-- Changed icon to fa-note-sticky and updated title -->
+                 <i class="fa-solid fa-face-smile" title="Open Emojis"></i> <!-- Emoji icon -->
+             </div>
+        </div>
+    </div>
+
+    <!-- Optional: Right sidebar for user list -->
+    <!--
+    <div class="user-list-sidebar">
+        <h2>Online Users - 3</h2>
+        <ul>
+            <li>YourUsername#1234</li>
+            <li>FriendUser#5678</li>
+            <li>AnotherUser#9012</li>
+        </ul>
+    </div>
+    -->
+
+    <script>
+        // Get the moon icon element
+        const dndButton = document.querySelector('.user-actions .fa-moon');
+        // Get the body element - REMOVED as it's not needed for this specific action anymore
+        // const bodyElement = document.body;
+
+        // Check if the button exists before adding listener
+        if (dndButton) {
+            // Add a click event listener to the moon icon
+            dndButton.addEventListener('click', () => {
+                // Toggle the 'dnd-icon-active' class directly on the moon icon element
+                dndButton.classList.toggle('dnd-icon-active');
+
+                // Removed the code that toggled class on bodyElement
+            });
+        } else {
+            console.error("Do Not Disturb button (.fa-moon) not found.");
+        }
+    </script>
+
+</body>
+</html>

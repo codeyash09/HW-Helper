@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    text-decoration: none;
+    font-family: 'Poppins';
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    height: 60vh;
+    justify-content: space-evenly;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+    background-color: #ffffff;
+    padding-bottom: 2vh;
+    border: rgb(74, 210, 255) 2px solid;
+    border-radius: 8px;
+    margin-top: 15vh;
+    padding: 3vh;
+    
+}
+
+input{
+    width: 75%;
+    height: 3vh;
+    font-size: 1vh;
+    border-radius: 8px;
+    padding: 1vh;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    background-color: #ffffff;
+    border: rgb(49, 49, 49) 2px solid;
+    transition: border .25s linear;
+    color: rgb(39, 39, 39);
+    
+}
+
+input:focus{
+    outline: none;
+    background-color: #ffffff;
+    border: rgb(28, 198, 255) 2.5px solid;
+    color: rgb(28, 198, 255);
+
+}
+
+
+
+h3{
+    text-decoration: none;
+    font-weight: normal;
+    font-family: 'Poppins';
+    position: relative;
+    bottom: -9h;
+    background-color: white;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+    left: -5.5vw;
+    font-size: 1.5vh;
+    color: rgb(70, 70, 70);
+    transition: color .25s linear, bottom .125s linear, left .125s linear;
+    bottom: -6vh;
+    left: -8vw;
+    font-size: 1vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+}
+
+h3:has(+ input:focus){
+    color: rgb(28, 198, 255);
+    
+    
+}
+
+
+.error{
+    border: rgb(255, 86, 86) 2.5px solid;
+    padding: 1vh;
+    border-radius: 8px;
+    color: rgb(255, 86, 86);
+    position: absolute;
+    display: none;
+    top: 8vh;
+}
+h1{
+    font-family: 'Poppins';
+    font-weight: normal;
+    
+}
+#button{
+    width: 10vw;
+    height: 5vh;
+    margin-top: 3vh;
+    font-size: 2vh;
+    background-color: white;
+    transition: background-color .25s linear;
+}
+
+#button:hover{
+    background-color: #f5f5f5;
+}
+
+
+@media only screen and (max-width: 1500px) {
+    form{
+        width: 100%;
+    }
+
+    h3{
+        left: -27vw;
+    }
+
+    #button{
+        width: 30vw;
+    }
+}
+

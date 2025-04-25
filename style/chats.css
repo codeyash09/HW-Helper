@@ -1,0 +1,359 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #36393f; /* Discord-like dark background */
+    color: #dcddde; /* Light text color */
+}
+
+.sidebar {
+    background-color: #2f3136; /* Slightly lighter sidebar */
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    margin-top: 0;
+    font-size: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #40444b;
+}
+
+.channels-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    flex-grow: 1; /* Takes remaining space */
+    overflow-y: auto; /* Scroll if too many channels */
+}
+
+.channels-list li {
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    display: flex; /* Align avatar and text */
+    align-items: center; /* Vertically center avatar and text */
+}
+
+.channels-list li .avatar { /* Style for sidebar avatars */
+    width: 32px; /* Slightly smaller avatar for the list */
+    height: 32px;
+    background-color: #7289da; /* Placeholder color */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 10px; /* Space between avatar and text */
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+}
+
+.channels-list li:hover, .channels-list li.active {
+    background-color: #40444b; /* Hover/active background */
+}
+
+.add-chat-button { /* Styles for the new button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* Match avatar size or adjust as needed */
+    height: 32px;
+    background-color: #40444b; /* Button background */
+    color: #b9bbbe; /* Plus sign color */
+    border-radius: 8px; /* Rounded square */
+    font-size: 24px; /* Size of the plus sign */
+    font-weight: bold;
+    line-height: 1; /* Adjust line height for centering */
+    cursor: pointer;
+    margin: 15px auto 10px auto; /* Center horizontally, add vertical space */
+    transition: background-color 0.2s ease, color 0.2s ease; /* Smooth hover effect */
+}
+
+.add-chat-button:hover {
+    background-color: #5865f2; /* Discord blue on hover */
+    color: #ffffff; /* White plus on hover */
+}
+
+
+/* Remove the '#' prefix for channels */
+/*
+.channels-list li::before {
+    content: '# ';
+    color: #72767d;
+}
+*/
+
+.user-info {
+    margin-top: auto; /* Pushes to the bottom */
+    padding: 10px; /* Adjusted padding */
+    border-top: 1px solid #40444b;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically center items */
+    background-color: #292b2f; /* Slightly darker background for this area */
+}
+
+.user-info .avatar { /* Style for user's own avatar */
+    width: 32px;
+    height: 32px;
+    background-color: #7289da; /* Placeholder color */
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-shrink: 0;
+    position: relative; /* Needed for status indicator positioning */
+}
+
+.user-info .avatar .status-indicator { /* Style for the status dot */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #43b581; /* Green for 'Online' */
+    border: 2px solid #292b2f; /* Border matches user-info background */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    box-sizing: border-box;
+}
+/* Example status colors (would need JS to change) */
+.user-info .avatar .status-indicator.idle { background-color: #faa61a; } /* Yellow */
+.user-info .avatar .status-indicator.dnd { background-color: #f04747; } /* Red */
+.user-info .avatar .status-indicator.offline { background-color: #747f8d; } /* Grey */
+
+
+.user-info .username {
+    font-size: 14px; /* Slightly larger font */
+    font-weight: 500;
+    color: #ffffff;
+    margin-right: auto; /* Pushes icons to the right */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis if too long */
+}
+
+.user-info .user-actions { /* Container for icons */
+    display: flex;
+    align-items: center;
+}
+
+.user-info .user-actions i { /* Style for icons */
+    color: #b9bbbe;
+    cursor: pointer;
+    padding: 4px; /* Add some clickable area */
+    margin-left: 4px; /* Space between icons */
+    font-size: 18px; /* Icon size */
+    border-radius: 3px;
+}
+
+.user-info .user-actions i:hover {
+    background-color: #40444b;
+    color: #dcddde;
+}
+
+/* Remove styles for DND Active State on body */
+/*
+body.dnd-active .user-info .avatar .status-indicator {
+    background-color: #f04747;
+}
+
+body.dnd-active .main-chat {
+    border-top: 3px solid rgba(240, 71, 71, 0.5);
+}
+
+body.dnd-active .user-info .user-actions .fa-moon {
+    color: #5865f2;
+}
+*/
+
+/* Style for the moon icon when DND is toggled on */
+.user-info .user-actions .fa-moon.dnd-icon-active {
+    color: #faa61a; /* Orange color */
+}
+
+
+.main-chat {
+    flex-grow: 1; /* Takes remaining horizontal space */
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f; /* Main chat area background */
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #40444b; /* Separator */
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.chat-messages {
+    flex-grow: 1; /* Takes remaining vertical space */
+    overflow-y: auto; /* Enable scrolling for messages */
+    padding: 20px;
+    display: flex;
+    flex-direction: column-reverse; /* New messages appear at the bottom */
+    gap: 10px; /* Add space between message bubbles */
+}
+
+/* Placeholder for messages */
+.message {
+    /* margin-bottom: 15px; Remove default margin, use gap instead */
+    display: flex;
+    align-items: flex-end; /* Align avatar to bottom of bubble */
+    max-width: 75%; /* Limit message width */
+    align-self: flex-start; /* Default to left alignment */
+    /* flex-direction: column; /* Removed */
+    /* position: relative; /* Removed */
+}
+
+/* Remove the message-body wrapper style */
+/*
+.message .message-body {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+}
+*/
+
+.message.own-message {
+    align-self: flex-end; /* Align own messages to the right */
+    flex-direction: row-reverse; /* Reverse order for avatar on right */
+}
+
+/* Remove row-reverse from message-body as it's gone */
+/*
+.message.own-message .message-body {
+    flex-direction: row-reverse;
+}
+*/
+
+
+.message .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #7289da; /* Discord blue placeholder */
+    border-radius: 50%;
+    /* margin-right: 15px; Remove default margin */
+    flex-shrink: 0;
+    margin: 0 10px; /* Add horizontal margin */
+    /* margin-bottom: 5px; /* Removed bottom margin */
+}
+
+/* Adjust avatar margin for own messages
+.message.own-message .avatar {
+    /* margin is already set to 0 10px, reversing row handles position */
+/* } */
+
+.message .content {
+    background-color: #40444b; /* Default bubble color */
+    padding: 10px 15px;
+    border-radius: 18px; /* Rounded corners for bubble */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow content bubble to grow */
+    min-width: 0; /* Prevent flex overflow issues */
+}
+
+.message.own-message .content {
+    background-color: #5865f2; /* Different bubble color for own messages */
+}
+
+/* Username styling - applies to both */
+.message .content .username {
+    font-weight: bold;
+    color: #ffffff; /* Ensure username is visible */
+    margin-bottom: 4px;
+    font-size: 13px; /* Slightly smaller username */
+    display: none; /* Hide usernames by default */
+}
+
+/* Rule to specifically show usernames in group chats (requires adding 'group-chat' class via JS) */
+/*
+.chat-messages.group-chat .message:not(.own-message) .content .username {
+     display: block; /* Or inline */
+     /* color: #ffffff; /* Set color when visible */
+/* }
+*/
+
+
+/* Keep the rule to hide username in own messages (redundant now but good practice) */
+.message.own-message .content .username {
+     display: none;
+}
+
+
+ .message .content .text {
+    line-height: 1.4;
+    color: #dcddde; /* Ensure text color contrasts with bubble */
+    word-wrap: break-word; /* Wrap long words */
+ }
+
+ /* Style for the timestamp */
+ .message .content .timestamp {
+     font-size: 11px; /* Smaller font size */
+     color: #a3a6aa; /* Lighter grey color */
+     margin-top: 5px; /* Space above the timestamp */
+     align-self: flex-end; /* Align timestamp to the right within the bubble */
+ }
+
+
+ /* Adjust bubble corners */
+ .message .content {
+     border-bottom-left-radius: 5px; /* Less rounded corner near avatar */
+ }
+ .message.own-message .content {
+     border-bottom-right-radius: 5px; /* Less rounded corner near avatar (own) */
+     border-bottom-left-radius: 18px; /* Reset other corner */
+ }
+
+ /* Remove rule for content margin */
+ /*
+ .message:not(.own-message) .content {
+     margin-top: 0;
+ }
+ */
+
+
+.chat-input {
+    padding: 10px 20px; /* Adjusted padding */
+    border-top: 1px solid #40444b; /* Separator */
+    display: flex; /* Use flexbox */
+    align-items: center; /* Vertically align items */
+    gap: 10px; /* Add some space between elements */
+}
+
+.chat-input input {
+    flex-grow: 1; /* Allow input to take available space */
+    width: auto; /* Override previous width: 100% */
+    padding: 12px 15px; /* Increased padding for bigger input */
+    border: none;
+    border-radius: 8px; /* Slightly more rounded */
+    background-color: #40444b; /* Input background */
+    color: #dcddde; /* Input text color */
+    box-sizing: border-box;
+    font-size: 15px; /* Slightly larger font */
+}
+
+.chat-input input::placeholder {
+    color: #72767d;
+}
+
+/* Styles for the action icons next to input */
+.chat-input .input-actions i {
+    color: #b9bbbe;
+    font-size: 22px; /* Icon size */
+    cursor: pointer;
+    padding: 8px; /* Clickable area */
+    border-radius: 5px;
+    transition: color 0.2s ease;
+}
+
+.chat-input .input-actions i:hover {
+    color: #dcddde; /* Lighter color on hover */
+}
+
+/* Container for icons on the right */
+.chat-input .input-actions.right {
+    display: flex;
+    gap: 5px; /* Space between right-side icons */
+}
