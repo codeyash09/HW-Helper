@@ -27,29 +27,46 @@ new Chart("gradeChart", {
     }]
   },
   options: {
-    title:{
+    responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 2,
+    title: {
         display: true,
         text: 'Grades Since the Past 90 Days',
-       
     },
-        
-    
     legend: {
         display: true,
         position: 'bottom',
-        labels:{
-            font:{
-                size: 14,
-                weight: 'italic',
-                padding: 10
-                
+        labels: {
+            boxWidth: 20,
+            padding: 10,
+            font: {
+                size: 12
             }
         }
     },
-    
-
     scales: {
-        yAxes: [{ticks: {min: 0, max:100}}],
+        yAxes: [{
+            ticks: {
+                min: 0,
+                max: 100,
+                stepSize: 20
+            }
+        }],
+        xAxes: [{
+            ticks: {
+                maxRotation: 45,
+                minRotation: 45
+            }
+        }]
+    },
+    layout: {
+        padding: {
+            left: 10,
+            right: 10,
+            top: 10,
+            bottom: 10
+        }
     }
   }
 });
