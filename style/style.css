@@ -216,3 +216,480 @@ footer a:hover {
         
     }
 }
+
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 100;
+    transition: width 0.3s ease, padding 0.3s ease;
+}
+
+/* Collapsed sidebar styles */
+.sidebar.collapsed {
+    width: 70px;
+    padding: 20px 10px;
+}
+
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .section-header span {
+    display: none;
+}
+
+.sidebar.collapsed .add-page-btn {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Collapse button styles */
+.collapse-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    z-index: 101;
+    padding: 0;
+}
+
+.collapse-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.collapse-btn.rotated {
+    transform: rotate(180deg);
+}
+
+.collapse-btn i {
+    font-size: 14px;
+    width: auto;
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    height: 40px; /* Set fixed height */
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+}
+
+/* Hide profile when sidebar is collapsed while maintaining space */
+.sidebar.collapsed .profile-section {
+    opacity: 0;
+    visibility: hidden;
+    height: 40px; /* Maintain the same height */
+    margin-bottom: 30px; /* Maintain the same margin */
+}
+
+/* Nav items positioning */
+.nav-items {
+    margin-top: 20px; /* Keep consistent margin */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar.collapsed .nav-items {
+    margin-top: 20px; /* Keep the same margin as expanded state */
+}
+
+/* Pages section styles */
+.pages-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Pages section header styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 15px;
+}
+
+.section-header span {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Adjust pages section in collapsed state */
+.sidebar.collapsed .section-header {
+    justify-content: center;
+    padding: 0;
+}
+
+/* Add page button styles */
+.add-page-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.add-page-btn:hover {
+    background-color: #f0f0f0;
+    transform: rotate(90deg);
+    color: #2caadb;
+}
+
+/* Pages list styles */
+.pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Bottom navigation styles */
+.bottom-nav {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+/* Navigation items styles */
+.sidebar a {
+    color: rgb(29, 29, 29);
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover effect for navigation items */
+.sidebar a:hover {
+    background-color: #f5f5f5;
+    transform: translateX(5px);
+    color: #2caadb;
+}
+
+.sidebar a:hover i {
+    transform: scale(1.1);
+    color: #2caadb;
+}
+
+/* Icon transitions */
+.sidebar i {
+    width: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Pages section styles */
+.pages-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Pages section header styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 15px;
+}
+
+.section-header span {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.section-header:hover span {
+    color: #2caadb;
+}
+
+/* Add page button hover effect */
+.add-page-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.add-page-btn:hover {
+    background-color: #f0f0f0;
+    transform: rotate(90deg);
+    color: #2caadb;
+}
+
+/* Collapse button hover effect */
+.collapse-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 101;
+    padding: 0;
+}
+
+.collapse-btn:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
+}
+
+/* Specific styles for collapsed state */
+.sidebar.collapsed a {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed a:hover {
+    transform: scale(1.1);
+    background-color: #f5f5f5;
+}
+
+/* Bottom navigation specific hover effect */
+.bottom-nav a:hover {
+    background-color: #f5f5f5;
+    transform: translateX(5px);
+    color: #2caadb;
+}
+
+/* Additional hover effect for active state */
+.sidebar a.active {
+    background-color: #e6f7ff;
+    color: #2caadb;
+}
+
+.sidebar a.active i {
+    color: #2caadb;
+}
+
+/* Hover effect adjustments for collapsed state */
+.sidebar.collapsed .nav-items a:hover,
+.sidebar.collapsed .bottom-nav a:hover {
+    transform: scale(1.1);
+    background-color: #f5f5f5;
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    height: 40px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+}
+
+/* Hide profile when sidebar is collapsed while maintaining space */
+.sidebar.collapsed .profile-section {
+    opacity: 0;
+    visibility: hidden;
+    height: 40px;
+    margin-bottom: 30px;
+}
+
+/* Nav items positioning */
+.nav-items {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Bottom nav positioning */
+.bottom-nav {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+/* Adjust pages section in collapsed state */
+.sidebar.collapsed .section-header {
+    justify-content: center;
+    padding: 0;
+}
+
+/* Pages list styles */
+.pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Main container styles */
+.main-container {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    background-color: #f8f8f8;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.main-container.expanded {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.grades {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.rest {
+    display: flex;
+    gap: 20px;
+}
+
+.chats, .upcoming {
+    flex: 1;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#gradeChart {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 400px;
+}
+
+@media screen and (max-width: 1500px) {
+    .content {
+        padding: 10px;
+    }
+    
+    .grades {
+        padding: 15px;
+    }
+    
+    #gradeChart {
+        max-height: 350px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .content {
+        padding: 5px;
+    }
+    
+    .grades {
+        padding: 10px;
+    }
+    
+    #gradeChart {
+        max-height: 300px;
+    }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+    }
+    
+    .nav-text,
+    .section-header span {
+        display: none;
+    }
+    
+    .main-container {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    
+    .collapse-btn {
+        display: none;
+    }
+}
