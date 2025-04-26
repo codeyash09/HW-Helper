@@ -3,36 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In | Summit</title>
-    <link rel="stylesheet" href="/style/login.css">
+    <title>Login | Summit</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/signup.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <div class="sidebar" id="sidebar">
+        <!-- Collapse Button -->
+        <button class="collapse-btn" id="collapseBtn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
     
-    
-    <form novalidate id="myForm">
-
-        <h1>Log In</h1>
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
+        </div>
         
-        <h3 class="emailer">Email Or Username</h3>
-        <input type="email" id="emailAddress" minlength="8" required>
+        <!-- Main Navigation -->
+        <div class="nav-items">
+            <a href="#"><i class="fa-solid fa-magnifying-glass"></i> <span class="nav-text">Search</span></a>
+            <a href="#"><i class="fa-solid fa-robot"></i> <span class="nav-text">Stylo AI</span></a>
+            <a href="#"><i class="fa-solid fa-house"></i> <span class="nav-text">Home</span></a>
+            <a href="#"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
+        </div>
+    
+        <!-- Pages Section -->
+        <div class="pages-section">
+            <div class="section-header">
+                <span class="nav-text">Pages</span>
+                <button class="add-page-btn">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+            <div class="pages-list">
+                <!-- Pages will be added here dynamically -->
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="#"><i class="fa-solid fa-gear"></i> <span class="nav-text">Settings</span></a>
+            <a href="#"><i class="fa-solid fa-trash"></i> <span class="nav-text">Trash</span></a>
+        </div>
+    </div>
 
-        <div id="emailErrorMessage" class="error"></div>
+    <div class="main-container" id="mainContainer">
+        <!-- Pages Divider -->
+        <div class="pages-divider">
+            <div class="pages-header">
+                <h2>Login</h2>
+            </div>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="content" id="content">
+            <form novalidate id="myForm">
+                <h1>Login</h1>
+                
+                <div class="form-group">
+                    <h3 class="emailer">Email/Username</h3>
+                    <input type="text" id="emailAddress" required>
+                </div>
 
-        <h3 class="passworder">Password</h3>
+                <div id="emailErrorMessage" class="error"></div>
 
-        <input type="password" id="password" minlength="8" required>
+                <div class="form-group">
+                    <h3 class="passworder">Password</h3>
+                    <input type="password" id="password" required>
+                </div>
 
-        <input id="button" type="submit" value='Log In'>
-
-    </form>
-
-
-
+                <input id="button" type="submit" value='Login'>
+            </form>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="/scripts/server.js"></script>
-
     <script type="module" src="/scripts/login.js"></script>
+    <script src="/scripts/animations.js"></script>
+    <script>
+        // Add sidebar collapse functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContainer = document.getElementById('mainContainer');
+            const collapseBtn = document.getElementById('collapseBtn');
+            
+            collapseBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContainer.classList.toggle('expanded');
+                collapseBtn.classList.toggle('rotated');
+            });
+        });
+    </script>
 </body>
 </html>
