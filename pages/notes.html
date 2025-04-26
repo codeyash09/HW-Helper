@@ -4,12 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes | Summit</title>
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="/style/notes.css">
     <script type="module" src="/scripts/notes.js"></script>
+    
 
 </head>
 <body>
+    <div class="sidebar" id="sidebar">
+        <!-- Collapse Button -->
+        <button class="collapse-btn" id="collapseBtn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
 
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
+        </div>
+        
+        <!-- Main Navigation -->
+        <div class="nav-items">
+            <a href="#"><i class="fa-solid fa-magnifying-glass"></i> <span class="nav-text">Search</span></a>
+            <a href="#"><i class="fa-solid fa-robot"></i> <span class="nav-text">Stylo AI</span></a>
+            <a href="#"><i class="fa-solid fa-house"></i> <span class="nav-text">Home</span></a>
+            <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
+        </div>
+
+        <!-- Pages Section -->
+        <div class="pages-section">
+            <div class="section-header">
+                <span class="nav-text">Pages</span>
+                <button class="add-page-btn">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+            <div class="pages-list" id="pageList">
+                
+                
+                
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="#"><i class="fa-solid fa-gear"></i> <span class="nav-text">Settings</span></a>
+            <a href="#"><i class="fa-solid fa-trash"></i> <span class="nav-text">Trash</span></a>
+        </div>
+    </div>
     
 
     <div id="notes">
@@ -27,7 +69,7 @@
 
         function placeHolderBye(text, id){
             let words = document.getElementById(id);
-            console.log('<span class="placeholder">' + text +'</span>');
+            
             if(words.innerHTML == '<span class="placeholder">' + text +'</span>'){
                 words.innerHTML = "";
 
@@ -64,7 +106,20 @@
     
 
     <script type="module" src="/scripts/notes.js"></script>
-    
+    <script>
+        // Add this new script for sidebar collapse functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContainer = document.getElementById('mainContainer');
+            const collapseBtn = document.getElementById('collapseBtn');
+            
+            collapseBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContainer.classList.toggle('expanded');
+                collapseBtn.classList.toggle('rotated');
+            });
+        });
+    </script>
     
 </body>
 </html>
