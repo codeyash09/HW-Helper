@@ -322,6 +322,7 @@ body {
 /* Nav items positioning */
 .nav-items {
     display: flex;
+    overflow:hidden;
     flex-direction: column;
     gap: 15px;
     margin-bottom: 30px;
