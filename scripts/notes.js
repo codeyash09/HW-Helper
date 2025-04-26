@@ -32,7 +32,7 @@ async function newNotes(){
 }
 
 submit.addEventListener('click', () =>{
-    if(noteName.innerHTML != '<span class="placeholder">Title...</span>' && textArea.innerHTML != '<span class="placeholder">Begin creating . . . <br><br><br><br><br></span>' || ){
+    if(noteName.innerHTML != '<span class="placeholder">Title...</span>' && textArea.innerHTML != '<span class="placeholder">Begin creating . . . <br><br><br><br><br></span>'){
         newNotes();
     }
 
