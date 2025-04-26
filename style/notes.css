@@ -59,3 +59,33 @@ body{
     border: none;
 }
 
+.save{
+    position: fixed;
+    bottom: 3vh;
+    right: 20vw;
+}
+
+#saveButton{
+    background-color: rgb(24, 24, 24);
+    color: #269a66;
+    border: 3px solid #269a66;
+    font-family: 'Poppins';
+    font-size: 2vh;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: background-color .25s linear, color .25s linear;
+    outline: none;
+    border-radius: 8px;
+    
+
+}
+
+#saveButton:hover{
+    background-color: #269a66;
+    color: white;
+
+    
+
+}
