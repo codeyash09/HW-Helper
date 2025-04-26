@@ -6,6 +6,104 @@
     <title>Summit</title>
     <link rel="stylesheet" href="/style/style.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+    <style>
+        /* Add simpler font and increase size for sidebar text */
+        .sidebar .nav-text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;  /* Increased from 16px to 18px */
+        }
+        
+        /* Keep the Pages section header smaller */
+        .sidebar .pages-section .section-header .nav-text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;  /* Smaller size specifically for Pages header */
+            font-weight: 600;
+        }
+        
+        /* Other section headers remain larger */
+        .sidebar .section-header .nav-text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        /* Style for the sign up button */
+        .signup-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6e5ff8, #4a6cf7);
+            color: white;
+            padding: 14px 28px;
+            margin-top: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(110, 95, 248, 0.5);
+            animation: fadeIn 1.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(110, 95, 248, 0.8);
+            cursor: pointer;
+        }
+        
+        .signup-btn:active {
+            transform: translateY(1px);
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Pulsing glow effect */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 15px rgba(110, 95, 248, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(110, 95, 248, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 15px rgba(110, 95, 248, 0.5);
+            }
+        }
+        
+        .signup-btn {
+            animation: fadeIn 1.2s ease-in-out, pulse 2s infinite 1.2s;
+        }
+        
+        /* Login link styling */
+        .login-text {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #666;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .login-link {
+            color: #4a6cf7;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .login-link:hover {
+            color: #6e5ff8;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
@@ -49,36 +147,12 @@
 
     <div class="main-container" id="mainContainer">
         <div class="content" id="content">
-            <div class="grades">
-                <canvas id="gradeChart"></canvas>
-            </div>
-            <div class="rest">
-                <div class="chats">
-                    <div class="message">
-                        <div class="from">
-                            <h3>Billy Bob</h3>
-                        </div>
-                        <div class="message">
-                            <p>When can we study?</p>
-                        </div>
-                        <div class="status">
-                            <h4>Read</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="upcoming">
-                    <div class="message">
-                        <div class="from">
-                            <h3>Billy Bob</h3>
-                        </div>
-                        <div class="message">
-                            <p>When can we study?</p>
-                        </div>
-                        <div class="status">
-                            <h4>Read</h4>
-                        </div>
-                    </div>
-                </div>
+            <div class="welcome-text">
+                <h1>Welcome to Summit</h1>
+                <h2>Your all-in-one student sidekick — take smart notes, stay on top of your schoolwork, and get the help you need to reach your academic peak.</h2>
+                <p class="bold-text">Summit is where focus meets simplicity.</p>
+                <a href="signup.html" class="signup-btn">Sign Up Now</a>
+                <p class="login-text">Already a member? <a href="login.html" class="login-link">Log in</a></p>
             </div>
         </div>
     </div>
@@ -86,9 +160,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="/scripts/server.js"></script>
     <script src="/scripts/animations.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src="/scripts/chart.js"></script>
     <script src="/scripts/chats.js"></script>
+    <script src="/scripts/textAnimation.js"></script>
     <script>
         // Add this new script for sidebar collapse functionality
         document.addEventListener('DOMContentLoaded', function() {
