@@ -17,5 +17,15 @@
 
     </script>
     
+    <style>
+        /* Add animation styles for welcome text */
+        .welcome-text {
+            overflow: hidden; /* Ensures the animation stays within bounds */
+        }
+        
+        .welcome-text h1, .welcome-text h2, .welcome-text p {
+            will-change: opacity, transform; /* Performance optimization */
+        }
+    </style>
 </body>
 </html>
