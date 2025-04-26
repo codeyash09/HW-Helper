@@ -159,13 +159,18 @@
 
     <div id="notes">
         <span contenteditable="true" class="firstLine" id="first" onfocus="placeHolderBye('Title...', 'first')" onblur="placeHolderHi('Title...', 'first')"><span class="placeholder">Title...</span></span><br>
-        <span contenteditable="true" class="text" id="text"  onfocus="placeHolderBye('Begin creating . . . <br><br><br><br><br>', 'text')" onblur="placeHolderHi('Begin creating . . . <br><br><br><br><br>', 'text')" oninput="checkForSpecial()"><span class="placeholder">Begin creating . . . <br><br><br><br><br></span></span>
+        <span contenteditable="true" class="text" id="text"  onfocus="placeHolderBye('Begin creating . . . <br><br><br><br><br>', 'text')" onblur="placeHolderHi('Begin creating . . . <br><br><br><br><br>', 'text')"><span class="placeholder">Begin creating . . . <br><br><br><br><br></span></span>
         
     </div>
 
 
     <div class="save">
         <button id="saveButton">Save</button>
+    </div>
+
+    <div class="interface">
+        
+        <input type="text" id="font-size" name="font-size" value="50" onblur="changeFontSize()">
     </div>
 
     <script>
@@ -203,6 +208,80 @@
             // }
         }
 
+
+        let currentFontSize = "50px
+        let savedSelection = null; 
+
+     
+        function saveSelection() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                savedSelection = selection.getRangeAt(0);
+            }
+        }
+
+        // Restore the saved selection
+        function restoreSelection() {
+            if (savedSelection) {
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(savedSelection);
+            }
+        }
+
+
+        function changeFontSize() {
+            const fontSizeInput = document.getElementById("font-size").value;
+            if (!isNaN(fontSizeInput) && fontSizeInput.trim() !== "") {
+                currentFontSize = `${fontSizeInput}px`; 
+                restoreSelection(); 
+
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const span = document.createElement("span");
+                    span.style.fontSize = currentFontSize; 
+                    span.textContent = range.toString();
+
+                    range.deleteContents(); 
+                    range.insertNode(span); 
+                }
+            } else {
+                console.log("Invalid font size input");
+            }
+        }
+
+        document.getElementById("text").addEventListener("keydown", (event) => {
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+
+            if (event.ctrlKey) {
+                
+                return;
+            }
+
+            if (event.key.length === 1) { 
+                range.deleteContents(); 
+                const span = document.createElement("span");
+                span.style.fontSize = currentFontSize;
+                span.textContent = event.key; 
+
+                range.insertNode(span); 
+                range.setStartAfter(span);
+                event.preventDefault(); 
+            } else if (event.key === " ") { 
+                range.deleteContents();
+                const span = document.createElement("span");
+                span.style.fontSize = currentFontSize; 
+                span.textContent = "\u00A0"; 
+
+                range.insertNode(span); 
+                range.setStartAfter(span);
+                event.preventDefault(); 
+            }
+        });
+
+        document.getElementById("font-size").addEventListener("focus", saveSelection);
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
