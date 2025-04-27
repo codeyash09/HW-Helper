@@ -211,8 +211,9 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .main-chat {
     flex-grow: 1; /* Takes remaining horizontal space */
     display: flex;
+    height: 100%;
     flex-direction: column;
-    background-color: #36393f; /* Main chat area background */
+    background-color: rgb(24, 24, 24); /* Main chat area background */
 }
 
 .chat-header {
