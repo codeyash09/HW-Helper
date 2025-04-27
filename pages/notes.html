@@ -37,11 +37,11 @@
         <div class="pages-section">
             <div class="section-header">
                 <span class="nav-text">Pages</span>
-                <button class="add-page-btn">
+                <button class="add-page-btn" onclick="newNoter()">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
-            <div class="pages-list">
+            <div class="pages-list" id="pageList">
                 <!-- Pages will be added here dynamically -->
             </div>
         </div>
@@ -73,6 +73,11 @@
     </div>
 
     <script>
+
+        function newNoter(){
+            window.location.replace("/pages/notes.html");
+        }
+
 
         function placeHolderBye(text, id){
             let words = document.getElementById(id);
