@@ -761,3 +761,24 @@ body {
     font-weight: 700;
     margin-top: 2rem;
 }
+
+/* Sidebar text styling */
+/* Add simpler font and increase size for sidebar text */
+.sidebar .nav-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;  /* Increased from 16px to 18px */
+}
+
+/* Keep the Pages section header smaller */
+.sidebar .pages-section .section-header .nav-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;  /* Smaller size specifically for Pages header */
+    font-weight: 600;
+}
+
+/* Other section headers remain larger */
+.sidebar .section-header .nav-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}

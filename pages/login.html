@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Summit</title>
 
-    <link rel="stylesheet" href="/style/signup.css">
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/login.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -90,10 +91,20 @@
             const mainContainer = document.getElementById('mainContainer');
             const collapseBtn = document.getElementById('collapseBtn');
             
+            // Check localStorage for saved state when page loads
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.classList.add('collapsed');
+                mainContainer.classList.add('expanded');
+                collapseBtn.classList.add('rotated');
+            }
+            
             collapseBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
                 mainContainer.classList.toggle('expanded');
                 collapseBtn.classList.toggle('rotated');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
         });
     </script>

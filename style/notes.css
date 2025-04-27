@@ -535,3 +535,9 @@ body{
     border-radius: 8px;
 
 }
+/* Add this to your notes.css file if it doesn't exist */
+#notes.expanded {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}

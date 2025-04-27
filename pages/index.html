@@ -7,26 +7,6 @@
     <link rel="stylesheet" href="/style/style.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
     <style>
-        /* Add simpler font and increase size for sidebar text */
-        .sidebar .nav-text {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 18px;  /* Increased from 16px to 18px */
-        }
-        
-        /* Keep the Pages section header smaller */
-        .sidebar .pages-section .section-header .nav-text {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 16px;  /* Smaller size specifically for Pages header */
-            font-weight: 600;
-        }
-        
-        /* Other section headers remain larger */
-        .sidebar .section-header .nav-text {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        
         /* Style for the sign up button */
         .signup-btn {
             display: inline-block;
@@ -171,10 +151,20 @@
             const mainContainer = document.getElementById('mainContainer');
             const collapseBtn = document.getElementById('collapseBtn');
             
+            // Check localStorage for saved state when page loads
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.classList.add('collapsed');
+                mainContainer.classList.add('expanded');
+                collapseBtn.classList.add('rotated');
+            }
+            
             collapseBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
                 mainContainer.classList.toggle('expanded');
                 collapseBtn.classList.toggle('rotated');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
         });
     </script>
