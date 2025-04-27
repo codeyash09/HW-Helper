@@ -1,19 +1,56 @@
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
     display: flex;
     height: 100vh;
     background-color: #36393f; /* Discord-like dark background */
     color: #dcddde; /* Light text color */
 }
 
+/* Remove this rule as it might be causing conflicts */
+.sidebar, .sidebar * {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Fix for icons - update this section */
+i.fa-solid, i.fa-regular, i.fa-brands {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure icons are visible in the sidebar */
+.sidebar a i {
+    color: #ffffff;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+/* Ensure icons are visible in user actions */
+.user-info .user-actions i {
+    color: #b9bbbe;
+    visibility: visible;
+    font-size: 18px;
+}
+
+/* Ensure icons are visible in input actions */
+.chat-input .input-actions i {
+    visibility: visible;
+    font-size: 22px;
+}
+
 .sidebar {
-    background-color: #2f3136; /* Slightly lighter sidebar */
+    background-color: #202020;
     width: 240px;
     display: flex;
     flex-direction: column;
     padding: 10px;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 .sidebar h2 {
