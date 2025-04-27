@@ -100,9 +100,11 @@
         <!-- Main Navigation -->
         <div class="nav-items">
             <a href="#"><i class="fa-solid fa-magnifying-glass"></i> <span class="nav-text">Search</span></a>
-            <a href="#"><i class="fa-solid fa-robot"></i> <span class="nav-text">Stylo AI</span></a>
-            <a href="#"><i class="fa-solid fa-house"></i> <span class="nav-text">Home</span></a>
-            <a href="#"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
+            <a href="#"><i class="fa-solid fa-robot"></i> <span class="nav-text">Summit AI</span></a>
+            <a href="/pages/"><i class="fa-solid fa-house"></i> <span class="nav-text">Home</span></a>
+            <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
+            <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i> <span class="nav-text">Notes</span></a>
+
         </div>
 
         <!-- Pages Section -->
@@ -149,10 +151,20 @@
             const mainContainer = document.getElementById('mainContainer');
             const collapseBtn = document.getElementById('collapseBtn');
             
+            // Check localStorage for saved state when page loads
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.classList.add('collapsed');
+                mainContainer.classList.add('expanded');
+                collapseBtn.classList.add('rotated');
+            }
+            
             collapseBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
                 mainContainer.classList.toggle('expanded');
                 collapseBtn.classList.toggle('rotated');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
         });
     </script>

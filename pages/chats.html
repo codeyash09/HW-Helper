@@ -98,7 +98,33 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="/scripts/server.js"></script>
     <script src="/scripts/animations.js"></script>
+    <script>
+        // Add sidebar collapse functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContainer = document.getElementById('mainContainer');
+            const collapseBtn = document.getElementById('collapseBtn');
+            
+            // Check localStorage for saved state when page loads
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.classList.add('collapsed');
+                mainContainer.classList.add('expanded');
+                collapseBtn.classList.add('rotated');
+            }
+            
+            collapseBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContainer.classList.toggle('expanded');
+                collapseBtn.classList.toggle('rotated');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            });
+        });
+    </script>
     <script>
         // Get the moon icon element
         const dndButton = document.getElementById('dndButton');

@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes | Summit</title>
-<<<<<<< Updated upstream
-    <link rel="stylesheet" href="/style/notes.css">
-    <script type="module" src="/scripts/notes.js"></script>
-
-=======
 
     <link rel="stylesheet" href="/style/style.css">
     <link rel="stylesheet" href="/style/notes.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
->>>>>>> Stashed changes
 </head>
-<body>
 
-<<<<<<< Updated upstream
-=======
+
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <!-- Collapse Button -->
+        <button class="collapse-btn" id="collapseBtn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
         <!-- Profile Section -->
         <div class="profile-section">
             <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
@@ -52,29 +52,45 @@
             <a href="#"><i class="fa-solid fa-trash"></i> <span class="nav-text">Trash</span></a>
         </div>
     </div>
->>>>>>> Stashed changes
     
 
     <div id="notes">
         <span contenteditable="true" class="firstLine" id="first" onfocus="placeHolderBye('Title...', 'first')" onblur="placeHolderHi('Title...', 'first')"><span class="placeholder">Title...</span></span><br>
-        <span contenteditable="true" class="text" id="text"  onfocus="placeHolderBye('Begin creating . . . ', 'text')" onblur="placeHolderHi('Begin creating . . . ', 'text')" oninput="checkForSpecial()"><span class="placeholder">Begin creating . . . </span></span>
+        <span contenteditable="true" class="text" id="text"  onfocus="placeHolderBye('Begin creating . . . <br><br><br><br><br>', 'text')" onblur="placeHolderHi('Begin creating . . . <br><br><br><br><br>', 'text')"><span class="placeholder">Begin creating . . . <br><br><br><br><br></span></span>
         
+    </div>
+
+
+    <div class="save">
+        <button id="saveButton">Save</button>
+    </div>
+
+    <div class="interface">
+        
+        <input type="text" id="font-size" name="font-size" value="50" onblur="changeFontSize()">
+        <input type="color" id="font-color" name="font-color" onblur="changeFontColor()">
+
     </div>
 
     <script>
 
         function placeHolderBye(text, id){
             let words = document.getElementById(id);
-
+            
             if(words.innerHTML == '<span class="placeholder">' + text +'</span>'){
                 words.innerHTML = "";
+
+                if(id == 'text'){
+                    words.innerHTML = "<br><br><br><br><br>";
+
+                }
             }
         }
 
         function placeHolderHi(text, id){
             let words = document.getElementById(id);
 
-            if(words.innerText == "" || words.innerHTML == '<br>' || words.innerHTML == '<br><br>' || words.innerHTML == '<br><br><br>'){
+            if(words.innerText == "" || words.innerHTML == '<br>' || words.innerHTML == '<br><br>' || words.innerHTML == '<br><br><br>' || words.innerHTML == '<br><br><br><br>' || words.innerHTML == '<br><br><br><br><br>' || words.innerHTML == '<br><br><br><br><br><br>'){
                 words.innerHTML = '<span class="placeholder">' + text +'</span>';
             }
         }
@@ -91,11 +107,127 @@
             // }
         }
 
+
+        let currentFontSize = "50px";
+        let savedSelection = null; 
+        let currentFontColor = "white";
+       
+     
+        function saveSelection() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                savedSelection = selection.getRangeAt(0);
+            }
+        }
+
+        // Restore the saved selection
+        function restoreSelection() {
+            if (savedSelection) {
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(savedSelection);
+            }
+        }
+   
+        function changeFontColor() {
+            
+            currentFontColor = document.getElementById("font-color").value;
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement("span");
+                span.style.color = currentFontColor; 
+                span.textContent = range.toString();
+                
+
+                range.deleteContents(); 
+                range.insertNode(span); 
+            }
+        }
+        function changeFontSize() {
+            const fontSizeInput = document.getElementById("font-size").value;
+            if (!isNaN(fontSizeInput) && fontSizeInput.trim() !== "") {
+                currentFontSize = `${fontSizeInput}px`; 
+                restoreSelection(); 
+
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const span = document.createElement("span");
+                    span.style.fontSize = currentFontSize; 
+                    span.textContent = range.toString();
+
+                    range.deleteContents(); 
+                    range.insertNode(span); 
+                }
+            } else {
+                console.log("Invalid font size input");
+            }
+        }
+
+        document.getElementById("text").addEventListener("keydown", (event) => {
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+
+            if (event.ctrlKey) {
+                
+                return;
+            }
+
+            if (event.key.length === 1) { 
+                range.deleteContents(); 
+                const span = document.createElement("span");
+                span.style.fontSize = currentFontSize;
+                span.style.color = currentFontColor
+                span.textContent = event.key; 
+
+                range.insertNode(span); 
+                range.setStartAfter(span);
+                event.preventDefault(); 
+            } else if (event.key === " ") { 
+                range.deleteContents();
+                const span = document.createElement("span");
+                span.style.fontSize = currentFontSize; 
+                span.textContent = "\u00A0"; 
+
+                range.insertNode(span); 
+                range.setStartAfter(span);
+                event.preventDefault(); 
+            }
+        });
+
+        document.getElementById("font-size").addEventListener("focus", saveSelection);
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="/scripts/server.js"></script>
+    
 
     <script type="module" src="/scripts/notes.js"></script>
+    <script>
+        // Add this new script for sidebar collapse functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const notesContainer = document.getElementById('notes');
+            const collapseBtn = document.getElementById('collapseBtn');
+            
+            // Check localStorage for saved state when page loads
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.classList.add('collapsed');
+                notesContainer.classList.add('expanded');
+                collapseBtn.classList.add('rotated');
+            }
+            
+            collapseBtn.addEventListener('click', function() {
+                console.log('Collapse button clicked'); // Debug log
+                sidebar.classList.toggle('collapsed');
+                notesContainer.classList.toggle('expanded');
+                collapseBtn.classList.toggle('rotated');
+                
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            });
+        });
+    </script>
+    
 </body>
 </html>
