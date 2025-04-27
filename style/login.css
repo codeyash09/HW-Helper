@@ -10,80 +10,97 @@
     font-family: 'Poppins';
 }
 
+/* Make the main container take full height and center content */
+.main-container {
+    display: flex;
+    background-color: rgb(24, 24, 24);
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-form{
+/* Style the pages divider to take minimal space */
+.pages-divider {
+    padding: 10px 20px;
+}
+
+/* Center the content in the main area */
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0;
+}
+
+/* Remove form background and make it centered */
+form {
     display: flex;
     flex-direction: column;
-    width: 30vw;
-    height: 60vh;
-    justify-content: space-evenly;
+    width: 20vw;
     align-items: center;
-    justify-self: center;
-    align-self: center;
-    background-color: #ffffff;
-    padding-bottom: 2vh;
-    border: rgb(74, 210, 255) 2px solid;
-    border-radius: 8px;
-    margin-top: 15vh;
-    padding: 3vh;
-    
+    justify-content: center;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
 }
 
-input{
-    width: 75%;
-    height: 3vh;
-    font-size: 1vh;
+/* Make form groups more prominent */
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+/* Style the input fields to be more prominent */
+input {
+    width: 60%;
+    height: 5vh;
+    font-size: 14px;
     border-radius: 8px;
-    padding: 1vh;
+    padding: 1.2vh;
     padding-left: 2vh;
     padding-right: 2vh;
-    background-color: #ffffff;
+    background-color: #2a2a2a;
     border: rgb(49, 49, 49) 2px solid;
-    transition: border .25s linear;
-    color: rgb(39, 39, 39);
-    
+    transition: all .25s linear;
+    color: #ffffff;
+    margin-left: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
 }
 
-input:focus{
+input:focus {
     outline: none;
-    background-color: #ffffff;
+    background-color: #2a2a2a;
     border: rgb(28, 198, 255) 2.5px solid;
     color: rgb(28, 198, 255);
-
+    box-shadow: 0 4px 12px rgba(28, 198, 255, 0.3);
+    transform: translateY(-2px);
 }
 
-
-
-h3{
+/* Style the labels to be more visible */
+h3 {
     text-decoration: none;
-    font-weight: normal;
-    font-family: 'Poppins';
-    position: relative;
-    bottom: -9h;
-    background-color: white;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-    left: -5.5vw;
-    font-size: 1.5vh;
-    color: rgb(70, 70, 70);
-    transition: color .25s linear, bottom .125s linear, left .125s linear;
-    bottom: -6vh;
-    left: -8vw;
-    font-size: 1vh;
-    padding-left: 1vw;
-    padding-right: 1vw;
-
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    position: static;
+    color: #e0e0e0;
+    font-size: 14px;
+    text-align: right;
+    width: 20%;
 }
 
-h3:has(+ input:focus){
+h3:has(+ input:focus) {
     color: rgb(28, 198, 255);
-    
-    
+    font-weight: 500;
 }
 
-
-.error{
+.error {
     border: rgb(255, 86, 86) 2.5px solid;
     padding: 1vh;
     border-radius: 8px;
@@ -91,36 +108,84 @@ h3:has(+ input:focus){
     position: absolute;
     display: none;
     top: 8vh;
-}
-h1{
-    font-family: 'Poppins';
-    font-weight: normal;
-    
-}
-#button{
-    width: 10vw;
-    height: 5vh;
-    margin-top: 3vh;
-    font-size: 2vh;
-    background-color: white;
-    transition: background-color .25s linear;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
 }
 
-#button:hover{
-    background-color: #f5f5f5;
+/* Make the heading smaller and less prominent */
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 30px;
+    opacity: 0.9;
 }
 
+/* Make the button more prominent */
+#button {
+    width: 12vw;
+    height: 5.5vh;
+    margin-top: 4vh;
+    font-size: 16px;
+    background-color: #2a2a2a;
+    transition: all .25s linear;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+#button:hover {
+    background-color: #333333;
+    color: rgb(28, 198, 255);
+    box-shadow: 0 6px 12px rgba(28, 198, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Add styling for the signup link at the bottom */
+.signup-text {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #e0e0e0;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.signup-link {
+    color: rgb(28, 198, 255);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.signup-link:hover {
+    color: rgb(0, 162, 255);
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @media only screen and (max-width: 1500px) {
-    form{
-        width: 100%;
+    form {
+        width: 80%;
     }
 
-    h3{
-        left: -27vw;
+    h3 {
+        width: 25%;
     }
 
-    #button{
+    #button {
         width: 30vw;
     }
 }
