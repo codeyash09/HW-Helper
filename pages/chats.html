@@ -34,11 +34,11 @@
         <div class="pages-section">
             <div class="section-header">
                 <span class="nav-text">Pages</span>
-                <button class="add-page-btn">
+                <button class="add-page-btn" id="newChatBtn">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
-            <div class="pages-list">
+            <div class="pages-list" id="pageList">
                 <!-- Pages will be added here dynamically -->
             </div>
         </div>
@@ -56,9 +56,9 @@
                 <!-- This should dynamically update based on selection -->
                 FriendUser#5678 <!-- Updated placeholder to match selected chat -->
             </div>
-            <div class="chat-messages">
+            <div class="chat-messages" id="chat-messages">
                 <!-- Messages will be loaded here -->
-                <div class="message"> <!-- Other user's message -->
+                <!-- <div class="message">  Other user's message
                     <div class="avatar"></div>
                     <div class="content">
                         <div class="username">FriendUser#5678</div>
@@ -66,7 +66,7 @@
                         <div class="timestamp">10:30 AM</div>
                     </div>
                 </div>
-                <div class="message own-message"> <!-- Your message -->
+                <div class="message own-message"> Your message
                     <div class="avatar"></div>
                     <div class="content">
                         <div class="username">YourUsername#1234</div>
@@ -74,14 +74,14 @@
                         <div class="timestamp">10:31 AM</div>
                     </div>
                 </div>
-                <div class="message"> <!-- Other user's message -->
+                <div class="message"> Other user's message 
                     <div class="avatar"></div>
                     <div class="content">
                         <div class="username">AnotherUser#9012</div>
                         <div class="text">Looks cool!</div>
                         <div class="timestamp">10:32 AM</div>
                     </div>
-                </div>
+                </div> --> 
                 <!-- Example message structure -->
             </div>
             <div class="chat-input">
@@ -91,6 +91,7 @@
                 </div>
                 <input type="text" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
                 <div class="input-actions right">
+                    <i class="fa-solid fa-paper-plane" title="Send"></i>
                     <i class="fa-solid fa-note-sticky" title="Open Stickers"></i> <!-- Changed icon to fa-note-sticky and updated title -->
                     <i class="fa-solid fa-face-smile" title="Open Emojis"></i> <!-- Emoji icon -->
                 </div>
@@ -98,9 +99,101 @@
         </div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="createGroupChat hider" id="blurWall">
+
+        <form id="form" class="unslider">
+            
+            <div id="close"><i class="fa-solid fa-xmark"></i></div>
+            <div id="emailErrorMessage" class="error"></div>
+
+            <h1>New Chat</h1>
+            
+            <div class="choices" id="q1">
+                
+                <!-- <div id="groupBtn" class="btn"><i class="fa-solid fa-user-group"></i><br>New Group</div>
+                <div class="line"></div>
+                <div id="friendBtn" class="btn"><i class="fa-solid fa-user"></i><br>New Friend</div> -->
+
+                <div id="users" class="hidden">
+                    <div id="inputs">
+                        <div class="input-group">
+                        
+                            <input type="text" name="username" style="width: 92%; margin-left: 8.5%;" placeholder="Enter username">
+                            
+                        </div>
+                    </div>
+                    <div class="btns">
+                        <button type="button" id="addInput">Add Additional Name</button>
+                        <button type="button" id="submit">Submit</button>
+                    </div>
+                </div>  
+
+
+                <div id="q2" class="hidden">
+                    <div id="inputs">
+                        <div class="input-group">
+                        
+                            <input type="text" id="gcname" name="groupName" style="width: 92%; margin-left: 8.5%;" placeholder="Enter group name">
+                            
+                        </div>
+                    </div>
+                    <div class="btns">
+                        
+                        <button type="button" id="submit2">Submit</button>
+                    </div>
+                </div>  
+                
+            </div>
+            
+            
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="/scripts/server.js"></script>
-    <script src="/scripts/animations.js"></script>
+    <script type="module" src="/scripts/createchat.js"></script>
+    <script type="module" src="/scripts/chats.js"></script>
+    
     <script>
         // Add sidebar collapse functionality
         document.addEventListener('DOMContentLoaded', function() {

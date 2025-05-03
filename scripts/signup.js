@@ -59,8 +59,8 @@ form.addEventListener("submit", (event) => {
     if (nameValue === "") {
         errorMessage.textContent = "Name cannot be empty.";
         errorMessage.style.display = "block";
-    } else if (nameValue.length <= 5) {
-        errorMessage.textContent = "First and Last Name Please (Minimum 6 characters)";
+    } else if (nameValue.length == 0) {
+        errorMessage.textContent = "First and Last Name Please";
         errorMessage.style.display = "block";
     } else {
         
