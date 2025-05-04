@@ -174,7 +174,7 @@ sendButton.addEventListener("click", async () => {
         console.error("Unexpected error:", err);
     }
 
-    document.location.replace("/pages/chats.html");
+    
 });
 
 
