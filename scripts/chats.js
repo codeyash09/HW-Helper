@@ -11,6 +11,8 @@ let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
 
 
+let chatsSys;
+
 let username;
 async function fetchUser() {
   const { data, error } = await db
@@ -68,6 +70,7 @@ async function showChats(){
     }
 
     const newest = data.reverse(); // Sorting chats newest first
+    
 
     if (newest.length > 0 && newest[0].chat_id) { // ✅ Check before accessing
         openChat(newest[0].chat_id);
@@ -182,6 +185,7 @@ async function openChat(id) {
     chatMess.innerHTML = ""; 
 
     chat = chat[0];
+    chatsSys = chat;
 
     if(chat.groupchat){
         chatHeader.innerHTML = chat.title;
@@ -247,9 +251,34 @@ setInterval(() => {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+
+
+
+    
+
     showChats();
 }, 2000); // Runs every 2 seconds
 
+
+
+
 setInterval(() => {
-    openChat(currentChat);
+    
+    changeChats();
 }, 500); // Runs every 0.5 seconds
+
+
+async function changeChats(){
+    
+   
+    let chat = await fetchChat(currentChat);
+
+    chat = chat[0];
+    
+
+    if(JSON.stringify(chat.messages) != JSON.stringify(chatsSys.messages)){
+        openChat(currentChat);
+        chatsSys = chat;
+    }
+    
+}
