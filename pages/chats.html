@@ -215,6 +215,33 @@
                 // Save state to localStorage
                 localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
+            
+            // Add Enter key functionality to send messages
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.querySelector('.fa-paper-plane');
+            
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(event) {
+                    // Check if the Enter key was pressed
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Prevent default form submission
+                        
+                        // Get the message text
+                        const messageText = chatInput.value.trim();
+                        
+                        // If there's text, send the message
+                        if (messageText) {
+                            // Trigger the send button click if it exists
+                            if (sendButton) {
+                                sendButton.click();
+                            } else {
+                                // Fallback if no send button is found
+                                chatInput.value = '';
+                            }
+                        }
+                    }
+                });
+            }
         });
     </script>
     <script>

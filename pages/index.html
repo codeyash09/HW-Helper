@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="/style/style.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
     <style>
+        /* Import Poppins font to match signup page */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        
+        /* Apply Poppins font to all elements */
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
         /* Style for the sign up button */
         .signup-btn {
             display: inline-block;
@@ -116,7 +124,31 @@
                 </button>
             </div>
             <div class="pages-list">
-                <!-- Pages will be added here dynamically -->
+                <!-- Folders for Chats and Notes -->
+                <div class="folder">
+                    <div class="folder-header">
+                        <i class="fa-solid fa-folder"></i>
+                        <span class="folder-name">Chats</span>
+                    </div>
+                    <div class="folder-items">
+                        <a href="/pages/chats.html" class="folder-item">
+                            <i class="fa-solid fa-inbox"></i>
+                            <span>All Chats</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="folder">
+                    <div class="folder-header">
+                        <i class="fa-solid fa-folder"></i>
+                        <span class="folder-name">Notes</span>
+                    </div>
+                    <div class="folder-items">
+                        <a href="/pages/notes.html" class="folder-item">
+                            <i class="fa-solid fa-note-sticky"></i>
+                            <span>All Notes</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         
