@@ -7,6 +7,8 @@ import {db} from '/scripts/createChat.js';
 let userId = window.localStorage.getItem("userIdentify");
 let chatMess = document.getElementById("chat-messages")
 let chatList = document.getElementById("pageList");
+let chatHeader = document.getElementById("chat-header");
+let chatInput = document.getElementById("chatInput");
 
 
 let username;
@@ -181,6 +183,30 @@ async function openChat(id) {
 
     chat = chat[0];
 
+    if(chat.groupchat){
+        chatHeader.innerHTML = chat.title;
+        chatInput.placeholder = "Message " + chat.title;
+    }else{
+        if(chat.host == "" + userId + ""){
+            chatHeader.innerHTML = chat.members[0];
+            chatInput.placeholder = "Message " + chat.members[0];
+
+
+        }else{
+            let hoster = fetchUsers(chat.host);
+            hoster.then(result =>{
+                if(result[0] != undefined){
+                    hoster = result[0].username;
+                    
+                    chatHeader.innerHTML = hoster;
+                    chatInput.placeholder = "Message " + hoster;
+
+
+                }
+            });
+
+        }
+    }
    
     for (let i = chat.messages.length - 1; i >= 0; i--) {
         const message = document.createElement("div");
