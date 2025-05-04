@@ -172,10 +172,12 @@ function handleSubmit2(){
 
 async function createChat(){
     let acceptedArr = [];
+    let reads = [];
     for(let i = 0; i < usernames.length; i++){
         acceptedArr.push(0);
+        reads.push(false);
     }
-    console.log("chatting");
+    reads.push(false);
 
 
     const { data, error } = await db.from('Chats').insert([
@@ -185,6 +187,7 @@ async function createChat(){
         title: gcName.value,
         host: window.localStorage.getItem("userIdentify"),
         accepted: acceptedArr,
+        read: reads,
     }
     ]);
 
@@ -224,6 +227,7 @@ async function createMessage(){
        
         host: window.localStorage.getItem("userIdentify"),
         accepted: ["0"],
+        read: [false],
     }
     ]);
 
