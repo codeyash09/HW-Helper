@@ -861,3 +861,12 @@ form h1{
     text-align: center;
     margin-top: 1vh;
 }
+
+
+.read-nonification{
+    border-radius: 50%;
+    background-color: rgb(167, 130, 61);
+    color: white;
+    width: 20px;
+    text-align: center;
+}

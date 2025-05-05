@@ -10,8 +10,9 @@ let chatList = document.getElementById("pageList");
 let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
 
-
+let chatOpened = false;
 let chatsSys;
+let rowSys;
 
 let username;
 async function fetchUser() {
@@ -70,22 +71,53 @@ async function showChats(){
     }
 
     const newest = data.reverse(); // Sorting chats newest first
-    
+    rowSys = newest;
 
     if (newest.length > 0 && newest[0].chat_id) { // ✅ Check before accessing
-        openChat(newest[0].chat_id);
+        if(!chatOpened){
+            openChat(newest[0].chat_id);
+            chatOpened = true;
+        }else{
+            openChat(currentChat);
+
+        }
     } else {
         console.warn("No valid chat ID found.");
     }
 
     for (const chat of newest) {
         const title = document.createElement("a");
+        let userNum;
+
+        if("" + userId + "" == chat.host){
+            userNum = chat.members.length;
+        }else{
+            for(let i = 0; i < chat.members.length; i++){
+                if(chat.members[i] == "" + username + ""){
+                    userNum = i;
+                }
+            }
+        }
+        
+        let readNum = chat.read[userNum];
+        
+
 
         if(chat.groupchat){
             title.innerHTML = chat.title;
+            if(readNum > 0){
+                title.innerHTML += "   <span class='read-nonification'>" + readNum + "</span>";
+            }
+
+            
+
+            
         }else{
             if(chat.host == "" + userId + ""){
                 title.innerHTML = chat.members[0];
+                if(readNum > 0){
+                    title.innerHTML += "   <span class='read-nonification'>" + readNum + "</span>";
+                }
 
             }else{
                 let hoster = fetchUsers(chat.host);
@@ -94,6 +126,10 @@ async function showChats(){
                         hoster = result[0].username;
                         
                         title.innerHTML = hoster;
+
+                        if(readNum > 0){
+                            title.innerHTML += "   <span class='read-nonification'>" + readNum + "</span>";
+                        }
 
                     }
                 });
@@ -143,7 +179,7 @@ sendButton.addEventListener("click", async () => {
 
         const { data, error } = await db
             .from("Chats")
-            .select("messages, times, senders")
+            .select("*")
             .eq("chat_id", chatId)
             .single();
 
@@ -155,11 +191,41 @@ sendButton.addEventListener("click", async () => {
         const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
         const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
         const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
+        
+        
+        let updatedRead = [];
 
+
+
+        updatedRead = data.read.map(Number);
+
+        if(Array.isArray(data.read)){
+            if("" + userId + "" == data.host){
+                for(let i = 0; i<data.members.length; i++){
+                    if(data.members[i] != "" + username + ""){  
+                        updatedRead[i]++;
+                    }   
+                }
+            }else{
+                for(let i = 0; i<data.members.length; i++){
+                    if(data.members[i] != "" + username + ""){  
+                        updatedRead[i]++;
+                    }   
+                }
+                updatedRead[data.members.length]++;
+            }
+            
+        }else{
+            console.log("Errenous read");
+        }
+
+
+
+   
 
         const { error: updateError } = await db
             .from("Chats")
-            .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders })
+            .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
             .eq("chat_id", chatId);
 
         if (updateError) {
@@ -179,6 +245,13 @@ sendButton.addEventListener("click", async () => {
 
 
 async function openChat(id) {
+
+
+
+    
+
+
+
     currentChat = id;
     let chat = await fetchChat(id);
     const chatMess = document.querySelector(".chat-messages");
@@ -186,6 +259,25 @@ async function openChat(id) {
 
     chat = chat[0];
     chatsSys = chat;
+    
+
+
+    let userNum;
+
+    if("" + userId + "" == chat.host){
+        userNum = chat.members.length;
+    }else{
+        for(let i = 0; i < chat.members.length; i++){
+            if(chat.members[i] == "" + username + ""){
+                userNum = i;
+            }
+        }
+    }
+    
+    let readNum = chat.read[userNum];
+
+    
+        
 
     if(chat.groupchat){
         chatHeader.innerHTML = chat.title;
@@ -243,21 +335,67 @@ async function openChat(id) {
 
         chatMess.appendChild(message);
     }
-}
 
-setInterval(() => {
-    const parent = document.getElementById("parentElement");
+    let updatedRead = chat.read;
 
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
+    chatMess.addEventListener("scroll", () => {
+        
+        const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
+        const atThreshold = chatMess.scrollTop >= -threshold;
+
+        if (atThreshold) {
+            console.log("bottom");
+
+
+            
+            updatedRead[userNum] = 0;
+            
+            updateRead(updatedRead);
+
+
+
+            
+            
+        }
+
+    });
+
+    const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
+    const atThreshold = chatMess.scrollTop >= -threshold;
+
+    if (atThreshold) {
+        console.log("bottom");
+
+        updatedRead[userNum] = 0;
+        
+        updateRead(updatedRead);
+        
     }
 
 
 
     
 
-    showChats();
-}, 2000); // Runs every 2 seconds
+    
+
+}
+
+
+async function updateRead(updatedRead){
+    const { error: updateError } = await db
+        .from("Chats")
+        .update({ read: updatedRead })
+        .eq("chat_id", currentChat);
+
+    if (updateError) {
+        console.error("Error updating chat:", updateError);
+        return;
+    }
+
+    
+}
+
+
 
 
 
@@ -265,6 +403,12 @@ setInterval(() => {
 setInterval(() => {
     
     changeChats();
+}, 500); // Runs every 0.5 seconds
+
+
+setInterval(() => {
+    
+    changeRow();
 }, 500); // Runs every 0.5 seconds
 
 
@@ -279,6 +423,39 @@ async function changeChats(){
     if(JSON.stringify(chat.messages) != JSON.stringify(chatsSys.messages)){
         openChat(currentChat);
         chatsSys = chat;
+
+
+        
     }
     
 }
+
+
+async function changeRow(){
+
+    const { data, error } = await db
+        .from('Chats') 
+        .select('*') 
+        .or(`members.cs.{"${username}"},host.eq."${userId}"`);
+
+    if (error || !data || data.length === 0) {
+        console.error("No chats found or error fetching chats:", error);
+        return;
+    }
+
+    const newest = data.reverse(); // Sorting chats newest first
+
+    if(JSON.stringify(newest) != JSON.stringify(rowSys)){
+        while (chatList.firstChild) {
+            chatList.removeChild(chatList.firstChild);
+        }
+    
+        
+    
+    
+        
+    
+        showChats();
+    }    
+}
+
