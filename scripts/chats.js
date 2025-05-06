@@ -13,7 +13,8 @@ let chatInput = document.getElementById("chatInput");
 let chatOpened = false;
 let chatsSys;
 let rowSys;
-
+let oldCurrent;
+let savedScrollPosition;
 let username;
 async function fetchUser() {
   const { data, error } = await db
@@ -59,10 +60,10 @@ username.then(result =>{
 });
 
 
-async function showChats(){
+async function showChats() {
     const { data, error } = await db
-        .from('Chats') 
-        .select('*') 
+        .from('Chats')
+        .select('*')
         .or(`members.cs.{"${username}"},host.eq."${userId}"`);
 
     if (error || !data || data.length === 0) {
@@ -70,81 +71,71 @@ async function showChats(){
         return;
     }
 
-    const newest = data.reverse(); // Sorting chats newest first
-    rowSys = newest;
+    // Sort chats by the most recent message timestamp
+    const sortedChats = data.sort((a, b) => {
+        const lastMessageTimeA = new Date(a.times?.slice(-1)[0] || 0);
+        const lastMessageTimeB = new Date(b.times?.slice(-1)[0] || 0);
+        return lastMessageTimeB - lastMessageTimeA; // Recent messages first
+    });
 
-    if (newest.length > 0 && newest[0].chat_id) { // ✅ Check before accessing
-        if(!chatOpened){
-            openChat(newest[0].chat_id);
-            chatOpened = true;
-        }else{
-            openChat(currentChat);
+    rowSys = sortedChats;
 
+    // Preserve scroll position before updating the list
+    const savedScrollPosition = chatList.scrollTop;
+
+    const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
+
+    for (const chat of sortedChats) {
+        if (!existingChatIds.has(chat.chat_id)) {
+            const title = document.createElement("a");
+            title.setAttribute("data-chat-id", chat.chat_id);
+
+            let userNum;
+            if ("" + userId === chat.host) {
+                userNum = chat.members.length;
+            } else {
+                userNum = chat.members.indexOf(username);
+            }
+
+            let readNum = chat.read[userNum];
+
+            if (chat.groupchat) {
+                title.innerHTML = chat.title;
+            } else {
+                if (chat.host === "" + userId) {
+                    title.innerHTML = chat.members[0];
+                } else {
+                    let hoster = await fetchUsers(chat.host);
+                    if (hoster[0]) {
+                        title.innerHTML = hoster[0].username;
+                    }
+                }
+            }
+
+            if (readNum > 0) {
+                title.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+            }
+
+            title.addEventListener("click", () => openChat(chat.chat_id));
+
+            chatList.appendChild(title);
         }
-    } else {
-        console.warn("No valid chat ID found.");
     }
 
-    for (const chat of newest) {
-        const title = document.createElement("a");
-        let userNum;
+    // Restore scroll position after update
+    requestAnimationFrame(() => {
+        chatList.scrollTop = savedScrollPosition;
+    });
 
-        if("" + userId + "" == chat.host){
-            userNum = chat.members.length;
-        }else{
-            for(let i = 0; i < chat.members.length; i++){
-                if(chat.members[i] == "" + username + ""){
-                    userNum = i;
-                }
-            }
-        }
-        
-        let readNum = chat.read[userNum];
-        
-
-
-        if(chat.groupchat){
-            title.innerHTML = chat.title;
-            if(readNum > 0){
-                title.innerHTML += "   <span class='read-nonification'>" + readNum + "</span>";
-            }
-
-            
-
-            
-        }else{
-            if(chat.host == "" + userId + ""){
-                title.innerHTML = chat.members[0];
-                if(readNum > 0){
-                    title.innerHTML += "   <span class='read-nonification'>" + readNum + "</span>";
-                }
-
-            }else{
-                let hoster = fetchUsers(chat.host);
-                hoster.then(result =>{
-                    if(result[0] != undefined){
-                        hoster = result[0].username;
-                        
-                        title.innerHTML = hoster;
-
-                        if(readNum > 0){
-                            title.innerHTML += "   <span class='read-nonification'>" + readNum + "</span>";
-                        }
-
-                    }
-                });
-
-            }
-        }
-         
-
-        title.addEventListener("click", () => {
-            openChat(chat.chat_id);
-        });
-
-        chatList.appendChild(title);
+    // Open the latest chat automatically if none is opened
+    if (!chatOpened && sortedChats.length > 0 && sortedChats[0].chat_id) {
+        openChat(sortedChats[0].chat_id);
+        chatOpened = true;
+    } else {
+        openChat(currentChat);
     }
 }
+
 
 
 
@@ -251,11 +242,11 @@ async function openChat(id) {
     
 
 
-
     currentChat = id;
     let chat = await fetchChat(id);
     const chatMess = document.querySelector(".chat-messages");
     chatMess.innerHTML = ""; 
+    
 
     chat = chat[0];
     chatsSys = chat;
@@ -338,13 +329,24 @@ async function openChat(id) {
 
     let updatedRead = chat.read;
 
+    if(oldCurrent != currentChat){
+        chatMess.scrollTop = chatMess.scrollHeight;
+        oldCurrent = currentChat;
+        
+
+
+    }else{
+        chatMess.scrollTop = savedScrollPosition;
+    
+    }
+
     chatMess.addEventListener("scroll", () => {
         
         const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
         const atThreshold = chatMess.scrollTop >= -threshold;
 
         if (atThreshold) {
-            console.log("bottom");
+  
 
 
             
@@ -364,7 +366,7 @@ async function openChat(id) {
     const atThreshold = chatMess.scrollTop >= -threshold;
 
     if (atThreshold) {
-        console.log("bottom");
+        
 
         updatedRead[userNum] = 0;
         
@@ -431,11 +433,10 @@ async function changeChats(){
 }
 
 
-async function changeRow(){
-
+async function changeRow() {
     const { data, error } = await db
-        .from('Chats') 
-        .select('*') 
+        .from('Chats')
+        .select('*')
         .or(`members.cs.{"${username}"},host.eq."${userId}"`);
 
     if (error || !data || data.length === 0) {
@@ -443,19 +444,31 @@ async function changeRow(){
         return;
     }
 
-    const newest = data.reverse(); // Sorting chats newest first
+    const newest = data.reverse(); 
 
-    if(JSON.stringify(newest) != JSON.stringify(rowSys)){
+    // Save the current scroll position before clearing
+    savedScrollPosition = chatMess.scrollTop;
+
+    if (JSON.stringify(newest) !== JSON.stringify(rowSys)) {
+        // Instead of completely rebuilding, first hold the position
+        
+
         while (chatList.firstChild) {
             chatList.removeChild(chatList.firstChild);
         }
-    
         
-    
-    
-        
-    
-        showChats();
-    }    
+
+        // Update the list
+        await showChats();
+
+        // Restore scroll position after content is replaced
+        setTimeout(() => {
+            chatMess.scrollTop = savedScrollPosition;
+            
+        }, 0); // Small delay ensures DOM is fully updated
+
+        rowSys = newest;
+    }
 }
+
 

@@ -206,6 +206,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
+    scroll-behavior: unset;
     margin-top: 5px;
     padding-bottom: 80px; /* Increase padding to make room for input */
     margin-bottom: 0;
@@ -644,6 +645,8 @@ form h1{
 
 
 
+
+
 .choices .btn:hover{
     
     
@@ -863,7 +866,7 @@ form h1{
 }
 
 
-.read-nonification{
+.read-notification {
     border-radius: 50%;
     background-color: rgb(167, 130, 61);
     color: white;
