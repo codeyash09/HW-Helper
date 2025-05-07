@@ -48,7 +48,7 @@ body{
     
     font-size: 5vh;
     min-width: 40vw;
-
+    white-space: pre-wrap;
 
 }
 .firstLine:focus{
