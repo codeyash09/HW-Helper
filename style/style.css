@@ -303,12 +303,17 @@ body {
     overflow: hidden;
 }
 
-.profile-section img {
+/* Ensure profile images are round on all pages */
+.profile-section img,
+#realProfile,
+.image img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 50% !important; /* Force rounded corners */
     background-color: rgb(194, 194, 194);
-    overflow: hidden;
+    object-fit: cover !important; /* Ensures the image covers the area properly */
+    overflow: hidden !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Hide profile when sidebar is collapsed while maintaining space */
@@ -556,6 +561,72 @@ body {
 .sidebar.collapsed .bottom-nav a:hover {
     transform: scale(1.1);
     background-color: #f5f5f5;
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    height: 40px;
+    opacity: 1;
+    visibility: visible;
+    overflow: visible; /* Changed from hidden to visible */
+    flex: 0 0 auto;
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+    overflow: visible; /* Changed from hidden to visible */
+}
+
+.nav-items {
+    flex: 0 0 auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.pages-section {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allow this section to scroll if needed */
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    margin-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bottom-nav {
+    flex: 0 0 auto;
+    margin-top: auto; /* Push to bottom */
+}
+
+/* Additional responsive adjustments */
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        width: 220px; /* Slightly smaller on laptops */
+    }
+    
+    .pages-section {
+        max-height: 40vh; /* Limit height on smaller screens */
+    }
+}
+
+@media only screen and (max-height: 700px) {
+    .nav-items {
+        gap: 10px; /* Reduce spacing on shorter screens */
+    }
+    
+    .profile-section {
+        margin-bottom: 20px; /* Less margin on smaller screens */
+    }
 }
 
 /* Profile section styles */
