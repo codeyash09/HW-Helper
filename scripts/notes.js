@@ -8,10 +8,10 @@ let noteList = document.getElementById("pageList");
 let currentNote;
 
 if(!localStorage.getItem('loggedInStatus')){
-    window.location.replace('/pages/login.html');
+    window.location.replace('/pages/signup.html');
 }
 if(localStorage.getItem('loggedInStatus') == "false"){
-    window.location.replace('/pages/login.html');
+    window.location.replace('/pages/signup.html');
 }
 
 const db = supabase.createClient(

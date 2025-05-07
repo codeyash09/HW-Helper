@@ -5,10 +5,19 @@ import {db} from '/scripts/createChat.js';
 
 
 let userId = window.localStorage.getItem("userIdentify");
+
+
+if(userId == null || userId == "null"){
+    window.location.replace('/pages/signup.html');
+}
+
+
 let chatMess = document.getElementById("chat-messages")
 let chatList = document.getElementById("pageList");
 let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
+
+
 
 let chatOpened = false;
 let chatsSys;

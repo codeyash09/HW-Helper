@@ -553,3 +553,24 @@ h2{
     }
 }
 
+.already{
+    text-align: center;
+    width: 100%;
+    color: white;
+    font-size: 15px;
+
+}
+
+.already a{
+    color: rgb(187, 187, 187);
+    text-decoration: underline;
+    transition: all .25s linear;
+   
+}
+
+.already a:hover{
+    color: rgb(209, 209, 209);
+    text-decoration: underline;
+
+
+}
