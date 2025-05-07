@@ -300,20 +300,6 @@ async function openChat(id) {
         message.classList.add("message");
 
 
-     
-
-        // Extract script content
-        const scriptMatch = chat.messages[i].match(/<script>([\s\S]*?)<\/script>/);
-        if (scriptMatch && scriptMatch[1]) {
-            // Create and execute script dynamically
-            let blob = new Blob([scriptMatch[1]], { type: "text/javascript" });
-            let scriptUrl = URL.createObjectURL(blob);
-            let scripture = document.createElement("script");
-            scripture.src = scriptUrl;
-            document.body.appendChild(scripture);
-
-        
-        }
 
   
         const avatar = document.createElement("div");
