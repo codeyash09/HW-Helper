@@ -113,21 +113,27 @@
         .chat-header {
             background-color: #FFFFFF;
             color: #000000;
-            border-bottom: 1px solid #eee;
+            border: 2px solid #eee;
+
+            border-bottom: 5px solid #eee;
+            border-top-right-radius: 8px;
+            border-top-left-radius: 8px;
         }
         
         .chat-input {
             background-color: #FFFFFF;
-            border-top: 1px solid #eee;
+            border-top: 5px solid #eee;
+            
         }
         
         .own-message .content {
-            background-color: #FD5A23;
-            color: #FFFFFF;
+            background-color: white;
+            color: #FD5A23;
+            border: 2px solid #FD5A23;
         }
         
         .message .content {
-            background-color: #F5F5F5;
+            background-color: #FD5A23;
             color: #000000;
         }
         
@@ -196,10 +202,7 @@
         </div>
         
         <!-- Bottom Navigation -->
-        <div class="bottom-nav">
-            <a href="#"><i class="fa-solid fa-gear"></i> <span class="nav-text">Settings</span></a>
-            <a href="#"><i class="fa-solid fa-trash"></i> <span class="nav-text">Trash</span></a>
-        </div>
+        
     </div>
 
     <div class="main-container" id="mainContainer">

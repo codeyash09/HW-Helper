@@ -194,7 +194,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     display: flex;
     height: 100%;
     flex-direction: column;
-    background-color: rgb(24, 24, 24); /* Main chat area background */
+    background-color: rgb(255, 255, 255); /* Main chat area background */
     position: relative; /* Add this to create a positioning context */
     overflow: hidden; /* Prevent any overflow issues */
 }
@@ -207,19 +207,25 @@ body.dnd-active .user-info .user-actions .fa-moon {
     flex-direction: column-reverse;
     gap: 10px;
     scroll-behavior: unset;
-    margin-top: 5px;
-    padding-bottom: 80px; /* Increase padding to make room for input */
+   
+    border: 2px solid #eee;
+    
     margin-bottom: 0;
+    background-color: white;
+  
 }
 
 .chat-input {
     padding: 15px 25px;
-    border-top: 1px solid #40444b;
+    
     display: flex;
     align-items: center;
     gap: 15px;
-    background-color: #202020;
-    margin: 0 10px 10px 10px;
+    background-color: white;
+   
+    border: 2px solid #eee;
+    border-top: 5px solid #eee;
+    
     border-radius: 0 0 10px 10px;
     position: absolute; /* Change from sticky to absolute */
     bottom: 0; /* Stick to bottom */
@@ -227,20 +233,20 @@ body.dnd-active .user-info .user-actions .fa-moon {
     right: 0; /* Stretch to right */
     z-index: 10;
     min-height: 60px;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    
 }
 
 .chat-header {
     padding: 15px 20px;
-    border-bottom: 1px solid #40444b;
+    border-bottom: 5px solid #acacac;
     font-size: 18px;
     font-weight: bold;
-    color: #ffffff;
+    color: #000000;
     position: sticky;
     top: 0;
     z-index: 20; /* Increased z-index to ensure it stays on top */
-    background-color: rgb(24, 24, 24);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: rgb(255, 255, 255);
+    
     width: 100%; /* Ensure it takes full width */
     box-sizing: border-box; /* Include padding in width calculation */
     flex-shrink: 0; /* Prevent shrinking */
@@ -256,7 +262,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
-    margin-top: 5px;
+
     padding-bottom: 30px; /* Add more padding at bottom */
     margin-bottom: 0; /* Remove any bottom margin */
 }
@@ -312,7 +318,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     
 
     height: 40px;
-    background-color: #7289da; /* Discord blue placeholder */
+    background-color: #FD5A23; /* Discord blue placeholder */
     border-radius: 50%;
     /* margin-right: 15px; Remove default margin */
     flex-shrink: 0;
@@ -341,9 +347,10 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .message.own-message .content {
-    background-color: #5865f2; /* Different bubble color for own messages */
-    font-family: 'Lexend';
-
+    background-color: white;
+    
+    color: #FD5A23;
+    border: 2px solid #FD5A23;
 
 }
 
@@ -375,9 +382,29 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 
+ .message .content .message.own-message .text {
+    line-height: 1.4;
+    color: #FD5A23; /* Ensure text color contrasts with bubble */
+    word-wrap: break-word; /* Wrap long words */
+    font-family: 'Lexend';
+
+
+ }
+
+
  .message .content .text {
     line-height: 1.4;
-    color: #dcddde; /* Ensure text color contrasts with bubble */
+    color: white; /* Ensure text color contrasts with bubble */
+    word-wrap: break-word; /* Wrap long words */
+    font-family: 'Lexend';
+
+
+ }
+
+
+ .own-message .content .text {
+    line-height: 1.4;
+    color: #FD5A23; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
     font-family: 'Lexend';
 
@@ -387,13 +414,25 @@ body.dnd-active .user-info .user-actions .fa-moon {
  /* Style for the timestamp */
  .message .content .timestamp {
      font-size: 11px; /* Smaller font size */
-     color: #a3a6aa; /* Lighter grey color */
+     color: white; /* Lighter grey color */
      margin-top: 5px; /* Space above the timestamp */
      align-self: flex-end; /* Align timestamp to the right within the bubble */
      font-family: 'Lexend';
 
 
  }
+
+  /* Style for the timestamp */
+  .own-message .content .timestamp {
+    font-size: 11px; /* Smaller font size */
+    color: #FD5A23; /* Lighter grey color */
+    margin-top: 5px; /* Space above the timestamp */
+    align-self: flex-end; /* Align timestamp to the right within the bubble */
+    font-family: 'Lexend';
+
+
+}
+
 
 
  /* Adjust bubble corners */
@@ -415,20 +454,20 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 .chat-input {
     padding: 15px 25px;
-    border-top: 1px solid #40444b;
+    border-top: 5px solid #eee;
     overflow: visible;
     display: flex;
     align-items: center;
-    gap: 15px;
+    
     background-color: #202020;
-    margin: 0 10px 10px 10px;
+   
     border-radius: 0 0 10px 10px;
     position: sticky;
     bottom: 0;
     z-index: 10;
     min-height: 60px;
     flex-shrink: 0;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2); /* Add shadow to top */
+    
 }
 
 .chat-input input {
@@ -437,7 +476,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     padding: 15px 20px;
     border: none;
     border-radius: 10px;
-    background-color: #40444b;
+    background-color: #eee;
     color: #dcddde;
     box-sizing: border-box;
     font-size: 16px;
@@ -873,3 +912,4 @@ form h1{
     width: 20px;
     text-align: center;
 }
+
