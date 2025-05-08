@@ -483,16 +483,20 @@ body.dnd-active .user-info .user-actions .fa-moon {
     font-family: 'Lexend';
     min-height: 50px;
     max-height: 100px; /* Add maximum height */
-    transition: background-color 0.2s ease;
+
     overflow-y: auto; /* Allow vertical scrolling if needed */
     resize: none; /* Prevent manual resizing */
     line-height: 1.4; /* Improve text readability */
+    transition: all .25s linear;
+    color:black;
+
 }
 
 .chat-input input:focus {
     outline: none;
-    background-color: #4a4e57; /* Slightly lighter background when focused */
-    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.5); /* Add a subtle focus ring */
+    color: #FD5A23;
+    background-color: #ffffff; /* Slightly lighter background when focused */
+    box-shadow: 0 0 0 2px #FD5A23; /* Add a subtle focus ring */
 }
 
 .chat-input input::placeholder {
