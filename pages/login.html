@@ -149,21 +149,7 @@
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
-            <div class="pages-list">
-                <!-- Folders for Chats and Notes -->
-                <div class="folder">
-                    <div class="folder-header">
-                        <i class="fa-solid fa-folder"></i>
-                        <span class="folder-name">Chats</span>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-header">
-                        <i class="fa-solid fa-folder"></i>
-                        <span class="folder-name">Notes</span>
-                    </div>
-                </div>
-            </div>
+            <!-- Removed pages-list div and its contents -->
         </div>
         
         <!-- Bottom Navigation -->
@@ -209,29 +195,7 @@
     <script type="module" src="/scripts/server.js"></script>
     <script type="module" src="/scripts/login.js"></script>
     <script src="/scripts/animations.js"></script>
-    <script>
-        // Add sidebar collapse functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContainer = document.getElementById('mainContainer');
-            const collapseBtn = document.getElementById('collapseBtn');
-            
-            // Check localStorage for saved state when page loads
-            if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                sidebar.classList.add('collapsed');
-                mainContainer.classList.add('expanded');
-                collapseBtn.classList.add('rotated');
-            }
-            
-            collapseBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContainer.classList.toggle('expanded');
-                collapseBtn.classList.toggle('rotated');
-                
-                // Save state to localStorage
-                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-            });
-        });
-    </script>
+    <script src="/scripts/sidebar.js"></script>
+    <!-- Remove the duplicate sidebar collapse code -->
 </body>
 </html>
