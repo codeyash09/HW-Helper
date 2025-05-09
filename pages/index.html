@@ -311,8 +311,12 @@
             animation: none;
         }
     </style>
+    <!-- Add loading script early in the page -->
+    <script src="/scripts/loading.js"></script>
 </head>
 <body>
+    <!-- Loading screen will be created by the loading.js script -->
+    
     <div class="sidebar" id="sidebar">
         <!-- Collapse Button -->
         <button class="collapse-btn" id="collapseBtn">
@@ -367,31 +371,7 @@
         </div>
     </div>
 
-    <!-- Remove this script block as it's duplicating sidebar.js functionality -->
-    <!-- <script>
-        // Sidebar collapse functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContainer = document.getElementById('mainContainer');
-            const collapseBtn = document.getElementById('collapseBtn');
-            
-            // Check localStorage for saved state when page loads
-            if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                sidebar.classList.add('collapsed');
-                mainContainer.classList.add('expanded');
-                collapseBtn.classList.add('rotated');
-            }
-            
-            collapseBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContainer.classList.toggle('expanded');
-                collapseBtn.classList.toggle('rotated');
-                
-                // Save state to localStorage
-                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-            });
-        });
-    </script> -->
+    <script src="/scripts/textanimation.js"></script>
     <script src="/scripts/sidebar.js"></script>
 </body>
 </html>
