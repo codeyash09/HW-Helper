@@ -67,9 +67,9 @@ body{
 }
 
 #saveButton{
-    background-color: rgb(24, 24, 24);
-    color: #2caadb;
-    border: 3px solid #2caadb;
+    background-color: #FD5A23;
+    color: #eee;
+    border: 3px solid #eee;
     font-family: 'Poppins';
     font-size: 2vh;
     padding-left: 20px;
@@ -84,8 +84,8 @@ body{
 }
 
 #saveButton:hover{
-    background-color: #2caadb;
-    color: white;
+    background-color: white;
+    color: #FD5A23;
 
     
 

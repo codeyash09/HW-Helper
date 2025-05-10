@@ -64,7 +64,7 @@ input {
     padding: 1.2vh;
     padding-left: 2vh;
     padding-right: 2vh;
-    background-color: #2a2a2a;
+    background-color: #eee;
     border: rgb(49, 49, 49) 2px solid;
     transition: all .25s linear;
     color: #ffffff;
@@ -76,9 +76,9 @@ input {
 
 input:focus {
     outline: none;
-    background-color: #2a2a2a;
-    border: rgb(28, 198, 255) 2.5px solid;
-    color: rgb(28, 198, 255);
+    background-color: #eee;
+    border: #FD5A23 2.5px solid;
+    color: #FD5A23;
     box-shadow: 0 4px 12px rgba(28, 198, 255, 0.3);
     transform: translateY(-2px);
 }
@@ -96,7 +96,7 @@ h3 {
 }
 
 h3:has(+ input:focus) {
-    color: rgb(28, 198, 255);
+    color: #FD5A23;
     font-weight: 500;
 }
 
@@ -144,8 +144,8 @@ h2{
 }
 
 #button:hover {
-    background-color: #333333;
-    color: rgb(28, 198, 255);
+    background-color: #333333;s
+    color: #FD5A23;
     box-shadow: 0 6px 12px rgba(28, 198, 255, 0.2);
     transform: translateY(-2px);
 }
