@@ -232,7 +232,7 @@
         <div class="pages-section" style="margin-top: 20px; border-top: 1px solid #000;">
             <div class="section-header">
                 <span style="color: #666; font-weight: 600;">Pages</span>
-                <button class="add-page-btn">
+                <button class="add-page-btn" onclick="newNoter()">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
@@ -267,6 +267,9 @@
     </div>
 
     <script>
+
+
+        
 
         function newNoter(){
             window.location.replace("/pages/notes.html");
@@ -309,7 +312,7 @@
 
         let currentFontSize = "50px";
         let savedSelection = null; 
-        let currentFontColor = "white";
+        let currentFontColor = "black";
        
      
         function saveSelection() {
