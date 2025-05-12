@@ -1185,7 +1185,7 @@ body {
 
 .linksmener i h1{
     color: white;
-    font-size: 5vh;
+    font-size: 4vh;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -1199,6 +1199,7 @@ body {
     border-bottom: transparent 5px solid;
     border-top: transparent 5px solid;
     padding-bottom: 50px;
+    overflow: hidden;
     padding-top: 50px;
     padding-left: 10px;
     left: 0;
