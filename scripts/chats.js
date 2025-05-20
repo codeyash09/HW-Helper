@@ -70,6 +70,8 @@ username.then(result =>{
 
 
 async function showChats() {
+
+    console.log("Hi");
     const { data, error } = await db
         .from('Chats')
         .select('*')
@@ -96,9 +98,10 @@ async function showChats() {
 
     for (const chat of sortedChats) {
         if (!existingChatIds.has(chat.chat_id)) {
+            
             const title = document.createElement("a");
             title.setAttribute("data-chat-id", chat.chat_id);
-
+            
             let userNum;
             if ("" + userId === chat.host) {
                 userNum = chat.members.length;
@@ -123,7 +126,9 @@ async function showChats() {
 
             if (readNum > 0) {
                 title.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+             
             }
+            
 
             title.addEventListener("click", () => openChat(chat.chat_id));
 
@@ -166,6 +171,82 @@ async function fetchChat(id) {
 
 const sendButton = document.querySelector(".fa-paper-plane");
 const messageInput = document.querySelector(".chat-input input");
+
+messageInput.addEventListener("keydown", async function(event) {
+    if (event.key === "Enter") {
+        const messageText = messageInput.value.trim();
+        if (!messageText) return; 
+
+        const chatId = currentChat; 
+        const sender = username; 
+        const timestamp = new Date().toISOString();
+
+        try {
+
+            const { data, error } = await db
+                .from("Chats")
+                .select("*")
+                .eq("chat_id", chatId)
+                .single();
+
+            if (error || !data) {
+                console.error("Failed to fetch chat:", error ?? "Chat not found");
+                return;
+            }
+
+            const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
+            const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
+            const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
+            
+            
+            let updatedRead = [];
+
+
+
+            updatedRead = data.read.map(Number);
+
+            if(Array.isArray(data.read)){
+                if("" + userId + "" == data.host){
+                    for(let i = 0; i<data.members.length; i++){
+                        if(data.members[i] != "" + username + ""){  
+                            updatedRead[i]++;
+                        }   
+                    }
+                }else{
+                    for(let i = 0; i<data.members.length; i++){
+                        if(data.members[i] != "" + username + ""){  
+                            updatedRead[i]++;
+                        }   
+                    }
+                    updatedRead[data.members.length]++;
+                }
+                
+            }else{
+                console.log("Errenous read");
+            }
+
+
+
+    
+
+            const { error: updateError } = await db
+                .from("Chats")
+                .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
+                .eq("chat_id", chatId);
+
+            if (updateError) {
+                console.error("Error updating chat:", updateError);
+                return;
+            }
+
+            
+            messageInput.value = ""; 
+
+        } catch (err) {
+            console.error("Unexpected error:", err);
+        }
+    }
+});
 
 sendButton.addEventListener("click", async () => {
     const messageText = messageInput.value.trim();
@@ -252,6 +333,15 @@ async function openChat(id) {
 
 
     currentChat = id;
+
+    document.querySelectorAll('a[data-chat-id]').forEach(element => {
+        element.classList.remove("currentTab");
+    });
+    
+    document.querySelector('a[data-chat-id="' + id + '"]').classList.add("currentTab");
+
+
+
     let chat = await fetchChat(id);
     const chatMess = document.querySelector(".chat-messages");
     chatMess.innerHTML = ""; 
@@ -454,7 +544,7 @@ async function changeRow() {
         console.error("No chats found or error fetching chats:", error);
         return;
     }
-
+   
     const newest = data.reverse(); 
 
     // Save the current scroll position before clearing

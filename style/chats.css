@@ -6,7 +6,7 @@ body {
     display: flex;
     margin: 0;
     padding: 0;
-    background-color: #191919;
+    background-color: white;
     color: #ffffff;
 }
 
@@ -188,11 +188,84 @@ body.dnd-active .user-info .user-actions .fa-moon {
     color: #faa61a; /* Orange color */
 }
 
+.currentTab{
+    background-color: #FD5A23 !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+#newChatBtn{
+    display: inline-block;
+    height: fit-content;
+  
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+#newChatBtn i{
+    font-size: 1.5vh;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+
+}
+
+.pages-list{
+    width: 100%;
+    display: inline;
+    
+    height: 2.5vh;
+    overflow-y: hidden;
+    
+    margin:0;
+    margin-left: 1vw;
+}
+.pages-list a{
+    color: #FD5A23;
+    background-color: white;
+    margin: 0;
+    font-size: 2vh;
+    cursor: pointer;
+
+    padding: 0;
+    width: max-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline;
+
+ 
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+
+
+
+}
+
+
+
+.read-notification {
+    border-radius: 50%;
+    display: inline-flex;
+    background-color: #FD5A23;
+    color: white;
+    width: 2vh;
+    justify-content: center;
+    align-self: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 1.5vh;
+    height: 2vh;
+}
+
 
 .main-chat {
     flex-grow: 1; /* Takes remaining horizontal space */
     display: flex;
-    height: 100%;
+    width: 100%;
+    height: 95%;
     flex-direction: column;
     background-color: rgb(255, 255, 255); /* Main chat area background */
     position: relative; /* Add this to create a positioning context */
@@ -545,13 +618,13 @@ body.dnd-active .user-info .user-actions .fa-moon {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #2e2e2e86;
-    animation: show 0.6s linear;
+    background-color: #ffffff8a;
+    animation: show 0.6s linear !important;
 
 }
 
 form{
-    background-color: #eee;
+    background-color: white;
     z-index: 501;
     
     width: 50vw;
@@ -564,14 +637,14 @@ form{
     box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.3);
     position: absolute;
     top: 20vh;
-    animation: slide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52);
+    animation: slide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) !important;
     overflow: hidden;
 
 }
 
 @keyframes show {
     0% {
-        background-color: #2e2e2e00;
+        background-color: #ffffff00;
         
     }
     
@@ -579,7 +652,7 @@ form{
 
     
     100% {
-        background-color: #2e2e2e86;
+        background-color: #ffffff8a;
         
 
     }
@@ -589,7 +662,7 @@ form{
 
 @keyframes hide {
     0% {
-        background-color: #2e2e2e86;
+        background-color: #ffffff8a;
         
     }
     
@@ -641,7 +714,7 @@ form{
 form h1{
     font-size: 10vh;
     text-align: center;
-    color: white;
+    color: #FD5A23;
 }
 
 .choices{
@@ -721,7 +794,7 @@ form h1{
 
 #close{
     font-size: 2vh;
-    color: white;
+    color: #FD5A23;
     background-color: transparent;
     outline: none;
     border: none;
@@ -744,12 +817,12 @@ form h1{
 @keyframes flickerColor {
     0% {
         
-        color: white;
+        color: #FD5A23;
     }
     
     50% {
         
-        color: #FD5A23;
+        color: black;
         
     }
 
@@ -757,7 +830,7 @@ form h1{
     100% {
         
 
-        color: white;
+        color: #FD5A23;
 
     }
 }
@@ -767,7 +840,7 @@ form h1{
 }
 
 .unslider{
-    animation: slide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52);
+    animation: unslide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) !important;
 }
 
 #users{
@@ -809,7 +882,7 @@ form h1{
     padding: 0.25vw;
     height: 1.5vw;
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: #ff9b7a;
     margin: 5%;
     padding: 2.5;
     border: none;
@@ -824,6 +897,7 @@ form h1{
 
     background-color: #FD5A23;
     outline: none;
+    color: white;
 }
 
 .deleteInput{
@@ -832,7 +906,7 @@ form h1{
     background-color: rgb(255, 150, 150);
     outline: none;
     border: none;
-    color: #202020;
+    color: white;
     height: 1.75vw;
     transition: all .25s linear;
     width: 1.75vw;
@@ -858,12 +932,12 @@ form h1{
   
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #202020;
+    background: #eee;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: white;
+    background: #FD5A23;
     transition: background .25s linear;
     
 
@@ -894,7 +968,7 @@ form h1{
 }
 
 .btns button:hover{
-    background-color: #1d1d1d;
+    background-color: #FD5A23;
 }
 
 .hidden{
@@ -909,11 +983,6 @@ form h1{
 }
 
 
-.read-notification {
-    border-radius: 50%;
-    background-color: rgb(167, 130, 61);
-    color: white;
-    width: 20px;
-    text-align: center;
-}
+
+
 

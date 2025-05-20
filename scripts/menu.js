@@ -23,7 +23,7 @@ function openMenu(){
 }
 
 
-let closeBtn = document.getElementById('close');
+let closeBtn = document.getElementById('closer');
 
 closeBtn.addEventListener('click', closeMenu);
 

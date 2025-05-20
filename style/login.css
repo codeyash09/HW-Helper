@@ -36,7 +36,7 @@
 form {
     display: flex;
     flex-direction: column;
-    width: 20vw;
+    width: 100%;
     align-items: center;
     justify-content: center;
     background-color: transparent;
@@ -53,6 +53,7 @@ form {
     width: 100%;
     justify-content: center;
     margin-bottom: 25px;
+    height: 10vh;
 }
 
 /* Style the input fields to be more prominent */
@@ -65,9 +66,9 @@ input {
     padding-left: 2vh;
     padding-right: 2vh;
     background-color: #eee;
-    border: rgb(49, 49, 49) 2px solid;
+    border: #eee 2px solid;
     transition: all .25s linear;
-    color: #ffffff;
+    color: rgb(82, 82, 82);
     margin-left: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-family: 'Poppins', sans-serif;
@@ -76,7 +77,7 @@ input {
 
 input:focus {
     outline: none;
-    background-color: #eee;
+    background-color: white;
     border: #FD5A23 2.5px solid;
     color: #FD5A23;
     box-shadow: 0 4px 12px rgba(28, 198, 255, 0.3);
@@ -89,10 +90,11 @@ h3 {
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
     position: static;
-    color: #e0e0e0;
+    color: #616161;
     font-size: 14px;
     text-align: right;
     width: 20%;
+    transition: all .25s linear;
 }
 
 h3:has(+ input:focus) {
@@ -134,9 +136,9 @@ h2{
     height: 5.5vh;
     margin-top: 4vh;
     font-size: 16px;
-    background-color: #2a2a2a;
+    background-color: #ffffff;
     transition: all .25s linear;
-    color: #ffffff;
+    color: #FD5A23;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-family: 'Poppins', sans-serif;
@@ -144,7 +146,7 @@ h2{
 }
 
 #button:hover {
-    background-color: #333333;s
+    background-color: #FD5A23;
     color: #FD5A23;
     box-shadow: 0 6px 12px rgba(28, 198, 255, 0.2);
     transform: translateY(-2px);
