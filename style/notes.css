@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 
 *{
     padding: 0;
@@ -534,4 +536,110 @@ body{
     margin-left: 70px;
     width: calc(100% - 70px);
     transition: margin-left 0.3s ease, width 0.3s ease;
+}
+.currentTab{
+    background-color: #FD5A23 !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+#newNoteBtn{
+    display: inline-block;
+    height: fit-content;
+  
+    background-color: transparent;
+    border: none;
+   
+    padding: 0;
+    margin: 0;
+}
+
+#newNoteBtn i{
+    font-size: 1.5vh;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+
+}
+
+.tabs {
+    position: fixed;
+    top: 2vh;
+    left: 5vw;
+
+    min-width: 5vw;
+    max-width: 40vw;
+}
+@container (width > 35vw){
+    .pages-list:hover{
+        overflow-x: scroll;
+        overscroll-behavior: contain;
+    }
+}
+
+.pages-list{
+
+    width: min(fit-content, 30vw);
+    display: inline-block;
+    font-family: 'Bebas Neue';
+    height: 2.5vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+    font-family: '';
+    
+    margin:0;
+    margin-bottom: -0.5vh;
+    margin-left: 1vw;
+}
+
+
+.pages-list a {
+    color: #FD5A23;
+    font-family: 'Bebas Neue';
+
+    background-color: white;
+    margin: 0;
+    font-size: 2vh;
+    cursor: pointer;
+    padding: 0;
+    width: max-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline;
+    border-top-left-radius: 8px;
+    border-top-right-radius:8px;
+}
+
+
+
+#newNoteBtn i {
+    font-size: 1.5vh;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FD5A23;
+    transition: background .25s linear;
+    
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #FD5A23;
 }
