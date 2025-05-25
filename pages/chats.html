@@ -299,8 +299,8 @@
                 <input type="text" id="chatInput" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
                 <div class="input-actions right">
                     <i class="fa-solid fa-paper-plane" title="Send"></i>
-                    <i class="fa-solid fa-note-sticky" title="Open Stickers"></i> <!-- Changed icon to fa-note-sticky and updated title -->
-                    <i class="fa-solid fa-face-smile" title="Open Emojis"></i> <!-- Emoji icon -->
+                    <i class="fa-solid fa-note-sticky" title="Open Stickers"></i>
+                    <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i> <!-- Added id attribute -->
                 </div>
             </div>
         </div>
@@ -398,6 +398,10 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <!-- Add these before your closing body tag -->
+    <script src="https://cdn.jsdelivr.net/npm/@emoji-mart/data"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+    <script src="/scripts/emojis.js"></script>
     <script type="module" src="/scripts/createchat.js"></script>
     <script type="module" src="/scripts/chats.js"></script>
     <script src="/scripts/sidebar.js"></script>
