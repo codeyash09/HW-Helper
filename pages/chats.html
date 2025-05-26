@@ -295,12 +295,13 @@
                 <!-- Input area now uses flexbox -->
                 <div class="input-actions left">
                     <i class="fa-solid fa-plus" title="Add Attachment"></i> <!-- Plus icon -->
+                    <!-- Removed the fa-image button -->
                 </div>
                 <input type="text" id="chatInput" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
                 <div class="input-actions right">
                     <i class="fa-solid fa-paper-plane" title="Send"></i>
-                    <i class="fa-solid fa-note-sticky" title="Open Stickers"></i>
-                    <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i> <!-- Added id attribute -->
+                    <i id="gifButton" class="gif-text-button" title="Open GIFs">GIF</i>
+                    <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
                 </div>
             </div>
         </div>
@@ -399,7 +400,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <!-- Add these before your closing body tag -->
+    <!-- Add this before your closing body tag -->
+    <script src="/scripts/gifs.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emoji-mart/data"></script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="/scripts/emojis.js"></script>
