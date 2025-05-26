@@ -990,6 +990,29 @@ form h1{
     margin-top: 1vh;
 }
 
+/* 2. Add CSS for the emoji picker to your chats.css file
+
+Add these styles to your chats.css file if they're not already there:
+```css
+/* Emoji picker container */
+.emoji-picker-container {
+    position: absolute;
+    bottom: 70px;
+    right: 20px;
+    z-index: 1000;
+    display: none;
+}
+
+.emoji-picker-container.active {
+    display: block;
+}
+
+/* Style for the emoji button when active */
+.emoji-button-active {
+    color: #FF7A4D !important;
+}
+```
+
 
 
 
