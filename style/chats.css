@@ -1047,7 +1047,7 @@ Add these styles to your chats.css file if they're not already there:
     box-shadow: none;
     padding: 4px 10px;
 }
-.gif-text-button:hover, .gif-label:hover {
+.gif-label:hover {
     background: #40444b !important;
     color: #fff !important;
     transition: background 0.2s, color 0.2s;
