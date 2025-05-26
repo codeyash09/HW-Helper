@@ -565,35 +565,41 @@ body{
 .tabs {
     position: fixed;
     top: 2vh;
-    left: 5vw;
-
+    left: 8vh;
+    display: flex;
+    justify-content: first baseline;
+    flex-direction: row;
+    overflow-y: hidden;
+    align-items: baseline;
     min-width: 5vw;
-    max-width: 40vw;
+    max-width: 85vw;
 }
-@container (width > 35vw){
-    .pages-list:hover{
-        overflow-x: scroll;
-        overscroll-behavior: contain;
-    }
-}
+
+
+
 
 .pages-list{
 
-    width: min(fit-content, 30vw);
+    width: 100%;
     display: inline-block;
     font-family: 'Bebas Neue';
-    height: 2.5vh;
+    height: fit-content;
     overflow-y: hidden;
     overflow-x: hidden;
+    white-space: nowrap;
 
     font-family: '';
     
     margin:0;
     margin-bottom: -0.5vh;
     margin-left: 1vw;
+    margin-right: 1vw;
 }
 
-
+.long-page-list:hover{
+    overflow-x: scroll;
+    overscroll-behavior: contain;
+}
 .pages-list a {
     color: #FD5A23;
     font-family: 'Bebas Neue';

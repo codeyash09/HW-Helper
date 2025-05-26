@@ -213,14 +213,22 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .pages-list{
-    width: 100%;
-    display: inline;
+
+    display: inline-block;
+    white-space: nowrap;
     
     height: 2.5vh;
     overflow-y: hidden;
-    
+    overflow-x: hidden;
+    max-width: 80vw;
     margin:0;
     margin-left: 1vw;
+    position: relative;
+    bottom: -0.7vh;
+}
+
+.long-page-list:hover{
+    overflow-x: scroll;
 }
 .pages-list a{
     color: #FD5A23;
@@ -986,3 +994,26 @@ form h1{
 
 
 
+::-webkit-scrollbar {
+    width: 10px;
+    height: 1vh;
+    
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FD5A23;
+    transition: background .25s linear;
+    
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #FD5A23;
+}
