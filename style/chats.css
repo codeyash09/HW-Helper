@@ -213,14 +213,22 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .pages-list{
-    width: 100%;
-    display: inline;
+
+    display: inline-block;
+    white-space: nowrap;
     
     height: 2.5vh;
     overflow-y: hidden;
-    
+    overflow-x: hidden;
+    max-width: 80vw;
     margin:0;
     margin-left: 1vw;
+    position: relative;
+    bottom: -0.7vh;
+}
+
+.long-page-list:hover{
+    overflow-x: scroll;
 }
 .pages-list a{
     color: #FD5A23;
@@ -1003,9 +1011,129 @@ Add these styles to your chats.css file if they're not already there:
 .emoji-button-active {
     color: #FF7A4D !important;
 }
+
+/* GIF picker container */
+.gif-picker-container {
+    position: absolute;
+    bottom: 70px;
+    right: 20px;
+    z-index: 1000;
+    display: none;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.gif-picker-container.active {
+    display: block;
+}
+
+/* Style for the GIF button when active */
+.gif-button-active {
+    color: #FF7A4D !important;
+}
+
+.gif-text-button, .gif-label {
+    background: transparent !important;
+    color: #FF7A4D;
+    border-radius: 8px;
+    font-family: 'Lexend', 'Inter', 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+    box-shadow: none;
+    padding: 4px 10px;
+}
+.gif-text-button:hover, .gif-label:hover {
+    background: #40444b !important;
+    color: #fff !important;
+    transition: background 0.2s, color 0.2s;
+}
+.gif-button-active {
+    background: #FF7A4D;
+    color: #fff;
+}
+
+/* GIF search container */
+.gif-search-container {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.gif-search-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.gif-search-button {
+    margin-left: 5px;
+    padding: 8px 12px;
+    background-color: #FF7A4D;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* GIF results container */
+.gif-results-container {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.gif-item {
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.gif-item:hover {
+    transform: scale(1.05);
+}
+
+.gif-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 ```
 
 
 
 
 
+::-webkit-scrollbar {
+    width: 10px;
+    height: 1vh;
+    
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FD5A23;
+    transition: background .25s linear;
+    
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #FD5A23;
+}
