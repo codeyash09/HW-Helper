@@ -990,10 +990,6 @@ form h1{
     margin-top: 1vh;
 }
 
-/* 2. Add CSS for the emoji picker to your chats.css file
-
-Add these styles to your chats.css file if they're not already there:
-```css
 /* Emoji picker container */
 .emoji-picker-container {
     position: absolute;
@@ -1108,11 +1104,161 @@ Add these styles to your chats.css file if they're not already there:
     height: auto;
     display: block;
 }
-```
 
+/* Image Upload Popup Styles */
+.image-upload-container {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    width: 300px;
+    background-color: #FFFFFF;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+}
 
+.image-upload-container.active {
+    display: block;
+}
 
+.upload-content {
+    padding: 15px;
+}
 
+.upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.upload-header h3 {
+    margin: 0;
+    color: #000000;
+    font-size: 16px;
+}
+
+.close-upload {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.close-upload:hover {
+    color: #FD5A23;
+}
+
+.upload-area {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover, .upload-area.dragover {
+    border-color: #FD5A23;
+    background-color: rgba(253, 90, 35, 0.05);
+}
+
+.upload-area i {
+    font-size: 36px;
+    color: #FD5A23;
+    margin-bottom: 10px;
+}
+
+.upload-area p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.preview-area {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.preview-area img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+}
+
+.upload-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #FD5A23;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: #FF7A4D;
+    box-shadow: 0 4px 8px rgba(253, 90, 35, 0.2);
+}
+
+.chat-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Smooth overlay for image preview */
+.image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.image-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.image-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    background: white;
+    animation: overlayImageIn 0.3s cubic-bezier(0.43, 0.34, 0.85, 1.52);
+}
+@keyframes overlayImageIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Style for active plus button */
+.input-actions .fa-plus.active {
+    color: #FD5A23;
+}
 
 ::-webkit-scrollbar {
     width: 10px;
