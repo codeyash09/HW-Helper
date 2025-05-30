@@ -1,3 +1,11 @@
+#meny{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8vh;
+    z-index: 499;
+}
+
 .sidebarmenu{
     background-color: #FD5A23;
     width: 8vh;

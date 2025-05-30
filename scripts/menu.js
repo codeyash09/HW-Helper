@@ -1,6 +1,7 @@
 let menu = document.getElementById("sirvo");
 let cover = document.getElementById("coverscreen121");
 let links = document.getElementById("linksmener");
+let meny = document.getElementById("meny");
 
 menu.style.display = 'none';
 cover.style.display = 'none';
@@ -16,7 +17,7 @@ function openMenu(){
     cover.style.display = 'flex';
     cover.style.opacity = '1';
     cover.style.animation = 'unblur .5s cubic-bezier(0.4, 0, 1, 1)';
-
+    meny.style.width = '100vw';
     links.style.opacity = '1';
     links.style.animation = 'unblur2 2.5s cubic-bezier(0.4, 0, 1, 1)';
   
@@ -46,4 +47,6 @@ function hideMenu(){
 
 function hideCover(){
     cover.style.display = 'none';
+    meny.style.width = '8vh';
+    
 }
