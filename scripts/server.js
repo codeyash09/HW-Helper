@@ -12,8 +12,8 @@ if(!localStorage.getItem('loggedInStatus')){
 }
 
 const db = supabase.createClient(
-  'https://mvovikninvudypyuhdqg.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12b3Zpa25pbnZ1ZHlweXVoZHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NDg1NjAwNSwiZXhwIjoyMDYwNDMyMDA1fQ.GA5vPB-n9gkdpJfrSy2q10fLr9dVHMIEpKGk6ysdpU4'
+  'https://piazefambbqhrtbmjjgm.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpYXplZmFtYmJxaHJ0Ym1qamdtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODY0MTE5NiwiZXhwIjoyMDY0MjE3MTk2fQ.cwWYsHmibxI-4kIilUhTwKg6n0pkEHyQnBN8PsOyWs4'
 );
 
 var details;
