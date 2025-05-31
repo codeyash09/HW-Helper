@@ -1,5 +1,5 @@
 import {db} from '/scripts/createChat.js';
-import { convertToLocalTime } from '/scripts/time.js';
+
 
 
 
@@ -325,6 +325,24 @@ sendButton.addEventListener("click", async () => {
     
 });
 
+function convertToLocalTime(centralTime) {
+    let date = new Date(centralTime);
+    let rn = new Date();
+    let daysApart = Math.floor((rn - date) / 86400000); // Direct ms-to-days conversion
+
+    if (daysApart > 6) {
+        return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    let timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    let dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let dayDiff = rn.getDay() - date.getDay();
+
+    return dayDiff === 0 ? `Today at ${timeStr}` :
+           dayDiff === 1 || (rn.getDay() === 0 && date.getDay() === 6) ? `Yesterday at ${timeStr}` :
+           `${dayNames[date.getDay()]} at ${timeStr}`;
+}
+
 
 async function openChat(id) {
 
@@ -414,9 +432,9 @@ async function openChat(id) {
         text.innerHTML = chat.messages?.[i] || "No message";
         const time = document.createElement("div");
         time.classList.add("timestamp");
-        time.innerHTML = chat.times?.[i] || "Unknown Time";
-        let converted = convertToLocalTime(time.innerHTML);
-        time.innerHTML = converted;
+
+        time.innerHTML = convertToLocalTime(chat.times[i]);
+       
 
         if (chat.senders[i] === username) {
             message.classList.add("own-message");
