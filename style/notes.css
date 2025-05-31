@@ -549,9 +549,11 @@ body{
   
     background-color: transparent;
     border: none;
-   
+    width: 3vh;
     padding: 0;
     margin: 0;
+    margin-right: 5vw;
+
 }
 
 #newNoteBtn i{

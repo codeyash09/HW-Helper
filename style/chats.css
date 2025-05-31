@@ -602,7 +602,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 .chat-input .input-actions i:hover {
     color: #ffffff; /* Brighter color on hover */
-    background-color: #40444b; /* Background on hover */
+    background-color: #FD5A23; /* Background on hover */
 }
 
 /* Container for icons on the right */
