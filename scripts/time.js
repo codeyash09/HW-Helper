@@ -1,4 +1,4 @@
-function convertToLocalTime(centralTime) {
+export function convertToLocalTime(centralTime) {
     // Parse the ISO timestamp
     let date = new Date(centralTime);
 
@@ -66,25 +66,3 @@ function convertToLocalTime(centralTime) {
     // Get the local time and formatted date
     
 }
-refreshTime();
-function isValidTimestamp(inputString) {
-    return inputString.includes("T") && inputString.includes("+");
-}
-
-
-setInterval(refreshTime, 100);
-
-function refreshTime(){
-    
-    let timestamps = document.getElementsByClassName("timestamp");
-
-    for(let i = 0; i< timestamps.length; i++){
-        if(isValidTimestamp(timestamps[i].innerHTML)){
-            let converted = convertToLocalTime(timestamps[i].innerHTML);
-            timestamps[i].innerHTML = converted;
-        }
-        
-    }
-}
-
-

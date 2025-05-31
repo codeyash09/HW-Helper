@@ -1,4 +1,5 @@
 import {db} from '/scripts/createChat.js';
+import { convertToLocalTime } from '/scripts/time.js';
 
 
 
@@ -414,6 +415,8 @@ async function openChat(id) {
         const time = document.createElement("div");
         time.classList.add("timestamp");
         time.innerHTML = chat.times?.[i] || "Unknown Time";
+        let converted = convertToLocalTime(time.innerHTML);
+        time.innerHTML = converted;
 
         if (chat.senders[i] === username) {
             message.classList.add("own-message");
