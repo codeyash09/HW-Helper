@@ -173,11 +173,14 @@ function handleSubmit2(){
 async function createChat(){
     let acceptedArr = [];
     let readArr = [];
+    let typingArr = [];
 
     for(let i = 0; i < usernames.length; i++){
         acceptedArr.push(0);
         readArr.push(0);
+        typingArr.push(false);
     }
+    typingArr.push(false);
    
     readArr.push(0);
 
@@ -190,7 +193,7 @@ async function createChat(){
         host: window.localStorage.getItem("userIdentify"),
         accepted: acceptedArr,
         read: readArr,
- 
+        typing: typingArr,
     }
     ]);
 
@@ -231,6 +234,7 @@ async function createMessage(){
         host: window.localStorage.getItem("userIdentify"),
         accepted: [0],
         read: [0, 0],
+        typing: [false, false],
     }
     ]);
 

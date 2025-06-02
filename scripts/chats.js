@@ -164,7 +164,11 @@ async function fetchChat(id) {
       console.error('Error fetching data:', error);
       return null;
     }
+<<<<<<< Updated upstream
     
+=======
+   
+>>>>>>> Stashed changes
     return data;
 }
 
