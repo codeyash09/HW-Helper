@@ -72,7 +72,7 @@ username.then(result =>{
 
 async function showChats() {
 
-    console.log("Hi");
+
     const { data, error } = await db
         .from('Chats')
         .select('*')
@@ -165,7 +165,9 @@ async function fetchChat(id) {
       console.error('Error fetching data:', error);
       return null;
     }
-    
+    console.clear();
+
+    console.log(i++);
     return data;
 }
 
@@ -297,8 +299,6 @@ sendButton.addEventListener("click", async () => {
                 updatedRead[data.members.length]++;
             }
             
-        }else{
-            console.log("Errenous read");
         }
 
 
@@ -519,21 +519,18 @@ async function updateRead(updatedRead){
     
 }
 
+let i = 0;
 
-
-
-
-
-setInterval(() => {
-    
+db
+  .channel('realtime-changes')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'Chats' }, (payload) => {
     changeChats();
-}, 500); // Runs every 0.5 seconds
-
-
-setInterval(() => {
-    
     changeRow();
-}, 500); // Runs every 0.5 seconds
+    
+  
+  })
+  .subscribe();
+
 
 
 async function changeChats(){

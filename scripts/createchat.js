@@ -5,8 +5,8 @@
 
 
 let db = supabase.createClient(
-    'https://ydmeyudvizyhbpislaos.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkbWV5dWR2aXp5aGJwaXNsYW9zIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODY0NDY2NiwiZXhwIjoyMDY0MjIwNjY2fQ.8hek-Tr39nhaqCgBePhWm05YWbES_H7kchDIpdEGRlE'
+    'https://afqxanpmrvmdsthdqfap.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcXhhbnBtcnZtZHN0aGRxZmFwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODcyNDE4NiwiZXhwIjoyMDY0MzAwMTg2fQ.rucKLZxCP1u7Rhkq2Nb0OUjP9JbMeGtdQ-E67Z2pDYQ'
 );
 
 export {db};
@@ -100,7 +100,7 @@ function disappear(){
 
 
 function inputHandleFunction(){
-    console.log("adding");
+
     const newInputGroup = document.createElement("div");
     newInputGroup.className = "input-group";
     newInputGroup.innerHTML = `<input type="text" name="username" placeholder="Enter username"><button type="button" class="deleteInput"><i class="fa-solid fa-trash"></i></button>`;
@@ -117,7 +117,7 @@ function inputHandleFunction(){
 
 
 function handleSubmit(){
-    console.log("messaging");
+
     if(!clicked){
         const inputs = document.querySelectorAll("input[name='username']");
         const values = Array.from(inputs).map(input => input.value);

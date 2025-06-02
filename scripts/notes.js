@@ -14,11 +14,10 @@ if(localStorage.getItem('loggedInStatus') == "false"){
     window.location.replace('/pages/signup.html');
 }
 
-const db = supabase.createClient(
-    'https://ydmeyudvizyhbpislaos.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkbWV5dWR2aXp5aGJwaXNsYW9zIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODY0NDY2NiwiZXhwIjoyMDY0MjIwNjY2fQ.8hek-Tr39nhaqCgBePhWm05YWbES_H7kchDIpdEGRlE'
+let db = supabase.createClient(
+    'https://afqxanpmrvmdsthdqfap.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmcXhhbnBtcnZtZHN0aGRxZmFwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODcyNDE4NiwiZXhwIjoyMDY0MzAwMTg2fQ.rucKLZxCP1u7Rhkq2Nb0OUjP9JbMeGtdQ-E67Z2pDYQ'
 );
-
 
 
 async function newNotes(){
