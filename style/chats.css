@@ -230,26 +230,20 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .long-page-list:hover{
     overflow-x: scroll;
 }
-.pages-list a{
+.pages-list a {
     color: #FD5A23;
     background-color: white;
     margin: 0;
     font-size: 2vh;
     cursor: pointer;
-
     padding: 0;
     width: max-content;
     padding-left: 10px;
     padding-right: 10px;
     display: inline;
-
- 
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-
-
-
-
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 

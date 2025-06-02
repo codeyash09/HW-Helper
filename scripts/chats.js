@@ -87,68 +87,87 @@ async function showChats() {
     const sortedChats = data.sort((a, b) => {
         const lastMessageTimeA = new Date(a.times?.slice(-1)[0] || 0);
         const lastMessageTimeB = new Date(b.times?.slice(-1)[0] || 0);
-        return lastMessageTimeB - lastMessageTimeA; // Recent messages first
+        return lastMessageTimeB - lastMessageTimeA;
     });
 
+    // Save the previous order for comparison
+    const prevOrder = rowSys ? rowSys.map(c => c.chat_id) : [];
     rowSys = sortedChats;
 
-    // Preserve scroll position before updating the list
-    const savedScrollPosition = chatList.scrollTop;
+    // Save scroll position
+    savedScrollPosition = chatMess.scrollTop;
 
+    // Update or add chat tabs
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
-
     for (const chat of sortedChats) {
-        if (!existingChatIds.has(chat.chat_id)) {
-            
-            const title = document.createElement("a");
-            title.setAttribute("data-chat-id", chat.chat_id);
-            
-            let userNum;
-            if ("" + userId === chat.host) {
-                userNum = chat.members.length;
-            } else {
-                userNum = chat.members.indexOf(username);
-            }
-
-            let readNum = chat.read[userNum];
-
+        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
+        let readNum = chat.read[userNum];
+        if (!tab) {
+            tab = document.createElement("a");
+            tab.setAttribute("data-chat-id", chat.chat_id);
             if (chat.groupchat) {
-                title.innerHTML = chat.title;
+                tab.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    title.innerHTML = chat.members[0];
+                    tab.innerHTML = chat.members[0];
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {
-                        title.innerHTML = hoster[0].username;
+                        tab.innerHTML = hoster[0].username;
                     }
                 }
             }
-
-            if (readNum > 0) {
-                title.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
-             
+            tab.addEventListener("click", () => openChat(chat.chat_id));
+            chatList.appendChild(tab);
+        }
+        // Update unread badge
+        const existingBadge = tab.querySelector('.read-notification');
+        if (readNum > 0) {
+            if (existingBadge) {
+                existingBadge.textContent = readNum;
+            } else {
+                tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
             }
-            
-
-            title.addEventListener("click", () => openChat(chat.chat_id));
-
-            chatList.appendChild(title);
+        } else if (existingBadge) {
+            existingBadge.remove();
         }
     }
-
-    // Restore scroll position after update
-    requestAnimationFrame(() => {
-        chatList.scrollTop = savedScrollPosition;
-    });
-
-    // Open the latest chat automatically if none is opened
-    if (!chatOpened && sortedChats.length > 0 && sortedChats[0].chat_id) {
-        openChat(sortedChats[0].chat_id);
-        chatOpened = true;
-    } else {
-        openChat(currentChat);
+    // Remove tabs for deleted chats
+    for (const element of Array.from(chatList.children)) {
+        const chatId = element.getAttribute("data-chat-id");
+        if (!sortedChats.some(chat => chat.chat_id === chatId)) {
+            chatList.removeChild(element);
+        }
     }
+    // Move the most recent chat tab to the left (first position)
+    if (sortedChats.length > 0) {
+        const mostRecentId = sortedChats[0].chat_id;
+        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        if (tab && tab.parentNode.firstChild !== tab) {
+            tab.style.transform = 'scale(1.05)';
+            tab.style.opacity = '0.7';
+            setTimeout(() => {
+                tab.style.transform = '';
+                tab.style.opacity = '';
+                tab.parentNode.insertBefore(tab, tab.parentNode.firstChild);
+            }, 150);
+        }
+    }
+    // Highlight current chat tab
+    if (currentChat) {
+        document.querySelectorAll('a[data-chat-id]').forEach(element => {
+            element.classList.remove("currentTab");
+        });
+        const currentElement = document.querySelector(`a[data-chat-id="${currentChat}"]`);
+        if (currentElement) {
+            currentElement.classList.add("currentTab");
+        }
+    }
+    // Restore scroll position
+    setTimeout(() => {
+        chatMess.scrollTop = savedScrollPosition;
+    }, 0);
 }
 
 
@@ -526,8 +545,6 @@ db
   .on('postgres_changes', { event: '*', schema: 'public', table: 'Chats' }, (payload) => {
     changeChats();
     changeRow();
-    
-  
   })
   .subscribe();
 
@@ -562,31 +579,110 @@ async function changeRow() {
         console.error("No chats found or error fetching chats:", error);
         return;
     }
-   
-    const newest = data.reverse(); 
 
-    // Save the current scroll position before clearing
+    // Sort chats by the most recent message timestamp
+    const sortedChats = data.sort((a, b) => {
+        const lastMessageTimeA = new Date(a.times?.slice(-1)[0] || 0);
+        const lastMessageTimeB = new Date(b.times?.slice(-1)[0] || 0);
+        return lastMessageTimeB - lastMessageTimeA;
+    });
+
+    // Save the previous order for comparison
+    const prevOrder = rowSys ? rowSys.map(c => c.chat_id) : [];
+    rowSys = sortedChats;
+
+    // Save scroll position
     savedScrollPosition = chatMess.scrollTop;
 
-    if (JSON.stringify(newest) !== JSON.stringify(rowSys)) {
-        // Instead of completely rebuilding, first hold the position
-        
-
-        while (chatList.firstChild) {
-            chatList.removeChild(chatList.firstChild);
+    // Update or add chat tabs
+    const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
+    for (const chat of sortedChats) {
+        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
+        let readNum = chat.read[userNum];
+        if (!tab) {
+            tab = document.createElement("a");
+            tab.setAttribute("data-chat-id", chat.chat_id);
+            if (chat.groupchat) {
+                tab.innerHTML = chat.title;
+            } else {
+                if (chat.host === "" + userId) {
+                    tab.innerHTML = chat.members[0];
+                } else {
+                    let hoster = await fetchUsers(chat.host);
+                    if (hoster[0]) {
+                        tab.innerHTML = hoster[0].username;
+                    }
+                }
+            }
+            tab.addEventListener("click", () => openChat(chat.chat_id));
+            chatList.appendChild(tab);
         }
-        
+        // Update unread badge
+        const existingBadge = tab.querySelector('.read-notification');
+        if (readNum > 0) {
+            if (existingBadge) {
+                existingBadge.textContent = readNum;
+            } else {
+                tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+            }
+        } else if (existingBadge) {
+            existingBadge.remove();
+        }
+    }
+    // Remove tabs for deleted chats
+    for (const element of Array.from(chatList.children)) {
+        const chatId = element.getAttribute("data-chat-id");
+        if (!sortedChats.some(chat => chat.chat_id === chatId)) {
+            chatList.removeChild(element);
+        }
+    }
+    // Move the most recent chat tab to the left (first position)
+    if (sortedChats.length > 0) {
+        const mostRecentId = sortedChats[0].chat_id;
+        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        if (tab && tab.parentNode.firstChild !== tab) {
+            tab.style.transform = 'scale(1.05)';
+            tab.style.opacity = '0.7';
+            setTimeout(() => {
+                tab.style.transform = '';
+                tab.style.opacity = '';
+                tab.parentNode.insertBefore(tab, tab.parentNode.firstChild);
+            }, 150);
+        }
+    }
+    // Highlight current chat tab
+    if (currentChat) {
+        document.querySelectorAll('a[data-chat-id]').forEach(element => {
+            element.classList.remove("currentTab");
+        });
+        const currentElement = document.querySelector(`a[data-chat-id="${currentChat}"]`);
+        if (currentElement) {
+            currentElement.classList.add("currentTab");
+        }
+    }
+    // Restore scroll position
+    setTimeout(() => {
+        chatMess.scrollTop = savedScrollPosition;
+    }, 0);
+}
 
-        // Update the list
-        await showChats();
 
-        // Restore scroll position after content is replaced
+
+function moveTabToLeft(chatId) {
+    const tab = document.querySelector(`.pages-list a[data-chat-id='${chatId}']`);
+    if (tab) {
+        tab.style.transform = 'scale(1.05)';
+        tab.style.opacity = '0.7';
         setTimeout(() => {
-            chatMess.scrollTop = savedScrollPosition;
-            
-        }, 0); // Small delay ensures DOM is fully updated
-
-        rowSys = newest;
+            tab.style.transform = '';
+            tab.style.opacity = '';
+            const parent = tab.parentNode;
+            parent.insertBefore(tab, parent.firstChild);
+        }, 150);
     }
 }
+
+// Inside changeRow(), after updating the DOM:
+moveTabToLeft(currentChat);
 
