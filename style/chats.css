@@ -508,6 +508,10 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 }
 
+.read-message{
+    background-color: #c24f32ff;
+}
+
 
 
  /* Adjust bubble corners */

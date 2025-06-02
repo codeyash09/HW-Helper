@@ -184,9 +184,7 @@ async function fetchChat(id) {
       console.error('Error fetching data:', error);
       return null;
     }
-    console.clear();
-
-    console.log(i++);
+   
     return data;
 }
 
@@ -686,3 +684,4 @@ function moveTabToLeft(chatId) {
 // Inside changeRow(), after updating the DOM:
 moveTabToLeft(currentChat);
 
+export {currentChat, username, userId};
