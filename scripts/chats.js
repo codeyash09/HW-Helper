@@ -2,7 +2,8 @@ import {db} from '/scripts/createChat.js';
 
 
 
-
+let count = 0;
+let read = 10;
 
 let userId = window.localStorage.getItem("userIdentify");
 
@@ -30,7 +31,8 @@ async function fetchUser() {
     .from('Users')
     .select('username')
     .eq('id', userId);
-
+  console.log(count++);
+  
   if (error) {
     console.error('Error fetching data:', error);
     return null;
@@ -48,7 +50,8 @@ async function fetchUsers(id) {
       .from('Users')
       .select('username')
       .eq('id', id);
-  
+    console.log(count++);
+    
     if (error) {
       console.error('Error fetching data:', error);
       return null;
@@ -97,6 +100,7 @@ async function showChats() {
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
 
     for (const chat of sortedChats) {
+<<<<<<< Updated upstream
         if (!existingChatIds.has(chat.chat_id)) {
             
             const title = document.createElement("a");
@@ -111,6 +115,15 @@ async function showChats() {
 
             let readNum = chat.read[userNum];
 
+=======
+        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
+        let readNum = chat.read[userNum];
+        read = readNum;
+        if (!tab) {
+            tab = document.createElement("a");
+            tab.setAttribute("data-chat-id", chat.chat_id);
+>>>>>>> Stashed changes
             if (chat.groupchat) {
                 title.innerHTML = chat.title;
             } else {
@@ -148,28 +161,68 @@ async function showChats() {
     } else {
         openChat(currentChat);
     }
+<<<<<<< Updated upstream
+=======
+    // Move the most recent chat tab to the left (first position)
+    if (sortedChats.length > 0) {
+        const mostRecentId = sortedChats[0].chat_id;
+        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        if (tab && tab.parentNode.firstChild !== tab) {
+            tab.style.transform = 'scale(1.05)';
+            tab.style.opacity = '0.7';
+            setTimeout(() => {
+                tab.style.transform = '';
+                tab.style.opacity = '';
+                tab.parentNode.insertBefore(tab, tab.parentNode.firstChild);
+            }, 150);
+        }
+    }
+    // Highlight current chat tab
+    if (currentChat) {
+        document.querySelectorAll('a[data-chat-id]').forEach(element => {
+            element.classList.remove("currentTab");
+        });
+        const currentElement = document.querySelector(`a[data-chat-id="${currentChat}"]`);
+        if (currentElement) {
+            currentElement.classList.add("currentTab");
+        }
+    }
+    // Restore scroll position
+    setTimeout(() => {
+        chatMess.scrollTop = savedScrollPosition;
+    }, 0);
+
+>>>>>>> Stashed changes
 }
 
 
 
 
-
 async function fetchChat(id) {
-    const { data, error } = await db
-      .from('Chats')
-      .select('*')
-      .eq('chat_id', id);
-  
-    if (error) {
-      console.error('Error fetching data:', error);
-      return null;
+    if(currentChat != undefined && currentChat != null && currentChat != ""){
+        const { data, error } = await db
+            .from('Chats')
+            .select('*')
+            .eq('chat_id', id);
+        console.log(count++);
+        
+        if (error) {
+        console.error('Error fetching data:', error);
+        return null;
+        }
+        return data;
     }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     
 =======
    
 >>>>>>> Stashed changes
     return data;
+=======
+
+    
+>>>>>>> Stashed changes
 }
 
 
@@ -192,6 +245,7 @@ messageInput.addEventListener("keydown", async function(event) {
                 .select("*")
                 .eq("chat_id", chatId)
                 .single();
+            console.log(count++);
 
             if (error || !data) {
                 console.error("Failed to fetch chat:", error ?? "Chat not found");
@@ -231,12 +285,13 @@ messageInput.addEventListener("keydown", async function(event) {
 
 
 
-    
+
 
             const { error: updateError } = await db
                 .from("Chats")
                 .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
                 .eq("chat_id", chatId);
+            console.log(count++);
 
             if (updateError) {
                 console.error("Error updating chat:", updateError);
@@ -267,6 +322,7 @@ sendButton.addEventListener("click", async () => {
             .select("*")
             .eq("chat_id", chatId)
             .single();
+        console.log(count++);
 
         if (error || !data) {
             console.error("Failed to fetch chat:", error ?? "Chat not found");
@@ -306,12 +362,13 @@ sendButton.addEventListener("click", async () => {
 
 
 
-   
+
 
         const { error: updateError } = await db
             .from("Chats")
             .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
             .eq("chat_id", chatId);
+         console.log(count++);
 
         if (updateError) {
             console.error("Error updating chat:", updateError);
@@ -329,10 +386,13 @@ sendButton.addEventListener("click", async () => {
 });
 
 
-async function openChat(id) {
+async function openChat(id, chatler) {
 
 
-
+    if (typeof id === 'undefined' || id === null || id === "undefined") {
+        console.error('fetchChat called with an undefined or invalid ID:', id);
+        return null; // Or handle as appropriate, maybe return an empty array
+    }
     
 
 
@@ -343,15 +403,19 @@ async function openChat(id) {
     });
     
     document.querySelector('a[data-chat-id="' + id + '"]').classList.add("currentTab");
+    let chat;
 
-
-
-    let chat = await fetchChat(id);
+    if(chatler){
+         chat = chatler;
+        
+    }else{
+        chat = await fetchChat(id);
+        chat = chat[0];
+    }
     const chatMess = document.querySelector(".chat-messages");
     chatMess.innerHTML = ""; 
     
 
-    chat = chat[0];
     chatsSys = chat;
     
 
@@ -397,13 +461,14 @@ async function openChat(id) {
 
         }
     }
-   
-    for (let i = chat.messages.length - 1; i >= 0; i--) {
-        const message = document.createElement("div");
-        message.classList.add("message");
+    if(chat != null && chat.messages != null){
+        for (let i = chat.messages.length - 1; i >= 0; i--) {
+            const message = document.createElement("div");
+            message.classList.add("message");
 
 
 
+<<<<<<< Updated upstream
   
         const avatar = document.createElement("div");
         avatar.classList.add("avatar");
@@ -418,66 +483,87 @@ async function openChat(id) {
         const time = document.createElement("div");
         time.classList.add("timestamp");
         time.innerHTML = chat.times?.[i] || "Unknown Time";
+=======
+    
+            const avatar = document.createElement("div");
+            avatar.classList.add("avatar");
+            const content = document.createElement("div");
+            content.classList.add("content");
+            const usernameElement = document.createElement("div");
+            usernameElement.classList.add("username");
+            usernameElement.innerHTML = chat.senders?.[i] || "Unknown User";
+            const text = document.createElement("div");
+            text.classList.add("text");
+            text.innerHTML = chat.messages?.[i] || "No message";
+            const time = document.createElement("div");
+            time.classList.add("timestamp");
 
-        if (chat.senders[i] === username) {
-            message.classList.add("own-message");
+            time.innerHTML = convertToLocalTime(chat.times[i]);
+        
+>>>>>>> Stashed changes
+
+            if (chat.senders[i] === username) {
+                message.classList.add("own-message");
+            }
+
+            message.appendChild(avatar);
+            message.appendChild(content);
+            content.appendChild(usernameElement);
+            content.appendChild(text);
+            content.appendChild(time);
+
+            chatMess.appendChild(message);
         }
 
-        message.appendChild(avatar);
-        message.appendChild(content);
-        content.appendChild(usernameElement);
-        content.appendChild(text);
-        content.appendChild(time);
+        let updatedRead = chat.read;
 
-        chatMess.appendChild(message);
-    }
+        if(oldCurrent != currentChat){
+            chatMess.scrollTop = chatMess.scrollHeight;
+            oldCurrent = currentChat;
+            
 
-    let updatedRead = chat.read;
 
-    if(oldCurrent != currentChat){
-        chatMess.scrollTop = chatMess.scrollHeight;
-        oldCurrent = currentChat;
+        }else{
+            chatMess.scrollTop = savedScrollPosition;
         
+        }
 
+        chatMess.addEventListener("scroll", () => {
+            
+            const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
+            const atThreshold = chatMess.scrollTop >= -threshold;
 
-    }else{
-        chatMess.scrollTop = savedScrollPosition;
+            if (atThreshold) {
     
-    }
 
-    chatMess.addEventListener("scroll", () => {
-        
+
+                
+                updatedRead[userNum] = 0;
+                
+                updateRead(updatedRead);
+
+
+
+                
+                
+            }
+
+        });
+
         const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
         const atThreshold = chatMess.scrollTop >= -threshold;
 
         if (atThreshold) {
-  
-
-
             
+
             updatedRead[userNum] = 0;
             
             updateRead(updatedRead);
-
-
-
-            
             
         }
-
-    });
-
-    const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
-    const atThreshold = chatMess.scrollTop >= -threshold;
-
-    if (atThreshold) {
-        
-
-        updatedRead[userNum] = 0;
-        
-        updateRead(updatedRead);
-        
     }
+
+    
 
 
 
@@ -489,20 +575,38 @@ async function openChat(id) {
 
 
 async function updateRead(updatedRead){
-    const { error: updateError } = await db
-        .from("Chats")
-        .update({ read: updatedRead })
-        .eq("chat_id", currentChat);
+    let chat = await fetchChat(currentChat);
+    chat = chat[0];
+    let userNum;
 
-    if (updateError) {
-        console.error("Error updating chat:", updateError);
-        return;
+    if("" + userId + "" == chat.host){
+        userNum = chat.members.length;
+    }else{
+        for(let i = 0; i < chat.members.length; i++){
+            if(chat.members[i] == "" + username + ""){
+                userNum = i;
+            }
+        }
     }
-
+    read = chat.read[userNum];
+    if(read > 0){
+        const { error: updateError } = await db
+            .from("Chats")
+            .update({ read: updatedRead })
+            .eq("chat_id", currentChat);
+        
+        if (updateError) {
+            console.error("Error updating chat: ", updateError);
+            return;
+        }
+    }
+    
+    changeRow();
     
 }
 
 
+<<<<<<< Updated upstream
 
 
 
@@ -511,6 +615,29 @@ setInterval(() => {
     
     changeChats();
 }, 500); // Runs every 0.5 seconds
+=======
+db
+  .channel('realtime-changes')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, (payload) => {
+    
+    changeRow();
+  })
+  .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, (payload) => {
+    
+    if(payload.new.chat_id == currentChat){
+
+        openChat(currentChat,payload.new);
+     
+
+    }else{
+        changeRow();
+
+    }
+
+    
+  })
+  .subscribe();
+>>>>>>> Stashed changes
 
 
 setInterval(() => {
@@ -523,7 +650,7 @@ async function changeChats(){
     
    
     let chat = await fetchChat(currentChat);
-
+    
     chat = chat[0];
     
 
@@ -543,7 +670,7 @@ async function changeRow() {
         .from('Chats')
         .select('*')
         .or(`members.cs.{"${username}"},host.eq."${userId}"`);
-
+    console.log(count++);
     if (error || !data || data.length === 0) {
         console.error("No chats found or error fetching chats:", error);
         return;
@@ -577,3 +704,7 @@ async function changeRow() {
 }
 
 
+<<<<<<< Updated upstream
+=======
+export {currentChat, username, userId,count};
+>>>>>>> Stashed changes
