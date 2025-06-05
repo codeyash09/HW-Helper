@@ -1,5 +1,5 @@
 import {db} from '/scripts/createChat.js';
-import {currentChat,username,userId} from '/scripts/chats.js';
+import {currentChat,username,userId, displayTypingBool, newpayload} from '/scripts/chats.js';
 
 
 let chatMess = document.getElementById("chat-messages")
@@ -11,6 +11,7 @@ let typing = false;
 let oldCurrent = currentChat;
 let counter = 0;
 let numId;
+let user;
 
 chatInput.addEventListener("input", async () => {
     if(chatInput.value != "" && chatInput.value != " " && chatInput.value != null){
@@ -35,6 +36,11 @@ async function afk(){
         typing = false;
 
         oldCurrent = currentChat;
+    }
+
+    if(displayTypingBool){
+        displayTyping(newpayload);
+
     }
 }
 
@@ -91,27 +97,31 @@ async function fixTyping(currentChat, onOrOff){
 }
 
 
-db
-  .channel('realtime-changes')
-  .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, (payload) => {
+// db
+//   .channel('realtime-changes')
+//   .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, (payload) => {
     
-    if(payload.new.chat_id == currentChat){
+//     if(payload.new.chat_id == currentChat){
 
-        displayTyping(payload.new);
+//         displayTyping(payload.new);
      
 
-    }
+//     }
 
     
-  })
-  .subscribe();
+//   })
+//   .subscribe();
 
 async function displayTyping(payload){
     let typing = payload.typing;
-    console.log("hi");
+    
 
     if(typing){
-        
+        if(document.getElementsByClassName('typingMessage')){
+            for(let i = 0; i < document.getElementsByClassName('typingMessage').length; i++){
+                document.getElementsByClassName('typingMessage')[i].remove();
+            }
+        }
         
         if(userId == payload.host){
             numId = 0;
@@ -128,21 +138,43 @@ async function displayTyping(payload){
         for(let i = 0; i< typing.length; i++){
             if(i != numId){
                 if(i == 0 && typing[i] == true){
-                    console.log(fetchUser(payload.host));
+                    
+                    user = await fetchUser(payload.host);
+                    user = user[0].username;
+
+                    
+
+                    let mess = document.createElement('div');
+                    mess.classList.add("message");
+                    mess.classList.add("typingMessage");
+                    mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>'
+                    chatMess.prepend(mess);
+                }
+                if(typing[i] == true && i != 0){
+                    user = payload.members[i-1];
+                    let mess = document.createElement('div');
+                    mess.classList.add("message");
+                    mess.classList.add("typingMessage");
+                    mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>'
+                    chatMess.prepend(mess);
                 }
             }
         }
 
+
+
     }else{
         console.log("no typing");
     }
+
+
 }
 
-async function fetchUser() {
+async function fetchUser(userIdentify) {
   const { data, error } = await db
     .from('Users')
     .select('username')
-    .eq('id', userId);
+    .eq('id', userIdentify);
   console.log("Typing: " + counter++);
   
   if (error) {

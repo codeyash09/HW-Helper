@@ -1283,3 +1283,10 @@ form h1{
 }
 
 
+.typingMessage .content{
+    background-color: #c24f32ff !important;
+}
+
+.typingMessage img{
+    width: 2vw;
+}
