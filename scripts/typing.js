@@ -45,7 +45,7 @@ chatInput.addEventListener('blur', async (event) =>{
 });
 
 //First: Host Then Others
-      
+
 async function fixTyping(currentChat, onOrOff){
     
     if(currentChat != undefined){
