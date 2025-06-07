@@ -5,7 +5,7 @@ import {db} from '/scripts/createChat.js';
 
 let count = 0;
 let read = 10;
-
+let totalRead = 0;
 
 let userId = window.localStorage.getItem("userIdentify");
 
@@ -74,7 +74,7 @@ username.then(result =>{
 
 async function showChats() {
 
-
+    totalRead = 0;
     const { data, error } = await db
         .from('Chats')
         .select('*')
@@ -163,6 +163,7 @@ async function showChats() {
             } else {
                 tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
             }
+            totalRead += readNum;
         } else if (existingBadge) {
             existingBadge.remove();
         }
@@ -198,7 +199,7 @@ async function showChats() {
             currentElement.classList.add("currentTab");
         }
     }
-    
+    openChat(sortedChats[0].chat_id);
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
