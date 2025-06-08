@@ -3,7 +3,9 @@ import {db} from '/scripts/createChat.js';
 
 
 
-
+let count = 0;
+let read = 10;
+let totalRead = 0;
 
 let userId = window.localStorage.getItem("userIdentify");
 
@@ -18,8 +20,8 @@ let chatList = document.getElementById("pageList");
 let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
 
-
-
+let displayTypingBool = false;
+let newpayload;
 let chatOpened = false;
 let chatsSys;
 let rowSys;
@@ -72,7 +74,7 @@ username.then(result =>{
 
 async function showChats() {
 
-
+    totalRead = 0;
     const { data, error } = await db
         .from('Chats')
         .select('*')
@@ -83,21 +85,53 @@ async function showChats() {
         return;
     }
 
-    // Sort chats by the most recent message timestamp
+   
     const sortedChats = data.sort((a, b) => {
-        const lastMessageTimeA = new Date(a.times?.slice(-1)[0] || 0);
-        const lastMessageTimeB = new Date(b.times?.slice(-1)[0] || 0);
-        return lastMessageTimeB - lastMessageTimeA;
+        let lastA;
+        let lastB;
+
+       
+        if (a.times && a.times.length > 0) {
+            lastA = a.times.at(-1);
+        } else {
+            lastA = null;
+        }
+
+        if (b.times && b.times.length > 0) {
+            lastB = b.times.at(-1);
+        } else {
+            lastB = null;
+        }
+
+       
+        if (lastA === null && lastB === null) {
+            return 0; 
+        }
+
+        if (lastA === null) {
+            return 1;
+        }
+
+        if (lastB === null) {
+            return -1; 
+        }
+
+        return new Date(lastB) - new Date(lastA); 
     });
 
-    // Save the previous order for comparison
-    const prevOrder = rowSys ? rowSys.map(c => c.chat_id) : [];
+    
+    let prevOrder;
+    if (rowSys && rowSys.length > 0) {
+        prevOrder = rowSys.map(c => c.chat_id);
+    } else {
+        prevOrder = [];
+    }
     rowSys = sortedChats;
 
-    // Save scroll position
+  
     savedScrollPosition = chatMess.scrollTop;
 
-    // Update or add chat tabs
+  
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
         let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
@@ -121,7 +155,7 @@ async function showChats() {
             tab.addEventListener("click", () => openChat(chat.chat_id));
             chatList.appendChild(tab);
         }
-        // Update unread badge
+        
         const existingBadge = tab.querySelector('.read-notification');
         if (readNum > 0) {
             if (existingBadge) {
@@ -129,18 +163,19 @@ async function showChats() {
             } else {
                 tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
             }
+            totalRead += readNum;
         } else if (existingBadge) {
             existingBadge.remove();
         }
     }
-    // Remove tabs for deleted chats
+    
     for (const element of Array.from(chatList.children)) {
         const chatId = element.getAttribute("data-chat-id");
         if (!sortedChats.some(chat => chat.chat_id === chatId)) {
             chatList.removeChild(element);
         }
     }
-    // Move the most recent chat tab to the left (first position)
+    
     if (sortedChats.length > 0) {
         const mostRecentId = sortedChats[0].chat_id;
         const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
@@ -154,7 +189,7 @@ async function showChats() {
             }, 150);
         }
     }
-    // Highlight current chat tab
+    
     if (currentChat) {
         document.querySelectorAll('a[data-chat-id]').forEach(element => {
             element.classList.remove("currentTab");
@@ -164,7 +199,7 @@ async function showChats() {
             currentElement.classList.add("currentTab");
         }
     }
-    // Restore scroll position
+    openChat(sortedChats[0].chat_id);
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
@@ -184,9 +219,7 @@ async function fetchChat(id) {
       console.error('Error fetching data:', error);
       return null;
     }
-    console.clear();
-
-    console.log(i++);
+   
     return data;
 }
 
@@ -404,7 +437,7 @@ async function openChat(id) {
     
     let readNum = chat.read[userNum];
 
-    
+    read = readNum;
         
 
     if(chat.groupchat){
@@ -514,10 +547,12 @@ async function openChat(id) {
 
     if (atThreshold) {
         
-
-        updatedRead[userNum] = 0;
+        if(updateRead[userNum] != 0){
+            updatedRead[userNum] = 0;
+            
+            updateRead(updatedRead);
+        }
         
-        updateRead(updatedRead);
         
     }
 
@@ -531,15 +566,37 @@ async function openChat(id) {
 
 
 async function updateRead(updatedRead){
-    const { error: updateError } = await db
-        .from("Chats")
-        .update({ read: updatedRead })
-        .eq("chat_id", currentChat);
+    
+    let chat = await fetchChat(currentChat);
+    
+    chat = chat[0];
+    let userNum;
 
-    if (updateError) {
-        console.error("Error updating chat:", updateError);
-        return;
+    if("" + userId + "" == chat.host){
+        userNum = chat.members.length;
+    }else{
+        for(let i = 0; i < chat.members.length; i++){
+            if(chat.members[i] == "" + username + ""){
+                userNum = i;
+            }
+        }
     }
+
+
+    read = chat.read[userNum];
+    if(read > 0){
+        const { error: updateError } = await db
+            .from("Chats")
+            .update({ read: updatedRead })
+            .eq("chat_id", currentChat);
+
+        if (updateError) {
+            console.error("Error updating chat:", updateError);
+            return;
+        }
+    }
+
+    changeRow();
 
     
 }
@@ -547,13 +604,25 @@ async function updateRead(updatedRead){
 let i = 0;
 
 db
-  .channel('realtime-changes')
-  .on('postgres_changes', { event: '*', schema: 'public', table: 'Chats' }, (payload) => {
-    changeChats();
-    changeRow();
-  })
-  .subscribe();
-
+    .channel('realtime-changes')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, (payload) => {
+        
+        changeRow();
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, (payload) => {
+       
+        if (payload.new.chat_id === currentChat) {
+            // If the update is for the currently open chat, re-open it with the new payload
+            openChat(currentChat, payload.new);
+            displayTypingBool = true;
+            newpayload = payload.new;
+            setTimeout(()=> {displayTypingBool = false}, 201);
+        } else {
+            // Otherwise, just refresh the chat list (to update unread counts or order)
+            changeRow();
+        }
+    })
+    .subscribe();
 
 
 async function changeChats(){
@@ -692,3 +761,4 @@ function moveTabToLeft(chatId) {
 // Inside changeRow(), after updating the DOM:
 moveTabToLeft(currentChat);
 
+export {currentChat, username, userId, displayTypingBool, newpayload};
