@@ -1,4 +1,5 @@
 import {db} from '/scripts/createChat.js';
+import { showContextMenu } from '/scripts/chatContextMenu.js';
 
 
 
@@ -28,6 +29,9 @@ let rowSys;
 let oldCurrent;
 let savedScrollPosition;
 let username;
+let messages;
+let sendlers;
+let timers;
 async function fetchUser() {
   const { data, error } = await db
     .from('Users')
@@ -153,6 +157,7 @@ async function showChats() {
                 }
             }
             tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatList.appendChild(tab);
         }
         
@@ -468,10 +473,8 @@ async function openChat(id) {
     for (let i = chat.messages.length - 1; i >= 0; i--) {
         const message = document.createElement("div");
         message.classList.add("message");
+        message.setAttribute('data-message-id', i);
 
-
-
-  
         const avatar = document.createElement("div");
         avatar.classList.add("avatar");
         const content = document.createElement("div");
@@ -485,13 +488,10 @@ async function openChat(id) {
         const time = document.createElement("div");
         time.classList.add("timestamp");
         time.innerHTML = convertToLocalTime(chat.times[i]);
-
-        // Add three-dots menu
-        const dotsMenu = document.createElement("div");
-        dotsMenu.classList.add("message-dots");
-        dotsMenu.innerHTML = '<i class="fa-solid fa-ellipsis-vertical"></i>';
-        dotsMenu.style.display = 'block'; // Force display
-        dotsMenu.style.visibility = 'visible'; // Force visibility
+        const messId = document.createElement("div");
+        messId.classList.add("messId");
+        messId.innerHTML = i;
+        messId.style.display = 'none';
 
         if (chat.senders[i] === username) {
             message.classList.add("own-message");
@@ -502,7 +502,7 @@ async function openChat(id) {
         content.appendChild(usernameElement);
         content.appendChild(text);
         content.appendChild(time);
-        message.appendChild(dotsMenu); // Move dots menu outside of content
+        content.appendChild(messId);
 
         chatMess.appendChild(message);
     }
@@ -558,7 +558,10 @@ async function openChat(id) {
 
 
 
-    
+    messages = chat.messages;
+    sendlers = chat.senders;
+    timers = chat.times;
+
 
     
 
@@ -691,6 +694,7 @@ async function changeRow() {
                 }
             }
             tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatList.appendChild(tab);
         }
         // Update unread badge
@@ -761,4 +765,4 @@ function moveTabToLeft(chatId) {
 // Inside changeRow(), after updating the DOM:
 moveTabToLeft(currentChat);
 
-export {currentChat, username, userId, displayTypingBool, newpayload};
+export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, timers};

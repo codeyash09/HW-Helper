@@ -128,13 +128,20 @@
         }
         
         .message {
-            position: relative;
+            overflow:visible;
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            padding: 0 45px 0 5px;
+            height: fit-content;
+            align-items: flex-end;
+            max-width: 75%;
+            height: fit-content;
+            align-self: flex-start;
+            font-family: 'Lexend';
         }
-        
+
+        .message .username {
+            display: none;
+        }
+
         .message .content {
             background-color: #FD5A23;
             color: #000000;
@@ -142,32 +149,42 @@
             padding-right: 10px;
             display: flex;
             flex-direction: column;
-        }
-        
-        .message-dots {
-            position: absolute;
-            right: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            cursor: pointer;
-            color: #000000;
-            padding: 12px;
-            z-index: 10;
-            font-size: 18px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 5px;
-        }
-        
-        .message:hover .message-dots {
-            opacity: 1;
+            border-radius: 18px;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
         }
 
+        .message:hover .content {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .message.squish {
+            animation: messageSquish 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes messageSquish {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .own-message .content {
+            background-color: #262626;
+            color: #FFFFFF;
+            border: none;
+            position: relative;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 18px;
+        }
+        
         /* Popup menu styles */
         .message-popup {
             position: absolute;
@@ -180,8 +197,8 @@
             z-index: 100;
             display: none;
             backdrop-filter: blur(8px);
-            transform-origin: top center;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            transform-origin: top right;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
         }
 
         .message-popup.show {
@@ -190,7 +207,16 @@
         }
 
         .message-popup.closing {
-            transform: scaleY(0);
+            transform: scale(0.1) translate(-100%, 100%);
+            opacity: 0;
+        }
+
+        .own-message .message-popup {
+            transform-origin: top left;
+        }
+
+        .own-message .message-popup.closing {
+            transform: scale(0.1) translate(100%, 100%);
             opacity: 0;
         }
 
@@ -334,49 +360,22 @@
             border-radius: 6px;
             font-size: 13px;
             font-weight: 500;
-            transform: translateX(-50%);
             pointer-events: none;
             z-index: 1000;
-            animation: tooltipFadeIn 0.2s ease-out;
+            opacity: 0;
+            transform: translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
-        @keyframes tooltipFadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 10px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
+        .copy-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Add styles for own messages */
         .own-message {
             flex-direction: row-reverse;
             padding: 0 5px 0 45px;
-        }
-        
-        .own-message .content {
-            background-color: white;
-            color: #FD5A23;
-            border: 2px solid #FD5A23;
-            position: relative;
-            padding-right: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .own-message .message-dots {
-            right: auto;
-            left: 15px;
-            margin-top: 5px;
-        }
-
-        /* Position popup for own messages */
-        .own-message .message-popup {
-            right: auto;
-            left: 15px;
         }
         
         .input-actions i {
@@ -410,29 +409,35 @@
 
         .message-reactions {
             display: flex;
-            gap: 4px;
-            padding: 2px 8px;
+            gap: 2px;
+            padding: 1px 4px;
             font-size: 16px;
             position: absolute;
-            bottom: -20px;
-            left: 75%;
-            transform: translateX(-50%);
+            bottom: -12px;
+            right: -10px;
             background: white;
-            border-radius: 12px;
+            border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            overflow: visible;
+            width: fit-content;
+            z-index: 1;
         }
 
         .own-message .message-reactions {
-            left: 25%;
-            transform: translateX(-50%);
+            right: auto;
+            left: -10px;
+            bottom: -12px;
+        }
+
+        .message {
+            position: relative;
         }
 
         .message-reaction {
             cursor: pointer;
             transition: all 0.2s ease;
             opacity: 0.8;
-            padding: 2px 4px;
+            padding: 1px 2px;
         }
 
         .message-reaction:hover {
@@ -443,34 +448,435 @@
         .message-reaction.active {
             opacity: 1;
         }
+
+        /* Selection mode styles */
+        .selection-mode {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 20px;
+            padding: 10px 20px;
+            align-items: center;
+            gap: 15px;
+            z-index: 9999;
+        }
+
+        .selection-mode.active {
+            display: flex;
+        }
+
+        .selection-count {
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .selection-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .selection-actions button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .selection-actions .delete-all {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+        }
+
+        .selection-actions .delete-all:hover {
+            background-color: #ff0000;
+        }
+
+        .selection-actions .cancel {
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+        }
+
+        .selection-actions .cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        .message.selected .content {
+            border: 2px solid #FD5A23 !important;
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2) !important;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .message.selected .content::before {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #FD5A23;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: checkmarkAppear 0.2s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes checkmarkAppear {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message.selected .content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(253, 90, 35, 0.05);
+            border-radius: 18px;
+            pointer-events: none;
+        }
+
+        .message.selection-hover .content {
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        /* Ensure the message content has proper positioning */
+        .message .content {
+            position: relative;
+            overflow: visible;
+        }
+
+        .selection-tooltip {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            animation: tooltipFade 2s ease;
+        }
+
+        @keyframes tooltipFade {
+            0% { opacity: 0; transform: translate(-50%, -10px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -10px); }
+        }
+
+        /* Selection mode active indicator */
+        .chat-messages.selection-mode-active .message {
+            cursor: pointer;
+        }
+
+        .chat-messages.selection-mode-active .message:hover .content {
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2);
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        /* Add a subtle animation for the selection mode bar */
+        .selection-mode {
+            transform: translateY(-100%);
+            transition: transform 0.2s ease;
+        }
+
+        .selection-mode.active {
+            transform: translateY(0);
+        }
+
+        /* Quick selection feedback */
+        .message.selected .content {
+            border: 2px solid #FD5A23;
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        /* Selection mode button */
+        .select-mode-btn {
+            background: none;
+            border: none;
+            color: #FD5A23;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .select-mode-btn:hover {
+            background-color: rgba(253, 90, 35, 0.1);
+            transform: scale(1.1);
+        }
+
+        .select-mode-btn.active {
+            background-color: #FD5A23;
+            color: white;
+        }
+
+        .pages-list {
+            position: relative;
+        }
+
+        /* Custom scrollbar styles */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #FD5A23;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #FF7A4D;
+        }
+
+        /* Add context menu specific styles */
+        .chat-context-menu {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            min-width: 200px;
+            overflow: auto;
+        }
+
+        .chat-context-menu::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .chat-context-menu::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        .chat-context-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #333;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            user-select: none;
+            position: relative;
+            touch-action: none;  /* Prevent touch scrolling */
+            -webkit-touch-callout: none;  /* Prevent callout */
+            -webkit-user-select: none;  /* Prevent selection */
+            -webkit-tap-highlight-color: transparent;  /* Remove tap highlight */
+        }
+
+        .context-menu-item:hover {
+            background-color: #FFF5F2;
+            color: #FD5A23;
+        }
+
+        .context-menu-item i {
+            width: 28px;
+            min-width: 28px;
+            color: #FD5A23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            left: 6px;
+            pointer-events: none;  /* Prevent icon interaction */
+        }
+
+        .context-menu-item span {
+            flex: 1;
+            margin-left: 12px;
+            pointer-events: none;  /* Prevent text interaction */
+        }
+
+        .replyMessage {
+            background-color: transparent;
+            color: #000000;
+            border-radius: 0;
+            padding: 0;
+            font-size: 14px;
+            margin-bottom: 4px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .replyMessage::before {
+            content: '';
+            width: 2px;
+            height: 16px;
+            background-color: #FD5A23;
+            border-radius: 2px;
+            margin-right: 4px;
+        }
+
+        .replyContent {
+            color: #666;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .replyContent::before {
+            content: '';
+            color: #666;
+            font-size: 13px;
+        }
+
+        .own-message .replyMessage {
+            margin-left: 0;
+        }
+
+        .message .timestamp {
+            display: none;
+            position: absolute;
+            color: #666 !important;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            bottom: -18px;
+            left: 0;
+        }
+
+        .message:hover .timestamp {
+            display: block;
+            opacity: 1;
+        }
+
+        .own-message .timestamp {
+            left: auto;
+            right: 0;
+        }
+
+        /* Ensure message container has proper positioning for absolute positioning of timestamp */
+        .message {
+            position: relative;
+            margin-bottom: 10px; /* Reduced from 20px to 10px */
+        }
+
+        /* Remove the previous padding we added */
+        .chat-messages {
+            padding: 0;
+        }
     </style>
 </head>
 <body>
-    <!-- <div class="sidebar" id="sidebar">
-         Collapse Button 
-        <button class="collapse-btn" id="collapseBtn">
-            <i class="fa-solid fa-chevron-left"></i>
+    <div class="main-container" id="mainContainer">
+        <div class="pages-list" id="pageList">
+            <!-- Pages will be added here dynamically -->
+        </div>
+        <div class="selection-mode" id="selectionMode">
+            <div class="selection-count">
+                <span id="selectedCount">0</span> messages selected
+            </div>
+            <div class="selection-actions">
+                <button class="delete-all" id="deleteSelected">Delete Selected</button>
+                <button class="cancel" id="cancelSelection">Cancel</button>
+            </div>
+        </div>
+        <button id="newChatBtn">
+            <i class="fa-solid fa-plus"></i>
         </button>
+        
+        <div class="main-chat">
+            <div class="chat-header" id="chat-header">
+                <!-- This should dynamically update based on selection -->
+                FriendUser#5678 <!-- Updated placeholder to match selected chat -->
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be loaded here -->
+                <!-- <div class="message">  Other user's message
+                    <div class="avatar"></div>
+                    <div class="content">
+                        <div class="username">FriendUser#5678</div>
+                        <div class="text">Hey, how's it going?</div>
+                        <div class="timestamp">10:30 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="message own-message"> Your message
+                    <div class="avatar"></div>
+                    <div class="content">
+                        <div class="username">YourUsername#1234</div>
+                        <div class="text">Pretty good! Just working on this chat interface.</div>
+                        <div class="timestamp">10:31 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
 
-         Profile Section 
-        <div class="profile-section">
-            <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
+                    </div>
+                </div>
+                <div class="message"> Other user's message 
+                    <div class="avatar"></div>
+                    <div class="content">
+                        <div class="username">AnotherUser#9012</div>
+                        <div class="text">Looks cool!</div>
+                        <div class="timestamp">10:32 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+                </div> --> 
+                <!-- Example message structure -->
+            </div>
+            <div class="chat-input">
+                <!-- Input area now uses flexbox -->
+                <div class="input-actions left">
+                    <i class="fa-solid fa-plus" title="Add Attachment"></i> <!-- Plus icon -->
+                    <!-- Removed the fa-image button -->
+                </div>
+                <input type="text" id="chatInput" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
+                <div class="input-actions right">
+                    <i id="send" class="fa-solid fa-paper-plane" title="Send"></i>
+                    <i id="gifButton" class="gif-text-button" title="Open GIFs"><i class="fa-solid fa-note-sticky"></i></i>
+                    <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
+                </div>
+            </div>
         </div>
-        
-         Main Navigation
-        <div class="nav-items">
-         
-            <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
-            <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i> <span class="nav-text">Notes</span></a>
-        </div>
+    </div>
 
-         Pages Section - Keeping this part from the chats.html 
-        
-        
-         Bottom Navigation 
-        
-    </div>  -->
-    
     <div id="meny">
         <div class="sidebarmenu">
             <a class="collapser" id="collapser">
@@ -525,91 +931,6 @@
         
     <script src="/scripts/menu.js"></script> 
     
-
-    <div class="main-container" id="mainContainer">
-        
-    
-        <div class="pages-list" id="pageList">
-            <!-- Pages will be added here dynamically -->
-        </div>
-        <button id="newChatBtn">
-            <i class="fa-solid fa-plus"></i>
-        </button>
-        
-
-        <div class="main-chat">
-            <div class="chat-header" id="chat-header">
-                <!-- This should dynamically update based on selection -->
-                FriendUser#5678 <!-- Updated placeholder to match selected chat -->
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <!-- Messages will be loaded here -->
-                <!-- <div class="message">  Other user's message
-                    <div class="avatar"></div>
-                    <div class="content">
-                        <div class="username">FriendUser#5678</div>
-                        <div class="text">Hey, how's it going?</div>
-                        <div class="timestamp">10:30 AM</div>
-                        <div class="message-dots">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="message own-message"> Your message
-                    <div class="avatar"></div>
-                    <div class="content">
-                        <div class="username">YourUsername#1234</div>
-                        <div class="text">Pretty good! Just working on this chat interface.</div>
-                        <div class="timestamp">10:31 AM</div>
-                        <div class="message-dots">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="message"> Other user's message 
-                    <div class="avatar"></div>
-                    <div class="content">
-                        <div class="username">AnotherUser#9012</div>
-                        <div class="text">Looks cool!</div>
-                        <div class="timestamp">10:32 AM</div>
-                        <div class="message-dots">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </div>
-                    </div>
-                </div> --> 
-                <!-- Example message structure -->
-            </div>
-            <div class="chat-input">
-                <!-- Input area now uses flexbox -->
-                <div class="input-actions left">
-                    <i class="fa-solid fa-plus" title="Add Attachment"></i> <!-- Plus icon -->
-                    <!-- Removed the fa-image button -->
-                </div>
-                <input type="text" id="chatInput" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
-                <div class="input-actions right">
-                    <i id="send" class="fa-solid fa-paper-plane" title="Send"></i>
-                    <i id="gifButton" class="gif-text-button" title="Open GIFs"><i class="fa-solid fa-note-sticky"></i></i>
-                    <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-    
-
 
     <div class="createGroupChat hider" id="blurWall">
 
@@ -694,11 +1015,13 @@
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="/scripts/emojis.js"></script>
     <script src="/scripts/imageupload.js"></script>
-    <script src="/scripts/messageMenu.js"></script>
+    <script type="module" src="/scripts/messageMenu.js"></script>
     <script type="module" src="/scripts/createchat.js"></script>
     <script type="module" src="/scripts/chats.js"></script>
     <script src="/scripts/sidebar.js"></script>
     <script type="module" src="/scripts/typing.js"></script>
+    <script type="module" src="/scripts/messageSelection.js"></script>
+    <script type="module" src="/scripts/chatContextMenu.js"></script>
 
 </body>
 </html>

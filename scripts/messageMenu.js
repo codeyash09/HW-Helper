@@ -1,3 +1,7 @@
+import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
+import {db} from '/scripts/createChat.js';
+
+
 // Function to create and show the popup menu
 function createMessageMenu(messageElement, isOwnMessage) {
     // Create popup menu
@@ -130,8 +134,7 @@ function createMessageMenu(messageElement, isOwnMessage) {
     popup.appendChild(actionsSection);
     
     // Position the popup
-    const dots = messageElement.querySelector('.message-dots');
-    const rect = dots.getBoundingClientRect();
+    const rect = messageElement.getBoundingClientRect();
     
     // Check if message is near the bottom of the chat
     const chatMessages = document.getElementById('chat-messages');
@@ -142,15 +145,15 @@ function createMessageMenu(messageElement, isOwnMessage) {
     
     // Position based on message type
     if (isOwnMessage) {
-        // For own messages, position to the left of the dots
-        popup.style.left = `${rect.left - 245}px`; // Move 245px to the left
-        popup.style.top = isVeryRecentMessage ? `${rect.top - 240}px` : 
+        // For own messages, position to the left of the message
+        popup.style.left = `${rect.left - 220}px`; // Move 220px to the left (was 245px)
+        popup.style.top = isVeryRecentMessage ? `${rect.top - 200}px` : 
                          isSecondMostRecent ? `${rect.top - 200}px` :
                          isRecentMessage ? `${rect.top - 120}px` : 
                          `${rect.top - 80}px`; // Move higher for very recent messages
     } else {
-        // For received messages, position very close to the dots
-        popup.style.left = `${rect.right - 35}px`; // Move 35px to the left
+        // For received messages, position to the right side of the message
+        popup.style.left = `${rect.right + 20}px`; // Move 20px to the right (was 30px)
         popup.style.top = isVeryRecentMessage ? `${rect.top - 200}px` : 
                          isRecentMessage ? `${rect.top - 120}px` : 
                          `${rect.top - 80}px`; // Move higher for very recent messages
@@ -162,48 +165,16 @@ function createMessageMenu(messageElement, isOwnMessage) {
     // Show popup
     popup.classList.add('show');
 
-    // Store the initial position relative to the viewport
-    const initialTop = rect.top;
-    const initialLeft = rect.left;
-    
-    // Update popup position on scroll
-    const updatePopupPosition = () => {
-        const scrollY = window.scrollY;
-        const scrollX = window.scrollX;
-        
-        if (isOwnMessage) {
-            popup.style.left = `${initialLeft - 245}px`;
-            popup.style.top = isVeryRecentMessage ? `${initialTop - 240 + scrollY}px` : 
-                             isSecondMostRecent ? `${initialTop - 200 + scrollY}px` :
-                             isRecentMessage ? `${initialTop - 120 + scrollY}px` : 
-                             `${initialTop - 80 + scrollY}px`;
-        } else {
-            popup.style.left = `${initialLeft - 35}px`;
-            popup.style.top = isVeryRecentMessage ? `${initialTop - 200 + scrollY}px` : 
-                             isRecentMessage ? `${initialTop - 120 + scrollY}px` : 
-                             `${initialTop - 80 + scrollY}px`;
-        }
-    };
-
-    // Add scroll event listener
-    window.addEventListener('scroll', updatePopupPosition);
-    
-    // Close popup when clicking outside or moving cursor away
+    // Close popup when clicking outside, moving cursor away, or scrolling
     const closePopup = (e) => {
-        // Check if the cursor is over the popup, message, or emoji picker
-        const isOverPopup = popup.contains(e.target);
-        const isOverMessage = messageElement.contains(e.target);
-        const isOverEmojiPicker = e.target.closest('em-emoji-picker');
-        const isOverDots = e.target === dots;
-        
-        // If cursor is not over any of these elements, close the popup
-        if (!isOverPopup && !isOverMessage && !isOverEmojiPicker && !isOverDots) {
+        // If it's a scroll event, close immediately
+        if (e.type === 'scroll') {
             // Add falling animation to emojis
             const emojis = popup.querySelectorAll('.emoji-reaction');
             emojis.forEach((emoji, index) => {
                 setTimeout(() => {
                     emoji.classList.add('falling');
-                }, index * 100); // Stagger the falling animation
+                }, index * 100);
             });
 
             // Add closing animation to popup
@@ -212,14 +183,69 @@ function createMessageMenu(messageElement, isOwnMessage) {
             // Remove popup after animations complete
             setTimeout(() => {
                 popup.remove();
-            }, 800); // Wait for all animations to complete
+            }, 800);
             
             document.removeEventListener('mousemove', closePopup);
+            document.removeEventListener('scroll', closePopup);
+            return;
+        }
+
+        // For mouse movement, check distance
+        const isOverPopup = popup.contains(e.target);
+        const isOverMessage = messageElement.contains(e.target);
+        const isOverEmojiPicker = e.target.closest('em-emoji-picker');
+        
+        // If cursor is over popup or emoji picker, don't close
+        if (isOverPopup || isOverEmojiPicker) {
+            return;
+        }
+        
+        // Get popup position
+        const popupRect = popup.getBoundingClientRect();
+        const messageRect = messageElement.getBoundingClientRect();
+        
+        // Calculate distance from popup and message
+        const distanceFromPopup = Math.min(
+            Math.abs(e.clientX - popupRect.left),
+            Math.abs(e.clientX - popupRect.right),
+            Math.abs(e.clientY - popupRect.top),
+            Math.abs(e.clientY - popupRect.bottom)
+        );
+        
+        const distanceFromMessage = Math.min(
+            Math.abs(e.clientX - messageRect.left),
+            Math.abs(e.clientX - messageRect.right),
+            Math.abs(e.clientY - messageRect.top),
+            Math.abs(e.clientY - messageRect.bottom)
+        );
+        
+        // If cursor is not over message and is far enough away
+        if (!isOverMessage && distanceFromMessage > 30) {
+            // Add falling animation to emojis
+            const emojis = popup.querySelectorAll('.emoji-reaction');
+            emojis.forEach((emoji, index) => {
+                setTimeout(() => {
+                    emoji.classList.add('falling');
+                }, index * 100);
+            });
+
+            // Add closing animation to popup
+            popup.classList.add('closing');
+            
+            // Remove popup after animations complete
+            setTimeout(() => {
+                popup.remove();
+            }, 800);
+            
+            document.removeEventListener('mousemove', closePopup);
+            document.removeEventListener('scroll', closePopup);
         }
     };
     
     // Use mousemove instead of click for smoother cursor tracking
     document.addEventListener('mousemove', closePopup);
+    // Add scroll event listener
+    document.addEventListener('scroll', closePopup, true);
 }
 
 // Handle emoji reactions
@@ -269,34 +295,98 @@ function handleEmojiReaction(emoji, messageElement) {
 function handleReply(messageElement) {
     const messageText = messageElement.querySelector('.text').textContent;
     const chatInput = document.getElementById('chatInput');
-    chatInput.value = `> ${messageText}\n`;
+
+    chatInput.value = `<div class="replyMessage"><div class="replyContent">${messageText}</div></div>`;
     chatInput.focus();
 }
 
 // Handle copy
 function handleCopy(messageElement) {
-    const messageText = messageElement.querySelector('.text').textContent;
-    navigator.clipboard.writeText(messageText).then(() => {
+    // Try different selectors to find the text content
+    const textElement = messageElement.querySelector('.content .text') || 
+                       messageElement.querySelector('.text') ||
+                       messageElement.querySelector('.content');
+    
+    if (!textElement) {
+        console.error('Could not find text element in message:', messageElement);
+        return;
+    }
+
+    const messageText = textElement.textContent;
+    console.log('Attempting to copy text:', messageText); // Debug log
+
+    // Use a fallback method if clipboard API fails
+    const copyToClipboard = async () => {
+        try {
+            await navigator.clipboard.writeText(messageText);
+            console.log('Successfully copied to clipboard');
+        } catch (err) {
+            console.error('Clipboard API failed, trying fallback method:', err);
+            // Fallback method
+            const textArea = document.createElement('textarea');
+            textArea.value = messageText;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                console.log('Successfully copied using fallback method');
+            } catch (err) {
+                console.error('Fallback copy method failed:', err);
+                return;
+            } finally {
+                textArea.remove();
+            }
+        }
+    };
+
+    copyToClipboard().then(() => {
         // Show a temporary "Copied!" tooltip
         const tooltip = document.createElement('div');
         tooltip.className = 'copy-tooltip';
         tooltip.textContent = 'Copied!';
         document.body.appendChild(tooltip);
         
-        // Position tooltip near the message
+        // Position tooltip to the side of the message
         const rect = messageElement.getBoundingClientRect();
-        tooltip.style.left = `${rect.left + rect.width / 2}px`;
-        tooltip.style.top = `${rect.top - 30}px`;
+        const isOwnMessage = messageElement.classList.contains('own-message');
+        
+        if (isOwnMessage) {
+            // For own messages, show tooltip on the left
+            tooltip.style.left = `${rect.left - 80}px`;
+        } else {
+            // For received messages, show tooltip on the right
+            tooltip.style.left = `${rect.right + 20}px`;
+        }
+        
+        // Center vertically
+        tooltip.style.top = `${rect.top + (rect.height / 2)}px`;
+        tooltip.style.transform = 'translateY(-50%)';
+        
+        // Force a reflow to ensure the transition works
+        tooltip.offsetHeight;
+        
+        // Add show class to trigger animation
+        tooltip.classList.add('show');
         
         // Remove tooltip after 2 seconds
         setTimeout(() => {
-            tooltip.remove();
-        }, 2000);
+            tooltip.classList.remove('show');
+            // Wait for fade out animation to complete before removing
+            setTimeout(() => {
+                tooltip.remove();
+            }, 200);
+        }, 1800);
     });
 }
 
 // Handle edit
 function handleEdit(messageElement) {
+    
     const messageText = messageElement.querySelector('.text');
     const originalText = messageText.textContent;
     
@@ -317,7 +407,7 @@ function handleEdit(messageElement) {
         if (newText && newText !== originalText) {
             messageText.textContent = newText;
             // TODO: Update message in database
-            console.log('Message edited:', newText);
+            UpdateMessage(messageElement, newText);
         } else {
             messageText.textContent = originalText;
         }
@@ -337,17 +427,104 @@ function handleEdit(messageElement) {
     });
 }
 
+async function UpdateMessage(messEl, updatedText){
+    let newMess = messages;
+    newMess[parseInt(messEl.querySelector('.messId').innerHTML)] = updatedText;
+
+    const { data, error } = await db
+      .from('Chats') 
+      .update({messages: newMess}) 
+      .eq('chat_id', currentChat); 
+}
+
 // Handle unsend (delete for everyone)
 function handleUnsend(messageElement) {
-    if (confirm('Are you sure you want to unsend this message? This action cannot be undone.')) {
-        // TODO: Update message in database to show as unsent
-        messageElement.style.opacity = '0.5';
-        const text = messageElement.querySelector('.text');
-        text.textContent = 'This message was unsent';
-        text.style.fontStyle = 'italic';
-        console.log('Message unsent');
-    }
+    customConfirm('Do you really want to unsend this message? This action cannot be undone.')
+        .then((userConfirmation) => {
+            if(userConfirmation){
+                messageElement.style.opacity = '0.5';
+                const text = messageElement.querySelector('.text');
+                text.textContent = 'This message was unsent';
+                text.style.fontStyle = 'italic';
+                UnsendMessage(messageElement);
+            }
+        })
+
+    
 }
+
+function customConfirm(message){
+    return new Promise((resolve) =>{
+        let popup = document.createElement('div');
+        popup.style.position = 'fixed';
+        popup.style.width = '15vw';
+        popup.style.height = '30vh';
+
+        popup.classList.add('popup');
+
+        popup.style.top = '35vh';
+        popup.style.left = '42.5vw';
+
+        popup.style.backgroundColor = 'white';
+
+        popup.style.border = '2px solid #FDA523';
+        popup.style.borderRadius = '8px';
+        popup.style.padding = '20px';
+     
+        popup.style.boxShadow = '0px 4px 8px rgba(0,0,0,0.2)';
+        popup.style.zIndex = '9999';
+
+        let x = document.createElement('i');
+        x.classList.add("fa-regular");
+        x.classList.add("fa-trash");
+        popup.appendChild(x);
+
+        let title = document.createElement('h2');
+        title.innerHTML = 'Are you sure?';
+        popup.appendChild(title);
+
+
+        let text = document.createElement('p');
+        text.innerText = message;
+        popup.appendChild(text);
+        let btns = document.createElement('div');
+        btns.classList.add("btnsMenu");
+        let yesButton = document.createElement('button');
+        yesButton.innerText = 'Yes';
+        yesButton.onclick = () => {
+            document.body.removeChild(popup);
+            resolve(true);
+        };
+        btns.appendChild(yesButton);
+
+        const noButton = document.createElement('button');
+        noButton.innerText = 'No';
+        noButton.onclick = () => {
+            document.body.removeChild(popup);
+            resolve(false);
+        };
+        btns.appendChild(noButton);
+        popup.appendChild(btns);
+
+        document.body.appendChild(popup);
+    });
+
+}
+
+async function UnsendMessage(messEl){
+    let newMess = messages;
+    newMess.splice(parseInt(messEl.querySelector('.messId').innerHTML), 1);
+    let newSend = sendlers;
+    newSend.splice(parseInt(messEl.querySelector('.messId').innerHTML), 1);
+    let newTime = timers;
+    newTime.splice(parseInt(messEl.querySelector('.messId').innerHTML), 1);
+
+    const { data, error } = await db
+      .from('Chats') 
+      .update({messages: newMess, senders: newSend, times: newTime}) 
+      .eq('chat_id', currentChat); 
+}
+
 
 // Handle delete (delete for me)
 function handleDelete(messageElement) {
@@ -358,15 +535,22 @@ function handleDelete(messageElement) {
     }
 }
 
-// Add click handlers to all message dots
+// Add right-click handlers to all messages
 document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.getElementById('chat-messages');
     
     // Use event delegation for dynamically added messages
-    chatMessages.addEventListener('click', (e) => {
-        const dots = e.target.closest('.message-dots');
-        if (dots) {
-            const message = dots.closest('.message');
+    chatMessages.addEventListener('contextmenu', (e) => {
+        e.preventDefault(); // Prevent default context menu
+        const message = e.target.closest('.message');
+        if (message) {
+            // Add squish animation
+            message.classList.add('squish');
+            // Remove the class after animation completes
+            setTimeout(() => {
+                message.classList.remove('squish');
+            }, 300);
+            
             const isOwnMessage = message.classList.contains('own-message');
             createMessageMenu(message, isOwnMessage);
         }

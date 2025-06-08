@@ -995,6 +995,10 @@ form h1{
     right: 20px;
     z-index: 1000;
     display: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    background: white;
+    padding: 8px;
 }
 
 .emoji-picker-container.active {
@@ -1289,4 +1293,79 @@ form h1{
 
 .typingMessage img{
     width: 2vw;
+}
+
+.replyMessage{
+    background-color: #ff7e53;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    
+
+}
+
+.own-message .replyMessage{
+    background-color: #eee;
+    color: #ff7e53;
+    border-radius: 8px;
+    padding: 5px;
+    border-bottom-right-radius: 0;
+
+}
+.replyMessage .replyUser{
+    font-family: 'Lexend', sans-serif;
+    font-weight: bold;
+}
+.replyMessage .replyContent{
+    font-family: 'Lexend', sans-serif;
+}
+
+.popup{
+    color: #FD5A23;
+    overflow: hidden; /* Prevent scrolling */
+    height: auto; /* Let height adjust to content */
+    max-height: 30vh; /* Maximum height */
+}
+
+.popup i{
+    text-align: center;
+    font-size: 8vh; /* Reduced from 10vh */
+    margin-bottom: 2vh; /* Reduced from 3vh */
+    overflow: hidden;
+    width: 100%;
+    margin-top: 1vh;
+}
+
+.popup h2{
+    text-align: center;
+    padding-bottom: 0.5vh; /* Reduced from 1vh */
+    margin: 0;
+}
+
+.popup p{
+    font-family: 'Lexend', sans-serif;
+    text-align: center;
+    margin: 1vh 0;
+}
+
+.btnsMenu{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1vh; /* Added small margin */
+}
+
+.popup button{
+    margin-top: 1vh; /* Reduced from 2vh */
+    text-align: center;
+    width: 5vw;
+    border-radius: 8px;
+    background-color: white;
+    color: #FD5A23;
+    transition: all .25s linear;
+}
+
+.popup button:hover{
+    background-color: #FD5A23 !important;
+    color: white !important;
 }
