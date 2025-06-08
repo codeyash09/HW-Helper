@@ -385,14 +385,76 @@ async function UpdateMessage(messEl, updatedText){
 
 // Handle unsend (delete for everyone)
 function handleUnsend(messageElement) {
-    if (confirm('Are you sure you want to unsend this message? This action cannot be undone.')) {
-        // TODO: Update message in database to show as unsent
-        messageElement.style.opacity = '0.5';
-        const text = messageElement.querySelector('.text');
-        text.textContent = 'This message was unsent';
-        text.style.fontStyle = 'italic';
-        UnsendMessage(messageElement);
-    }
+    customConfirm('Do you really want to unsend this message? This action cannot be undone.')
+        .then((userConfirmation) => {
+            if(userConfirmation){
+                messageElement.style.opacity = '0.5';
+                const text = messageElement.querySelector('.text');
+                text.textContent = 'This message was unsent';
+                text.style.fontStyle = 'italic';
+                UnsendMessage(messageElement);
+            }
+        })
+
+    
+}
+
+function customConfirm(message){
+    return new Promise((resolve) =>{
+        let popup = document.createElement('div');
+        popup.style.position = 'fixed';
+        popup.style.width = '15vw';
+        popup.style.height = '30vh';
+
+        popup.classList.add('popup');
+
+        popup.style.top = '35vh';
+        popup.style.left = '42.5vw';
+
+        popup.style.backgroundColor = 'white';
+
+        popup.style.border = '2px solid #FDA523';
+        popup.style.borderRadius = '8px';
+        popup.style.padding = '20px';
+     
+        popup.style.boxShadow = '0px 4px 8px rgba(0,0,0,0.2)';
+        popup.style.zIndex = '9999';
+
+        let x = document.createElement('i');
+        x.classList.add("fa-regular");
+        x.classList.add("fa-trash");
+        popup.appendChild(x);
+
+        let title = document.createElement('h2');
+        title.innerHTML = 'Are you sure?';
+        popup.appendChild(title);
+
+
+        let text = document.createElement('p');
+        text.innerText = message;
+        popup.appendChild(text);
+        let btns = document.createElement('div');
+        btns.classList.add("btnsMenu");
+        let yesButton = document.createElement('button');
+        yesButton.innerText = 'Yes';
+        yesButton.onclick = () => {
+            document.body.removeChild(popup);
+            resolve(true);
+        };
+        btns.appendChild(yesButton);
+
+        const noButton = document.createElement('button');
+        noButton.innerText = 'No';
+        noButton.onclick = () => {
+            document.body.removeChild(popup);
+            resolve(false);
+        };
+        btns.appendChild(noButton);
+        popup.appendChild(btns);
+
+        document.body.appendChild(popup);
+    });
+
 }
 
 async function UnsendMessage(messEl){

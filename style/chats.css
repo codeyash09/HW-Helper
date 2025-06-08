@@ -1315,3 +1315,50 @@ form h1{
 .replyMessage .replyContent{
     font-family: 'Lexend', sans-serif;
 }
+
+.popup{
+    color: #FD5A23;
+}
+
+.popup i{
+    text-align: center;
+    font-size: 10vh;
+    margin-bottom: 3vh;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 1vh;
+}
+
+.popup h2{
+    text-align: center;
+    padding-bottom: 1vh;
+}
+
+.popup p{
+    font-family: 'Lexend', sans-serif;
+    text-align: center;
+
+}
+
+.btnsMenu{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+
+.popup button{
+    margin-top: 5vh;
+    text-align: center;
+    width: 5vw;
+    border-radius: 8px;
+    background-color: white;
+    color: #FD5A23;
+    transition: all .25s linear;
+}
+
+.popup button:hover{
+    background-color: #FD5A23 !important;
+    color: white !important;
+}
