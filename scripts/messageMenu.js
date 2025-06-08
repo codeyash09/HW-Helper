@@ -284,9 +284,23 @@ function handleEmojiReaction(emoji, messageElement) {
 
 // Handle reply
 function handleReply(messageElement) {
+    const sender = messageElement.querySelector('.username').textContent;
     const messageText = messageElement.querySelector('.text').textContent;
     const chatInput = document.getElementById('chatInput');
-    chatInput.value = `> ${messageText}\n`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+    chatInput.value = `<div class="replyMessage"><div class="replyUser">${sender}</div><div class="replyContent">${messageText}</div></div>`;
     chatInput.focus();
 }
 

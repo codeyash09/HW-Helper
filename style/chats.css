@@ -1290,3 +1290,28 @@ form h1{
 .typingMessage img{
     width: 2vw;
 }
+
+.replyMessage{
+    background-color: #ff7e53;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    border-bottom-right-radius: 0;
+
+}
+
+.own-message .replyMessage{
+    background-color: #eee;
+    color: #ff7e53;
+    border-radius: 8px;
+    padding: 5px;
+    border-bottom-right-radius: 0;
+
+}
+.replyMessage .replyUser{
+    font-family: 'Lexend', sans-serif;
+    font-weight: bold;
+}
+.replyMessage .replyContent{
+    font-family: 'Lexend', sans-serif;
+}
