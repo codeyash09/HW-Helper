@@ -127,15 +127,256 @@
             
         }
         
-        .own-message .content {
-            background-color: white;
-            color: #FD5A23;
-            border: 2px solid #FD5A23;
+        .message {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 0 45px 0 5px;
         }
         
         .message .content {
             background-color: #FD5A23;
             color: #000000;
+            position: relative;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-dots {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            cursor: pointer;
+            color: #000000;
+            padding: 12px;
+            z-index: 10;
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 5px;
+        }
+        
+        .message:hover .message-dots {
+            opacity: 1;
+        }
+
+        /* Popup menu styles */
+        .message-popup {
+            position: absolute;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+            min-width: 220px;
+            z-index: 100;
+            display: none;
+            backdrop-filter: blur(8px);
+            transform-origin: top center;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        .message-popup.show {
+            display: block;
+            animation: popupFadeIn 0.2s ease-out;
+        }
+
+        .message-popup.closing {
+            transform: scaleY(0);
+            opacity: 0;
+        }
+
+        .message-popup-date {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 14px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .message-popup-emoji {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 14px;
+            padding: 10px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .emoji-reaction {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            transform: scale(1);
+            opacity: 0;
+            animation: emojiAppear 0.3s ease-out forwards;
+        }
+
+        .emoji-reaction.falling {
+            animation: emojiFall 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .emoji-reaction:nth-child(1) { animation-delay: 0.1s; }
+        .emoji-reaction:nth-child(2) { animation-delay: 0.2s; }
+        .emoji-reaction:nth-child(3) { animation-delay: 0.3s; }
+        .emoji-reaction:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes emojiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes emojiAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.5) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .emoji-reaction:hover {
+            background-color: #FFF5F2;
+            transform: scale(1.1);
+        }
+
+        .emoji-reaction:active {
+            transform: scale(0.95);
+        }
+
+        .message-popup-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message-popup-action {
+            background: none;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .message-popup-action:hover {
+            background-color: #FFF5F2;
+            color: #FD5A23;
+            transform: translateX(2px);
+        }
+
+        .message-popup-action:active {
+            transform: translateX(0);
+        }
+
+        .message-popup-action.delete-action {
+            color: #ff4444;
+        }
+
+        .message-popup-action.delete-action:hover {
+            background-color: #fff0f0;
+            color: #ff0000;
+        }
+
+        .message-edit-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #FD5A23;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .message-edit-input:focus {
+            box-shadow: 0 0 0 3px rgba(253, 90, 35, 0.2);
+        }
+
+        .message-popup-action i {
+            width: 16px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .copy-tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 1000;
+            animation: tooltipFadeIn 0.2s ease-out;
+        }
+
+        @keyframes tooltipFadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Add styles for own messages */
+        .own-message {
+            flex-direction: row-reverse;
+            padding: 0 5px 0 45px;
+        }
+        
+        .own-message .content {
+            background-color: white;
+            color: #FD5A23;
+            border: 2px solid #FD5A23;
+            position: relative;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .own-message .message-dots {
+            right: auto;
+            left: 15px;
+            margin-top: 5px;
+        }
+
+        /* Position popup for own messages */
+        .own-message .message-popup {
+            right: auto;
+            left: 15px;
         }
         
         .input-actions i {
@@ -165,6 +406,42 @@
         
         .add-chat-button:hover {
             background-color: #FF7A4D;
+        }
+
+        .message-reactions {
+            display: flex;
+            gap: 4px;
+            padding: 2px 8px;
+            font-size: 16px;
+            position: absolute;
+            bottom: -20px;
+            left: 75%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .own-message .message-reactions {
+            left: 25%;
+            transform: translateX(-50%);
+        }
+
+        .message-reaction {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.8;
+            padding: 2px 4px;
+        }
+
+        .message-reaction:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .message-reaction.active {
+            opacity: 1;
         }
     </style>
 </head>
@@ -273,6 +550,9 @@
                         <div class="username">FriendUser#5678</div>
                         <div class="text">Hey, how's it going?</div>
                         <div class="timestamp">10:30 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="message own-message"> Your message
@@ -281,6 +561,9 @@
                         <div class="username">YourUsername#1234</div>
                         <div class="text">Pretty good! Just working on this chat interface.</div>
                         <div class="timestamp">10:31 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="message"> Other user's message 
@@ -289,6 +572,9 @@
                         <div class="username">AnotherUser#9012</div>
                         <div class="text">Looks cool!</div>
                         <div class="timestamp">10:32 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
                     </div>
                 </div> --> 
                 <!-- Example message structure -->
@@ -407,7 +693,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@emoji-mart/data"></script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="/scripts/emojis.js"></script>
-    <script src="/scripts/imageupload.js"></script> <!-- Add this new script -->
+    <script src="/scripts/imageupload.js"></script>
+    <script src="/scripts/messageMenu.js"></script>
     <script type="module" src="/scripts/createchat.js"></script>
     <script type="module" src="/scripts/chats.js"></script>
     <script src="/scripts/sidebar.js"></script>
