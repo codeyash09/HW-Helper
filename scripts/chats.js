@@ -1,4 +1,5 @@
 import {db} from '/scripts/createChat.js';
+import { showContextMenu } from '/scripts/chatContextMenu.js';
 
 
 
@@ -156,6 +157,7 @@ async function showChats() {
                 }
             }
             tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatList.appendChild(tab);
         }
         
@@ -471,10 +473,8 @@ async function openChat(id) {
     for (let i = chat.messages.length - 1; i >= 0; i--) {
         const message = document.createElement("div");
         message.classList.add("message");
+        message.setAttribute('data-message-id', i);
 
-
-
-  
         const avatar = document.createElement("div");
         avatar.classList.add("avatar");
         const content = document.createElement("div");
@@ -694,6 +694,7 @@ async function changeRow() {
                 }
             }
             tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatList.appendChild(tab);
         }
         // Update unread badge

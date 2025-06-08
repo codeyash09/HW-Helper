@@ -75,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             emojiPickerContainer.classList.add('active');
             emojiButton.classList.add('emoji-button-active');
+            
+            // Close GIF picker if it's open
+            const gifPickerContainer = document.getElementById('gifPickerContainer');
+            if (gifPickerContainer && gifPickerContainer.classList.contains('active')) {
+                gifPickerContainer.classList.remove('active');
+                document.querySelector('#gifButton').classList.remove('gif-button-active');
+            }
         }
     }
     

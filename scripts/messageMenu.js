@@ -195,6 +195,11 @@ function createMessageMenu(messageElement, isOwnMessage) {
         const isOverMessage = messageElement.contains(e.target);
         const isOverEmojiPicker = e.target.closest('em-emoji-picker');
         
+        // If cursor is over popup or emoji picker, don't close
+        if (isOverPopup || isOverEmojiPicker) {
+            return;
+        }
+        
         // Get popup position
         const popupRect = popup.getBoundingClientRect();
         const messageRect = messageElement.getBoundingClientRect();
@@ -214,8 +219,8 @@ function createMessageMenu(messageElement, isOwnMessage) {
             Math.abs(e.clientY - messageRect.bottom)
         );
         
-        // If cursor is not over any of these elements and is far enough away
-        if (!isOverPopup && !isOverMessage && !isOverEmojiPicker && distanceFromPopup > 20 && distanceFromMessage > 20) {
+        // If cursor is not over message and is far enough away
+        if (!isOverMessage && distanceFromMessage > 30) {
             // Add falling animation to emojis
             const emojis = popup.querySelectorAll('.emoji-reaction');
             emojis.forEach((emoji, index) => {
@@ -319,23 +324,85 @@ function handleReply(messageElement) {
 
 // Handle copy
 function handleCopy(messageElement) {
-    const messageText = messageElement.querySelector('.text').textContent;
-    navigator.clipboard.writeText(messageText).then(() => {
+    // Try different selectors to find the text content
+    const textElement = messageElement.querySelector('.content .text') || 
+                       messageElement.querySelector('.text') ||
+                       messageElement.querySelector('.content');
+    
+    if (!textElement) {
+        console.error('Could not find text element in message:', messageElement);
+        return;
+    }
+
+    const messageText = textElement.textContent;
+    console.log('Attempting to copy text:', messageText); // Debug log
+
+    // Use a fallback method if clipboard API fails
+    const copyToClipboard = async () => {
+        try {
+            await navigator.clipboard.writeText(messageText);
+            console.log('Successfully copied to clipboard');
+        } catch (err) {
+            console.error('Clipboard API failed, trying fallback method:', err);
+            // Fallback method
+            const textArea = document.createElement('textarea');
+            textArea.value = messageText;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                console.log('Successfully copied using fallback method');
+            } catch (err) {
+                console.error('Fallback copy method failed:', err);
+                return;
+            } finally {
+                textArea.remove();
+            }
+        }
+    };
+
+    copyToClipboard().then(() => {
         // Show a temporary "Copied!" tooltip
         const tooltip = document.createElement('div');
         tooltip.className = 'copy-tooltip';
         tooltip.textContent = 'Copied!';
         document.body.appendChild(tooltip);
         
-        // Position tooltip near the message
+        // Position tooltip to the side of the message
         const rect = messageElement.getBoundingClientRect();
-        tooltip.style.left = `${rect.left + rect.width / 2}px`;
-        tooltip.style.top = `${rect.top - 30}px`;
+        const isOwnMessage = messageElement.classList.contains('own-message');
+        
+        if (isOwnMessage) {
+            // For own messages, show tooltip on the left
+            tooltip.style.left = `${rect.left - 80}px`;
+        } else {
+            // For received messages, show tooltip on the right
+            tooltip.style.left = `${rect.right + 20}px`;
+        }
+        
+        // Center vertically
+        tooltip.style.top = `${rect.top + (rect.height / 2)}px`;
+        tooltip.style.transform = 'translateY(-50%)';
+        
+        // Force a reflow to ensure the transition works
+        tooltip.offsetHeight;
+        
+        // Add show class to trigger animation
+        tooltip.classList.add('show');
         
         // Remove tooltip after 2 seconds
         setTimeout(() => {
-            tooltip.remove();
-        }, 2000);
+            tooltip.classList.remove('show');
+            // Wait for fade out animation to complete before removing
+            setTimeout(() => {
+                tooltip.remove();
+            }, 200);
+        }, 1800);
     });
 }
 
