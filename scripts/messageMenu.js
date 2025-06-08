@@ -130,8 +130,7 @@ function createMessageMenu(messageElement, isOwnMessage) {
     popup.appendChild(actionsSection);
     
     // Position the popup
-    const dots = messageElement.querySelector('.message-dots');
-    const rect = dots.getBoundingClientRect();
+    const rect = messageElement.getBoundingClientRect();
     
     // Check if message is near the bottom of the chat
     const chatMessages = document.getElementById('chat-messages');
@@ -142,15 +141,15 @@ function createMessageMenu(messageElement, isOwnMessage) {
     
     // Position based on message type
     if (isOwnMessage) {
-        // For own messages, position to the left of the dots
-        popup.style.left = `${rect.left - 245}px`; // Move 245px to the left
-        popup.style.top = isVeryRecentMessage ? `${rect.top - 240}px` : 
+        // For own messages, position to the left of the message
+        popup.style.left = `${rect.left - 220}px`; // Move 220px to the left (was 245px)
+        popup.style.top = isVeryRecentMessage ? `${rect.top - 200}px` : 
                          isSecondMostRecent ? `${rect.top - 200}px` :
                          isRecentMessage ? `${rect.top - 120}px` : 
                          `${rect.top - 80}px`; // Move higher for very recent messages
     } else {
-        // For received messages, position very close to the dots
-        popup.style.left = `${rect.right - 35}px`; // Move 35px to the left
+        // For received messages, position to the right side of the message
+        popup.style.left = `${rect.right + 20}px`; // Move 20px to the right (was 30px)
         popup.style.top = isVeryRecentMessage ? `${rect.top - 200}px` : 
                          isRecentMessage ? `${rect.top - 120}px` : 
                          `${rect.top - 80}px`; // Move higher for very recent messages
@@ -162,48 +161,16 @@ function createMessageMenu(messageElement, isOwnMessage) {
     // Show popup
     popup.classList.add('show');
 
-    // Store the initial position relative to the viewport
-    const initialTop = rect.top;
-    const initialLeft = rect.left;
-    
-    // Update popup position on scroll
-    const updatePopupPosition = () => {
-        const scrollY = window.scrollY;
-        const scrollX = window.scrollX;
-        
-        if (isOwnMessage) {
-            popup.style.left = `${initialLeft - 245}px`;
-            popup.style.top = isVeryRecentMessage ? `${initialTop - 240 + scrollY}px` : 
-                             isSecondMostRecent ? `${initialTop - 200 + scrollY}px` :
-                             isRecentMessage ? `${initialTop - 120 + scrollY}px` : 
-                             `${initialTop - 80 + scrollY}px`;
-        } else {
-            popup.style.left = `${initialLeft - 35}px`;
-            popup.style.top = isVeryRecentMessage ? `${initialTop - 200 + scrollY}px` : 
-                             isRecentMessage ? `${initialTop - 120 + scrollY}px` : 
-                             `${initialTop - 80 + scrollY}px`;
-        }
-    };
-
-    // Add scroll event listener
-    window.addEventListener('scroll', updatePopupPosition);
-    
-    // Close popup when clicking outside or moving cursor away
+    // Close popup when clicking outside, moving cursor away, or scrolling
     const closePopup = (e) => {
-        // Check if the cursor is over the popup, message, or emoji picker
-        const isOverPopup = popup.contains(e.target);
-        const isOverMessage = messageElement.contains(e.target);
-        const isOverEmojiPicker = e.target.closest('em-emoji-picker');
-        const isOverDots = e.target === dots;
-        
-        // If cursor is not over any of these elements, close the popup
-        if (!isOverPopup && !isOverMessage && !isOverEmojiPicker && !isOverDots) {
+        // If it's a scroll event, close immediately
+        if (e.type === 'scroll') {
             // Add falling animation to emojis
             const emojis = popup.querySelectorAll('.emoji-reaction');
             emojis.forEach((emoji, index) => {
                 setTimeout(() => {
                     emoji.classList.add('falling');
-                }, index * 100); // Stagger the falling animation
+                }, index * 100);
             });
 
             // Add closing animation to popup
@@ -212,14 +179,64 @@ function createMessageMenu(messageElement, isOwnMessage) {
             // Remove popup after animations complete
             setTimeout(() => {
                 popup.remove();
-            }, 800); // Wait for all animations to complete
+            }, 800);
             
             document.removeEventListener('mousemove', closePopup);
+            document.removeEventListener('scroll', closePopup);
+            return;
+        }
+
+        // For mouse movement, check distance
+        const isOverPopup = popup.contains(e.target);
+        const isOverMessage = messageElement.contains(e.target);
+        const isOverEmojiPicker = e.target.closest('em-emoji-picker');
+        
+        // Get popup position
+        const popupRect = popup.getBoundingClientRect();
+        const messageRect = messageElement.getBoundingClientRect();
+        
+        // Calculate distance from popup and message
+        const distanceFromPopup = Math.min(
+            Math.abs(e.clientX - popupRect.left),
+            Math.abs(e.clientX - popupRect.right),
+            Math.abs(e.clientY - popupRect.top),
+            Math.abs(e.clientY - popupRect.bottom)
+        );
+        
+        const distanceFromMessage = Math.min(
+            Math.abs(e.clientX - messageRect.left),
+            Math.abs(e.clientX - messageRect.right),
+            Math.abs(e.clientY - messageRect.top),
+            Math.abs(e.clientY - messageRect.bottom)
+        );
+        
+        // If cursor is not over any of these elements and is far enough away
+        if (!isOverPopup && !isOverMessage && !isOverEmojiPicker && distanceFromPopup > 20 && distanceFromMessage > 20) {
+            // Add falling animation to emojis
+            const emojis = popup.querySelectorAll('.emoji-reaction');
+            emojis.forEach((emoji, index) => {
+                setTimeout(() => {
+                    emoji.classList.add('falling');
+                }, index * 100);
+            });
+
+            // Add closing animation to popup
+            popup.classList.add('closing');
+            
+            // Remove popup after animations complete
+            setTimeout(() => {
+                popup.remove();
+            }, 800);
+            
+            document.removeEventListener('mousemove', closePopup);
+            document.removeEventListener('scroll', closePopup);
         }
     };
     
     // Use mousemove instead of click for smoother cursor tracking
     document.addEventListener('mousemove', closePopup);
+    // Add scroll event listener
+    document.addEventListener('scroll', closePopup, true);
 }
 
 // Handle emoji reactions
@@ -358,15 +375,22 @@ function handleDelete(messageElement) {
     }
 }
 
-// Add click handlers to all message dots
+// Add right-click handlers to all messages
 document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.getElementById('chat-messages');
     
     // Use event delegation for dynamically added messages
-    chatMessages.addEventListener('click', (e) => {
-        const dots = e.target.closest('.message-dots');
-        if (dots) {
-            const message = dots.closest('.message');
+    chatMessages.addEventListener('contextmenu', (e) => {
+        e.preventDefault(); // Prevent default context menu
+        const message = e.target.closest('.message');
+        if (message) {
+            // Add squish animation
+            message.classList.add('squish');
+            // Remove the class after animation completes
+            setTimeout(() => {
+                message.classList.remove('squish');
+            }, 300);
+            
             const isOwnMessage = message.classList.contains('own-message');
             createMessageMenu(message, isOwnMessage);
         }

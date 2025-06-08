@@ -486,13 +486,6 @@ async function openChat(id) {
         time.classList.add("timestamp");
         time.innerHTML = convertToLocalTime(chat.times[i]);
 
-        // Add three-dots menu
-        const dotsMenu = document.createElement("div");
-        dotsMenu.classList.add("message-dots");
-        dotsMenu.innerHTML = '<i class="fa-solid fa-ellipsis-vertical"></i>';
-        dotsMenu.style.display = 'block'; // Force display
-        dotsMenu.style.visibility = 'visible'; // Force visibility
-
         if (chat.senders[i] === username) {
             message.classList.add("own-message");
         }
@@ -502,7 +495,6 @@ async function openChat(id) {
         content.appendChild(usernameElement);
         content.appendChild(text);
         content.appendChild(time);
-        message.appendChild(dotsMenu); // Move dots menu outside of content
 
         chatMess.appendChild(message);
     }
