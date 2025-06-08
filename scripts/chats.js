@@ -28,6 +28,9 @@ let rowSys;
 let oldCurrent;
 let savedScrollPosition;
 let username;
+let messages;
+let sendlers;
+let timers;
 async function fetchUser() {
   const { data, error } = await db
     .from('Users')
@@ -485,6 +488,10 @@ async function openChat(id) {
         const time = document.createElement("div");
         time.classList.add("timestamp");
         time.innerHTML = convertToLocalTime(chat.times[i]);
+        const messId = document.createElement("div");
+        messId.classList.add("messId");
+        messId.innerHTML = i;
+        messId.style.display = 'none';
 
         if (chat.senders[i] === username) {
             message.classList.add("own-message");
@@ -495,6 +502,7 @@ async function openChat(id) {
         content.appendChild(usernameElement);
         content.appendChild(text);
         content.appendChild(time);
+        content.appendChild(messId);
 
         chatMess.appendChild(message);
     }
@@ -550,7 +558,10 @@ async function openChat(id) {
 
 
 
-    
+    messages = chat.messages;
+    sendlers = chat.senders;
+    timers = chat.times;
+
 
     
 
@@ -753,4 +764,4 @@ function moveTabToLeft(chatId) {
 // Inside changeRow(), after updating the DOM:
 moveTabToLeft(currentChat);
 
-export {currentChat, username, userId, displayTypingBool, newpayload};
+export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, timers};

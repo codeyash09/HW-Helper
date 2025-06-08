@@ -1,3 +1,7 @@
+import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
+import {db} from '/scripts/createChat.js';
+
+
 // Function to create and show the popup menu
 function createMessageMenu(messageElement, isOwnMessage) {
     // Create popup menu
@@ -328,6 +332,7 @@ function handleCopy(messageElement) {
 
 // Handle edit
 function handleEdit(messageElement) {
+    
     const messageText = messageElement.querySelector('.text');
     const originalText = messageText.textContent;
     
@@ -348,7 +353,7 @@ function handleEdit(messageElement) {
         if (newText && newText !== originalText) {
             messageText.textContent = newText;
             // TODO: Update message in database
-            console.log('Message edited:', newText);
+            UpdateMessage(messageElement, newText);
         } else {
             messageText.textContent = originalText;
         }
@@ -368,6 +373,16 @@ function handleEdit(messageElement) {
     });
 }
 
+async function UpdateMessage(messEl, updatedText){
+    let newMess = messages;
+    newMess[parseInt(messEl.querySelector('.messId').innerHTML)] = updatedText;
+
+    const { data, error } = await db
+      .from('Chats') 
+      .update({messages: newMess}) 
+      .eq('chat_id', currentChat); 
+}
+
 // Handle unsend (delete for everyone)
 function handleUnsend(messageElement) {
     if (confirm('Are you sure you want to unsend this message? This action cannot be undone.')) {
@@ -376,9 +391,24 @@ function handleUnsend(messageElement) {
         const text = messageElement.querySelector('.text');
         text.textContent = 'This message was unsent';
         text.style.fontStyle = 'italic';
-        console.log('Message unsent');
+        UnsendMessage(messageElement);
     }
 }
+
+async function UnsendMessage(messEl){
+    let newMess = messages;
+    newMess.splice(parseInt(messEl.querySelector('.messId').innerHTML), 1);
+    let newSend = sendlers;
+    newSend.splice(parseInt(messEl.querySelector('.messId').innerHTML), 1);
+    let newTime = timers;
+    newTime.splice(parseInt(messEl.querySelector('.messId').innerHTML), 1);
+
+    const { data, error } = await db
+      .from('Chats') 
+      .update({messages: newMess, senders: newSend, times: newTime}) 
+      .eq('chat_id', currentChat); 
+}
+
 
 // Handle delete (delete for me)
 function handleDelete(messageElement) {
