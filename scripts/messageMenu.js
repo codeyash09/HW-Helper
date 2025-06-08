@@ -250,7 +250,7 @@ function handleEmojiReaction(emoji, messageElement) {
     if (!reactionsContainer) {
         reactionsContainer = document.createElement('div');
         reactionsContainer.className = 'message-reactions';
-        messageElement.appendChild(reactionsContainer); // Changed from .content to messageElement
+        messageElement.children[1].children[1].appendChild(reactionsContainer); // Changed from .content to messageElement
     }
 
     // Check if this emoji reaction already exists
@@ -282,8 +282,17 @@ function handleEmojiReaction(emoji, messageElement) {
         reactionsContainer.appendChild(reactionElement);
     }
 
-    // TODO: Update reaction in database
-    console.log('Reacted with:', emoji, 'to message:', messageElement.querySelector('.text').textContent);
+    UpdateMessageReact(messageElement, messageElement.children[1].children[1].innerHTML);
+}
+
+async function UpdateMessageReact(messEl, updatedText){
+    let newMess = messages;
+    newMess[parseInt(messEl.querySelector('.messId').innerHTML)] = updatedText;
+
+    const { data, error } = await db
+      .from('Chats') 
+      .update({messages: newMess}) 
+      .eq('chat_id', currentChat); 
 }
 
 // Handle reply

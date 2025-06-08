@@ -1331,12 +1331,14 @@ form h1{
 
 .popup h2{
     text-align: center;
+    font-size:2vh;
     padding-bottom: 1vh;
 }
 
 .popup p{
     font-family: 'Lexend', sans-serif;
     text-align: center;
+    font-size:1.15vh;
 
 }
 
