@@ -725,10 +725,10 @@
         }
 
         .replyMessage {
-            background-color: transparent;
-            color: #000000;
-            border-radius: 0;
-            padding: 0;
+            background-color: #eee;
+            color: #666;
+            border-radius: 8px;
+            padding: 5px;
             font-size: 14px;
             margin-bottom: 4px;
             width: 100%;
@@ -762,6 +762,25 @@
 
         .own-message .replyMessage {
             margin-left: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        /* Make received message reply styling match own messages exactly */
+        .message .replyMessage {
+            background-color: #eee;
+            color: #666;
+            border-radius: 8px;
+            padding: 5px;
+            border-bottom-right-radius: 0;
+        }
+
+        .message .replyContent {
+            color: #666;
+        }
+
+        .message .replyUser {
+            color: #666;
+            font-weight: 500;
         }
 
         .message .timestamp {
